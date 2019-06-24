@@ -15,12 +15,15 @@ public class MiModel {
 	@Column(name = "code")
 	private String code;
 
+	//实体类型
 	@Column(name = "type")
 	private Integer type;
 	
+	//是否记录历史
 	@Column(name = "need_history")
 	private Integer needHistory;
 	
+	//是否需要缓存
 	@Column(name = "need_cache")
 	private Integer needCache;
 	
