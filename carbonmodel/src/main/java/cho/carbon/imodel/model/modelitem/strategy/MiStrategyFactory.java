@@ -1,6 +1,6 @@
 package cho.carbon.imodel.model.modelitem.strategy;
 
-import com.abc.model.enun.ModelItemType;
+import cho.carbon.meta.enun.ModelItemType;
 
 /**
  * MiStrategy 策略工程
@@ -15,9 +15,14 @@ public class MiStrategyFactory {
 		switch (modelItemType) {
 		case MODEL:
 			return new ModelItemMiStrategy();
+		case STAT_MODEL:
+			return new StatModelItemMiStrategy();
 		case VALUE_ITEM:
 		case CASCADE_REFERENCE_ITEM:
 			return new ValueItemMiStrategy();
+		case FACT_ITEM:
+		case DIMENSION_ITEM:	
+			return new FactDimeMiStrategy();
 		case ENUM_ITEM:
 		case PREENUM_STRING_ITEM:
 			return new EnumItemMiStrategy();

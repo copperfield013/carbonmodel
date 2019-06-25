@@ -10,12 +10,10 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.abc.model.enun.ItemValueType;
-import com.abc.model.enun.ModelItemType;
-
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.comm.service.CommService;
+import cho.carbon.imodel.model.modelitem.Constants;
 import cho.carbon.imodel.model.modelitem.dao.ModelItemDao;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
@@ -28,6 +26,8 @@ import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.strategy.MiStrategyContext;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.modelitem.vo.ViewLabel;
+import cho.carbon.meta.enun.ItemValueType;
+import cho.carbon.meta.enun.ModelItemType;
 import cn.sowell.copframe.dto.page.PageInfo;
 
 @Service
@@ -61,13 +61,13 @@ public class ModelItemServiceImpl implements ModelItemService {
 		if (modelItem.getCode() == null || modelItem.getCode().trim().length() < 1) {
 			flag = "add";
 			ModelItemType itemType = ModelItemType.getItemType(modelItem.getType());
-			if (!ModelItemType.MODEL.equals(itemType)) {
+			if (!Constants.isModel(itemType)) {
 				ModelItem modelItem2 = commService.get(ModelItem.class, modelItem.getParent());
 				modelItem.setBelongModel(modelItem2.getBelongModel());
 			}
 			String itemCode = miCodeGService.getBasicItemCode(itemType, modelItem.getBelongModel());
 			modelItem.setCode(itemCode);
-			if (ModelItemType.MODEL.equals(itemType)) {
+			if (Constants.isModel(itemType)) {
 				modelItem.setBelongModel(itemCode);
 			}
 		}
@@ -122,12 +122,16 @@ public class ModelItemServiceImpl implements ModelItemService {
 		switch (modelItemType) {
 		case MODEL:
 		case ONE_LINE_GROUP:
+		case FACT_GROUP:
+		case DIMENSION_GROUP:
 		case FILE_ITEM:
 			return viewLabelList;
 		case GIANT_LINE_GROUP:
 		case MULTI_LINE_GROUP:
 			break;
 		case VALUE_ITEM:
+		case FACT_ITEM:
+		case DIMENSION_ITEM:
 		case CASCADE_REFERENCE_ITEM:
 			getViewLabelToMiValue(miValue, viewLabelList);
 			return viewLabelList;
@@ -177,9 +181,6 @@ public class ModelItemServiceImpl implements ModelItemService {
 
 			break;
 		case PASSWORD_ITEM:
-
-			break;
-		case LABEL:
 
 			break;
 		case TWO_LEVEL_ITEM:
@@ -319,5 +320,11 @@ public class ModelItemServiceImpl implements ModelItemService {
 		MiStrategyContext miStrategyContext = new MiStrategyContext(commService, casenumItemService, modelItemService, miCodeGService);
 		miStrategyContext.delModelItem(miCode);
 		return null;
+	}
+
+	@Override
+	public List<ModelItem> getModelList() {
+		
+		return modelItemDao.getModelList();
 	}
 }

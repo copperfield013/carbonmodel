@@ -2,8 +2,6 @@ package cho.carbon.imodel.model.modelitem.strategy;
 
 import java.util.List;
 
-import com.abc.model.enun.ItemValueType;
-import com.abc.model.enun.ModelItemType;
 
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.comm.service.CommService;
@@ -14,6 +12,8 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.meta.enun.ItemValueType;
+import cho.carbon.meta.enun.ModelItemType;
 
 /**
  * ModelItemType

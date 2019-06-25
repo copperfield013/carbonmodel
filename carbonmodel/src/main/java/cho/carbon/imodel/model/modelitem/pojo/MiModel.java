@@ -15,10 +15,6 @@ public class MiModel {
 	@Column(name = "code")
 	private String code;
 
-	//实体类型
-	@Column(name = "type")
-	private Integer type;
-	
 	//是否记录历史
 	@Column(name = "need_history")
 	private Integer needHistory;
@@ -29,10 +25,9 @@ public class MiModel {
 	
 	public MiModel() {}
 	
-	public MiModel(String code, Integer type, Integer needHistory, Integer needCache) {
+	public MiModel(String code, Integer needHistory, Integer needCache) {
 		super();
 		this.code = code;
-		this.type = type;
 		this.needHistory = needHistory;
 		this.needCache = needCache;
 	}
@@ -43,14 +38,6 @@ public class MiModel {
 
 	public void setCode(String code) {
 		this.code = code;
-	}
-
-	public Integer getType() {
-		return type;
-	}
-
-	public void setType(Integer type) {
-		this.type = type;
 	}
 
 	public Integer getNeedHistory() {

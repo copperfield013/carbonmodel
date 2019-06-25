@@ -9,9 +9,6 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-import com.abc.model.enun.ItemValueType;
-import com.abc.model.enun.ModelItemType;
-
 import cho.carbon.imodel.model.cascadedict.criteria.CascadedictBasicItemCriteria;
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
 import cho.carbon.imodel.model.modelitem.dao.ModelItemDao;
@@ -19,6 +16,7 @@ import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.meta.enun.ModelItemType;
 import cn.sowell.copframe.dao.deferedQuery.DeferedParamQuery;
 import cn.sowell.copframe.dao.deferedQuery.sqlFunc.WrapForCountFunction;
 import cn.sowell.copframe.dao.utils.QueryUtils;
@@ -34,7 +32,7 @@ public class ModelItemDaoImpl implements ModelItemDao {
 	@Override
 	public List<ModelItem> queryList(ModelItem modelItem, PageInfo pageInfo) throws Exception {
 		
-		String hql = "from ModelItem b WHERE type=1";
+		String hql = "from ModelItem b WHERE type in(1, 101, 102)";
 		DeferedParamQuery dQuery = new DeferedParamQuery(hql);
 		if(TextUtils.hasText(modelItem.getCode())){
 			dQuery.appendCondition(" AND b.code =:code")
@@ -164,8 +162,11 @@ public class ModelItemDaoImpl implements ModelItemDao {
 		return sFactory.getCurrentSession().createSQLQuery(sb.toString())
 				.setString("mappingId", mappingId).list();
 	}
-	
-	
-	
+
+	@Override
+	public List<ModelItem> getModelList() {
+		String hql = "from ModelItem b WHERE type='1'";
+		return sFactory.getCurrentSession().createQuery(hql).list();
+	}
 	
 }

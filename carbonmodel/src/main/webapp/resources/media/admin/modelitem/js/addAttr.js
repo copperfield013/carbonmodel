@@ -104,7 +104,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	});
 	
 	 $($page).on("click", "#btn-save", function (e) {
-		 debugger;
 		 //这里获取属性的值
 		 var formdom = $page.find(".modelItemForm")[0];
 	     var fData = new FormData(formdom);

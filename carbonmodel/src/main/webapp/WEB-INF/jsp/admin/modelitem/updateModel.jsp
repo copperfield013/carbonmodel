@@ -10,6 +10,18 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<form class="bv-form form-horizontal validate-form" action="admin/modelItem/createModelItem">
+				
+					
+					
+					<c:if test="${sourceModelItem ne null }">
+						<div class="form-group">
+							<label class="col-lg-2 control-label" for="name">来源实体</label>
+							<div class="col-lg-5">
+								${sourceModelItem.name }
+							</div>
+						</div>
+					</c:if>
+				
 					<div class="form-group">
 						<input type="hidden" name="modelItem.code" value="${modelItem.code }">
 						<input type="hidden" name="modelItem.type" value="${modelItem.type }">

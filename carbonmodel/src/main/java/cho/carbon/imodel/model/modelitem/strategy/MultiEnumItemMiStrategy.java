@@ -2,9 +2,6 @@ package cho.carbon.imodel.model.modelitem.strategy;
 
 import java.util.List;
 
-import com.abc.model.constant.ModelItemValueParter;
-import com.abc.model.enun.ItemValueType;
-
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
@@ -13,6 +10,8 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.meta.constant.ModelItemValueParter;
+import cho.carbon.meta.enun.ItemValueType;
 
 /**
  * ModelItemType
@@ -42,7 +41,7 @@ public class MultiEnumItemMiStrategy implements MiStrategy {
 	private void createCorrelationMiValue(ModelItem modelItem, CommService commService) {
 		String code_P = ModelItemValueParter.getRepeatKeyName(modelItem.getCode());
 		String code_ED = ModelItemValueParter.getRepeatEditTimeName(modelItem.getCode());
-		String code_V = ModelItemValueParter.getSMValueName(modelItem.getCode());
+		String code_V = ModelItemValueParter.getMEValueName(modelItem.getCode());
 		
 		String tableName = "t_" + modelItem.getBelongModel()+ "_" + modelItem.getCode();
 		
@@ -67,7 +66,7 @@ public class MultiEnumItemMiStrategy implements MiStrategy {
 		// 删除三个衍生属性
 		String code_P = ModelItemValueParter.getRepeatKeyName(code);
 		String code_ED = ModelItemValueParter.getRepeatEditTimeName(code);
-		String code_V = ModelItemValueParter.getSMValueName(code);
+		String code_V = ModelItemValueParter.getMEValueName(code);
 		
 		
 		MiValue miValue1 = new MiValue();

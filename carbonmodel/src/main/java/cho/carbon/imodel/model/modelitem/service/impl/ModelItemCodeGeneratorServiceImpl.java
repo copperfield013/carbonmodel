@@ -7,12 +7,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.abc.model.enun.ItemValueType;
-import com.abc.model.enun.ModelItemType;
-
+import cho.carbon.imodel.model.modelitem.Constants;
 import cho.carbon.imodel.model.modelitem.dao.ModelItemCodeGeneratorDao;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItemCodeGenerator;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
+import cho.carbon.meta.enun.ModelItemType;
 
 @Service
 public class ModelItemCodeGeneratorServiceImpl implements ModelItemCodeGeneratorService {
@@ -29,10 +28,10 @@ public class ModelItemCodeGeneratorServiceImpl implements ModelItemCodeGenerator
 	}
 
 	@Override
-	public String getBasicItemFix(ModelItemType dataType, String belongModel) throws Exception {
+	public String getBasicItemFix(ModelItemType itemType, String belongModel) throws Exception {
 		//获取前缀信息
 		String basicItemFix = null;
-		if (ModelItemType.MODEL.equals(dataType) && (belongModel == null || belongModel == "")) {
+		if (Constants.isModel(itemType) && (belongModel == null || belongModel == "")) {
 			 basicItemFix = btCodeGenDao.getBasicItemFixByDB();
 		} else {
 			
@@ -59,6 +58,8 @@ public class ModelItemCodeGeneratorServiceImpl implements ModelItemCodeGenerator
 		String basicItemFix = getBasicItemFix(itemType, belongModel);
 		
 		switch (itemType) {
+		case STAT_MODEL:
+		case SQL_MODEL:
 		case MODEL:
 			basicItemCode =btNg.getEntityCode(basicItemFix);
 			map.put(basicItemCode, basicItemFix);

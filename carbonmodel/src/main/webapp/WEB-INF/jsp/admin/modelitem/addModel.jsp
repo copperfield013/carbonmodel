@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/common/base_empty.jsp"%>
-<div id="cascadedictBasicItem-add">
+<div id="modelItem-add">
 	<div class="page-header">
 		<div class="header-title">
 			<h1>添加模型</h1>
@@ -11,16 +11,34 @@
 			<div class="col-lg-12">
 				<form class="bv-form form-horizontal validate-form" action="admin/modelItem/createModelItem">
 					<div class="form-group">
-					
-						<input type="hidden" name="modelItem.type" value="1">
-						<input type="hidden" name="modelItem.usingState" value="0">
 						<label class="col-lg-2 control-label" for="name">名称</label>
 						<div class="col-lg-5">
 							<input type="text" placeholder="名字不能为空" data-bv-notempty="true" data-bv-notempty-message="名字不能为空" class="form-control name" name="modelItem.name" />
 						</div>
 					</div>
+					
+					<div class="form-group modelType">
+						<label class="col-lg-2 control-label" for="modelItem.type">实体类型</label>
+						<div class="col-lg-5">
+							<select class="form-control modelItemType" name="modelItem.type">
+								<option value="1">普通实体</option>
+								<option value="101">sql片段统计实体</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group sourceModelDiv"  style="display:none;">
+						<label class="col-lg-2 control-label" for="miModelStat.sourceCode">来源实体</label>
+						<div class="col-lg-5">
+							<select class="form-control sourceModelSel" name="miModelStat.sourceCode">
+								<option value="122">来源1</option>
+								<option value="222">来源2</option>
+							</select>
+						</div>
+					</div>
+					
 					<div class="form-group">
-						<label class="col-lg-2 control-label" for="order">描述</label>
+						<label class="col-lg-2 control-label" for="modelItem.description">描述</label>
 						<div class="col-lg-5">
 							<textarea  class="form-control" name="modelItem.description" />
 						</div>
@@ -37,18 +55,41 @@
 	</div>
 </div>
 <script>
-/* function checkName() {
-	var $cnName = $("form").find(".name");
-	var nameValue = $cnName.val();
+seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF){
+var $page = $('#modelItem-add');	
+
+$($page).on("change", ".modelItemType", function() { 
+
+	var miType = $(this).val();
 	
-	var reg = /[^\u4e00-\u9fa5 \w \(（）\)]/;
-    var istrue = reg.test(nameValue);
-    $cnName.siblings("#req").remove();
-    if (istrue) {
-    	
-    	$cnName.after(" <span id=\"req\" style=\"color: red;\">名称只能输入中文、英文、下划线、中英括号！</span>");
-    	return;
-    } 
-} */
+	if ("101" == miType) {
+	 	Ajax.ajax('admin/modelItem/getModelList', '', function(data) {			
+			if (data.code == "400") {
+				 Dialog.notice(data.msg, "error");
+				 $CPF.closeLoading();
+			} else{
+				debugger;
+				var $select = $('.sourceModelSel');
+				$select.html("");
+				var str = "";
+				
+				var modelList = data.modelList;
+				for ( var key in modelList) {
+					str+="<option value='"+modelList[key].code+"'>"+modelList[key].name+"</option>";
+				}
+
+				$select.append(str);
+
+				$('.sourceModelDiv').show();
+			}
+			
+			$CPF.closeLoading();
+		}); 
+	} else {
+		$('.sourceModelDiv').hide();
+	}
+	
+	});
+});
 
 </script>

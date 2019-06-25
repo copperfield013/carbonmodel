@@ -2,12 +2,12 @@ package cho.carbon.imodel.model.modelitem.dao;
 
 import java.util.List;
 
-import com.abc.model.enun.ModelItemType;
 
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.meta.enun.ModelItemType;
 import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface ModelItemDao {
@@ -74,5 +74,11 @@ public interface ModelItemDao {
 	 * @return
 	 */
 	List getTwoAttrByMappingId(String mappingId);
+
+	/**
+	 * 获取ModelItemType.MODEL
+	 * @return
+	 */
+	public List<ModelItem> getModelList();
 	
 }

@@ -33,7 +33,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				for ( var key in modelItemList) {
 					var modelItem = modelItemList[key];
 					
-					if (modelItem.type == 5) {//单行属性分组
+					if (modelItem.type == 5 || modelItem.type == 501 || modelItem.type == 502) {//单行属性分组
 						initGroup(modelItem, $parent);
 					} else if (modelItem.type == 6 || modelItem.type == 7) { //多行属性组 or  巨多行属性
 						initMoreGroup(modelItem, $parent);
@@ -43,6 +43,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					} else if (modelItem.type == 207) {
 						//级联枚举属性
 						initCascadeReferenceAttr(modelItem, $parent);
+					} else if (modelItem.type == 211) {
+						//维度属性
+						initDimensionAttr(modelItem, $parent);
+					} else if (modelItem.type == 212) {
+						//事实属性
+						initFactAttr(modelItem, $parent);
 					}else {
 						initCommAttr(modelItem, $parent);
 					}
@@ -205,6 +211,115 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	  return attrGroupHtml;
     }
     
+    // 维度属性start
+    /**
+     * 添加通用属性方法
+      */
+    function addDimensionAttr(el, modelItem) {// 这个有用
+        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
+        var attrGroupHtml = getDimensionNode(modelItem);
+        var $html = $(attrGroupHtml).prependTo($content);  
+	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
+	    addUnfold(el)
+        drag($(".dragEdit-wrap").length);
+    };
+    
+    //通用属性初始化方法
+    function initDimensionAttr(modelItem, $parent) {
+    	var attrGroupHtml = getDimensionNode(modelItem);
+	    var $html = $(attrGroupHtml).prependTo($($parent));
+	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
+        drag($(".dragEdit-wrap").length);
+    }
+    
+    //通用属性节点
+    function getDimensionNode(modelItem) {
+    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
+        var attrGroupHtml = "<li class='add-attr clear-fix'>" +
+            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
+            "<div class='icon-label attr'>" +
+            "<i class='icon icon-attr'></i>" +
+            "<span class='text'>"+modelItem.showType+"</span>" +
+            "</div>" +
+            "<div class='label-bar al-save attr'>" +
+            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+	         attrGroupHtml += "<div class='btn-wrap'>" +
+	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
+	         "<i class='fa fa-keyboard-o expression'></i>"+
+	         "<i class='fa fa-edit icon-edit'></i>"+
+	         "<i class='glyphicon glyphicon-trash delModelItem'></i>" +
+           /* "<i class='icon icon-add-sm group'></i>" +*/
+           /* "<i class='icon delModelItem'></i>" +*/
+            /*"<i class='icon icon-arrow-sm active'></i>" +*/
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
+            "</ul>" +
+            "</li>";
+	         
+	  return attrGroupHtml;
+    }
+    // 维度属性end
+    
+    //事实属性start
+    /**
+     * 添加通用属性方法
+      */
+    function addFactAttr(el, modelItem) {// 这个有用
+        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
+        var attrGroupHtml = getFactAttrNode(modelItem);
+        var $html = $(attrGroupHtml).prependTo($content);  
+	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
+	    addUnfold(el)
+        drag($(".dragEdit-wrap").length);
+    };
+    
+    //通用属性初始化方法
+    function initFactAttr(modelItem, $parent) {
+    	var attrGroupHtml = getFactAttrNode(modelItem);
+	    var $html = $(attrGroupHtml).prependTo($($parent));
+	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
+        drag($(".dragEdit-wrap").length);
+    }
+    
+    //通用属性节点
+    function getFactAttrNode(modelItem) {
+    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
+        var attrGroupHtml = "<li class='add-attr clear-fix'>" +
+            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
+            "<div class='icon-label attr'>" +
+            "<i class='icon icon-attr'></i>" +
+            "<span class='text'>"+modelItem.showType+"</span>" +
+            "</div>" +
+            "<div class='label-bar al-save attr'>" +
+            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+	         attrGroupHtml += "<div class='btn-wrap'>" +
+	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
+	         
+	         
+	        /* fa-filter*/
+	         "<i class='glyphicon glyphicon-filter'></i>"+
+	         "<i class='fa fa-keyboard-o expression'></i>"+
+	        
+	         "<i class='fa fa-edit icon-edit'></i>"+
+	         "<i class='glyphicon glyphicon-trash delModelItem'></i>" +
+           /* "<i class='icon icon-add-sm group'></i>" +*/
+           /* "<i class='icon delModelItem'></i>" +*/
+            /*"<i class='icon icon-arrow-sm active'></i>" +*/
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
+            "</ul>" +
+            "</li>";
+	         
+	  return attrGroupHtml;
+    }
+    //事实属性end
+    
     //下面是级联枚举加载方法
     /**
      * 添加级联枚举属性方法
@@ -255,6 +370,21 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     //级联枚举孩子查看
     $("#modelItemEdit").on("click", ".confCascadeEnumChild", function() {        
         var $labelBar = $(this).closest(".label-bar");
+        var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
+        Dialog.openDialog("admin/modelItem/getCasEnumChild?pmiCode=" + modelItemCode, "级联枚举孩子", "", {
+            width :1000,
+            height : 500
+        });
+        
+    });
+    
+    //级联枚举孩子查看
+    $("#modelItemEdit").on("click", ".expression", function() {        
+       
+    	alert("sdfs");
+    	return;
+    	
+    	var $labelBar = $(this).closest(".label-bar");
         var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
         Dialog.openDialog("admin/modelItem/getCasEnumChild?pmiCode=" + modelItemCode, "级联枚举孩子", "", {
             width :1000,
@@ -1106,17 +1236,33 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         var relativeLength = $(el).closest(".collapse-header")
             .siblings(".collapse-content")
             .children(".attr-relative").length;
+        
+      var modelType =   $(el).closest(".collapse-header").attr("data-type");
+      
         var html = "<ul class='card'>";        
-            html +=
-                "<li class='card-list add-attr-group' modelItemType='5' modelItemShowName='添加单行属性组'>" +
-                "<i class='icon icon-card-attr-group'></i>" +
-                "<span class='text'>单行属性组</span>" +
-                "</li>" +
-                "<li class='card-list add-more-group' modelItemType='6' modelItemShowName='添加多行属性组'>" +
-                "<i class='icon icon-card-more-attr'></i>" +
-                "<span class='text'>多行属性组</span>" +
-                "</li>"+
-                "</ul>";
+           
+                	 html +=
+                         "<li class='card-list add-attr-group' modelItemType='5' modelItemShowName='添加单行属性组'>" +
+                         "<i class='icon icon-card-attr-group'></i>" +
+                         "<span class='text'>单行属性组</span>" +
+                         "</li>" +
+                         "<li class='card-list add-more-group' modelItemType='6' modelItemShowName='添加多行属性组'>" +
+                         "<i class='icon icon-card-more-attr'></i>" +
+                         "<span class='text'>多行属性组</span>" +
+                         "</li>";
+                if(modelType == '101' || modelType == '102'){//统计实体
+            	 html +=
+                     "<li class='card-list add-attr-group' modelItemType='501' modelItemShowName='添加维度组'>" +
+                     "<i class='icon icon-card-attr-group'></i>" +
+                     "<span class='text'>添加维度组</span>" +
+                     "</li>" +
+                     "<li class='card-list add-attr-group' modelItemType='502' modelItemShowName='添加事实组'>" +
+                     "<i class='icon icon-card-more-attr'></i>" +
+                     "<span class='text'>添加事实组</span>" +
+                     "</li>";
+                }
+                
+                html +="</ul>";
 
         var wrap = $("#modelItemEdit");
         var offsetx = $(el).offset().left;
@@ -1140,29 +1286,26 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         var addTagLength = $(el).closest(".collapse-header")
             .next(".add-tag").length;
         var isMoreAttr = $(el).closest(".collapse-header").hasClass("more-attr-title");
+        
+        
+        
+        var modelType = $(el).closest(".collapse-header").attr("data-type");
+        
         var html = "<ul class='card'>";
-        if (addTagLength > 0 || isMoreAttr ) {
-            html += "<li class='card-list add_VALUE_ITEM'>" +
+        if (modelType == 501) {// 维度属性
+            html += "<li class='card-list add_DIMENSION_ITEM'  modelItemType='211' modelItemShowName='添加维度属性'>" +
                 "<i class='icon icon-card-attr'></i>" +
-                "<span class='text'>添加属性</span>" +
+                "<span class='text'>添加维度属性</span>" +
                 "</li>" +
-                /*"<li class='card-list add-more-cascade-attr'>" +
-                "<i class='icon icon-card-attr'></i>" +
-                "<span class='text'>添加级联属性</span>" +
-                "</li>" +
-                "<li class='card-list add-refattribute-attr'>" +
-                "<i class='icon icon-card-attr'></i>" +
-                "<span class='text'>添加引用属性</span>" +
-                "</li>" +
-                "<li class='card-list add-rRefattribute-attr'>" +
-                "<i class='icon icon-card-attr'></i>" +
-                "<span class='text'>添加引用->引用属性</span>" +
-                "</li>" +
-                "<li class='card-list add-filters' source='moreAttr'>" +
-                "<i class='icon icon-card-relative'></i>" +
-                "<span class='text'>添加过滤条件</span>" +
-                "</li>" +*/
+               
                 "</ul>";
+        } else if(modelType == 502) {// 事实属性
+        	 html += "<li class='card-list add_FACT_ITEM' modelItemType='212' modelItemShowName='添加事实属性'>" +
+             "<i class='icon icon-card-attr'></i>" +
+             "<span class='text'>添加事实属性</span>" +
+             "</li>" +
+            
+             "</ul>";
         } else {
             html += "<li class='card-list add_VALUE_ITEM' modelItemType='2' modelItemShowName='添加普通属性'>" +
                 "<i class='icon icon-card-attr'></i>" +
@@ -3903,12 +4046,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             var el = $("#modelItemEdit").find(".icon-add-filter.active")[0];
         }
         
-         if ($(this).hasClass("add-attr-group")) { // 这个有用
+     if ($(this).hasClass("add-attr-group")) { // 添加单行组
             var mipCode = $(el).closest(".collapse-header").attr("data-code");
             var modelItemType = $(this).attr("modelItemType");
             var modelItemShowName = $(this).attr("modelItemShowName");
       	//这里要弹出框， 保存并回显
-      	 Dialog.openDialog("admin/modelItem/addAttr?modelItemType="+modelItemType+"&mipCode=" +mipCode, modelItemShowName, "", {
+      Dialog.openDialog("admin/modelItem/addAttr?modelItemType="+modelItemType+"&mipCode=" +mipCode, modelItemShowName, "", {
                width :920,
                height : 400,
                events		: {
@@ -3920,7 +4063,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
    				}
    			}
            });
-      } else if ($(this).hasClass("add-more-group")) { // 这个有用
+      } else if ($(this).hasClass("add-more-group")) { //添加多行组
           var mipCode = $(el).closest(".collapse-header").attr("data-code");
           var modelItemType = $(this).attr("modelItemType");
           var modelItemShowName = $(this).attr("modelItemShowName");
@@ -3938,6 +4081,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
  			}
          });
     }  else {
+    	
     	  var mipCode = $(el).closest(".collapse-header").attr("data-code");
           var modelItemType = $(this).attr("modelItemType");
           var modelItemShowName = $(this).attr("modelItemShowName");
@@ -3953,6 +4097,14 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     							addCascadeEnumAttr(el, modelItem);
     						} else if (modelItem.type == 207) {
     							addCascadeReferenceAttr(el, modelItem);
+    						} else if (modelItem.type == 211) {
+    							//添加维度属性
+    							addDimensionAttr(el, modelItem);
+    							
+    						} else if (modelItem.type == 212) {
+    							//添加事实属性
+    							addFactAttr(el, modelItem);
+    							
     						}else {
     							addCommAttr(el, modelItem);
     						}

@@ -24,6 +24,7 @@
 			<thead>
 				<tr>
 					<th>序号</th>
+					<th>实体类型</th>
 					<th>模型编码</th>
 					<th>模型名称</th>
 					<th>状态</th>
@@ -34,6 +35,7 @@
 				<c:forEach items="${modelItemList }" var="item" varStatus="i">
 					<tr>
 						<td>${i.index + 1 }</td>
+						<td><font color="${item.type eq '1'? '': '#00bcd4'}">${item.showType }</font></td>
 						<td>${item.code }</td>
 						<td>${item.name }</td>
 						<td>${item.usingState }</td>

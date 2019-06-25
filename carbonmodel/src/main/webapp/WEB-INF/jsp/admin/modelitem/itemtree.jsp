@@ -5,7 +5,7 @@
 <script src="media/admin/modelitem/js/Sortable.js"></script>
 <script src="media/admin/modelitem/js/itemtree.js"></script>
 
-<div id="modelItemEdit" data-belongModel="${modelItem.belongModel}">
+<div id="modelItemEdit" data-type="${modelItem.type }"  data-belongModel="${modelItem.belongModel}">
 		
 	<div class="entity_list clear-fix">					
 				<div 
@@ -17,13 +17,14 @@
 		
         <div class="entity-edit-wrap active">
             <!-- 实体标题:begin -->
-            <div class="entity-title collapse-header al-save need-ajax" data-code="${modelItem.code}" data-order="">
+            <div class="entity-title collapse-header al-save need-ajax" data-code="${modelItem.code}" data-type="${modelItem.type }">
                 <div class="icon-label-master">
                     <i class="icon-root icon"></i>
                     <span class="text">模型</span>
                 </div>
-                <span class="span-title">${modelItem.code}</span>
-                <span class="span-title">${modelItem.name}</span>
+                 <span class="span-title" title="模型类型">${modelItem.showType}</span>
+                <span class="span-title" title="模型编码">${modelItem.code}</span>
+                <span class="span-title" title="模型名称">${modelItem.name}</span>
                
                 <div class="btn-wrap">
                 	<!-- <i class="icon icon-save"></i> -->

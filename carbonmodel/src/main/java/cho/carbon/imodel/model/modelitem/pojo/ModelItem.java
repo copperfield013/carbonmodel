@@ -8,6 +8,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cho.carbon.meta.enun.ModelItemType;
+
+
 @Entity
 @Table(name = "t_cc_model_item")
 public class ModelItem {
@@ -127,6 +130,12 @@ public class ModelItem {
 	public String getShowType() {
 		
 		switch (this.type) {
+		case 1:
+			return ModelItemType.MODEL.getCName();
+		case 101:
+			return ModelItemType.STAT_MODEL.getCName();
+		case 102:
+			return ModelItemType.SQL_MODEL.getCName();
 		case 2:
 			return "普通属性";
 		case 201:
@@ -149,12 +158,18 @@ public class ModelItem {
 			return "计算属性";
 		case 210:
 			return "密码属性";
-		case 3:
-			return "标签";
+		case 211:
+			return ModelItemType.DIMENSION_ITEM.getCName();
+		case 212:
+			return ModelItemType.FACT_ITEM.getCName();
 		case 4:
 			return "二级属性";
 		case 5:
 			return "单行分组";
+		case 501:
+			return  ModelItemType.DIMENSION_GROUP.getCName();
+		case 502:
+			return ModelItemType.FACT_GROUP.getCName();
 		case 6:
 			return "多行分组";
 		case 7:

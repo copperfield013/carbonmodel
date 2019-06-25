@@ -3,6 +3,8 @@ package cho.carbon.imodel.model.modelitem;
 import java.util.HashMap;
 import java.util.Map;
 
+import cho.carbon.meta.enun.ModelItemType;
+
 public interface Constants {
 	
 	public static final Integer USING_STATE_NORMAL = 0;//新增正常
@@ -55,4 +57,23 @@ public interface Constants {
 		}
 	};
 	
+	/**
+	 * 
+	 * @param itemType
+	 * @return 实体返回true
+	 */
+	public static boolean isModel(ModelItemType itemType) {
+		
+		boolean bool = false;
+		
+		switch (itemType) {
+			case MODEL:
+			case STAT_MODEL:
+			case SQL_MODEL:
+				bool = true;
+			break;
+		}
+		
+		return bool;
+	}
 }

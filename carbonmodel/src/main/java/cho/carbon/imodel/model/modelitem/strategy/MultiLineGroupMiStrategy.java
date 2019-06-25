@@ -1,8 +1,5 @@
 package cho.carbon.imodel.model.modelitem.strategy;
 
-import com.abc.model.constant.ModelItemValueParter;
-import com.abc.model.enun.ItemValueType;
-
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
@@ -10,6 +7,8 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.meta.constant.ModelItemValueParter;
+import cho.carbon.meta.enun.ItemValueType;
 
 /**
  * ModelItemType 

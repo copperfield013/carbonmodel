@@ -1,7 +1,7 @@
 package cn.sowell.datacenter.test;
 
-import com.abc.extface.dto.AggregateExpressionDTO;
-import com.abc.model.IAggregateExpressionDAO;
+import cho.carbon.meta.extface.dto.AggregateExpressionDTO;
+import cho.carbon.meta.model.IAggregateExpressionDAO;
 
 public class CommonTest {
 	

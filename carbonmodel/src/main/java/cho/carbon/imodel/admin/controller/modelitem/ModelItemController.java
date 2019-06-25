@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.abc.model.enun.ModelItemType;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
@@ -22,6 +21,7 @@ import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
+import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
@@ -29,6 +29,7 @@ import cho.carbon.imodel.model.modelitem.service.MiTableDBService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.modelitem.vo.ViewLabel;
+import cho.carbon.meta.enun.ModelItemType;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
 import cn.sowell.copframe.dto.ajax.NoticeType;
 import cn.sowell.copframe.dto.ajax.PageAction;
@@ -81,17 +82,50 @@ public class ModelItemController {
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @return 获取所有可选的来源实体
+	 */
+	@ResponseBody
+	@RequestMapping("/getModelList")
+	public String getModelList(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		JSONObject jobj = new JSONObject(map);
+		try {
+			List<ModelItem> modelList = miService.getModelList();
+			map.put("modelList", modelList);
+			map.put("code", 200);
+			map.put("msg", "成功！");
+			return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+		} catch (Exception e) {
+			logger.error("操作失败！", e);
+			e.printStackTrace();
+			map.put("code", 400);
+			map.put("msg", "操作失败！");
+			return jobj.toString();
+		}
+	}
+	
 
 	@RequestMapping("/add")
 	public String add(Model model) {
-		return AdminConstants.JSP_BASE + "/modelitem/add.jsp";
+		return AdminConstants.JSP_BASE + "/modelitem/addModel.jsp";
 	}
 	
 	@RequestMapping("/update")
 	public String update(String itemCode, Model model) {
 		ModelItem modelItem = commService.get(ModelItem.class, itemCode);
+		
+		ModelItemType itemType = ModelItemType.getItemType(modelItem.getType());
+		if (ModelItemType.STAT_MODEL.equals(itemType) || ModelItemType.SQL_MODEL.equals(itemType) ) {
+			MiModelStat miModelStat = commService.get(MiModelStat.class, itemCode);
+			ModelItem sourceModelItem = commService.get(ModelItem.class, miModelStat.getSourceCode());
+			model.addAttribute("sourceModelItem", sourceModelItem);
+		}
+		
 		model.addAttribute("modelItem", modelItem);
-		return AdminConstants.JSP_BASE + "/modelitem/update.jsp";
+		return AdminConstants.JSP_BASE + "/modelitem/updateModel.jsp";
 	}
 
 	@ResponseBody
@@ -126,7 +160,6 @@ public class ModelItemController {
 			return jobj.toString();
 		}
 	}
-	
 	
     @RequestMapping(value = "/itemtree")
 	public ModelAndView itemtree(String itemCode) {

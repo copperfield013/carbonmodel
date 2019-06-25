@@ -1,6 +1,6 @@
 package cho.carbon.imodel.model.modelitem.service;
 
-import com.abc.model.enun.ModelItemType;
+import cho.carbon.meta.enun.ModelItemType;
 
 public interface ModelItemCodeGeneratorService {
 	

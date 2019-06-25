@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.abc.model.enun.ModelItemType;
-import com.abc.model.enun.RelationType;
 import com.alibaba.fastjson.JSONObject;
 
 import cho.carbon.imodel.admin.controller.AdminConstants;
@@ -28,6 +26,8 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.service.ModelRelationTypeService;
+import cho.carbon.meta.enun.ModelItemType;
+import cho.carbon.meta.enun.RelationType;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
 import cn.sowell.copframe.dto.ajax.NoticeType;
 import cn.sowell.copframe.dto.page.PageInfo;
