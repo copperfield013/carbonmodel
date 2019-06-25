@@ -21,8 +21,9 @@ public class MiStrategyFactory {
 		case CASCADE_REFERENCE_ITEM:
 			return new ValueItemMiStrategy();
 		case FACT_ITEM:
+			return new FactMiStrategy();
 		case DIMENSION_ITEM:	
-			return new FactDimeMiStrategy();
+			return new DimensionMiStrategy();
 		case ENUM_ITEM:
 		case PREENUM_STRING_ITEM:
 			return new EnumItemMiStrategy();
