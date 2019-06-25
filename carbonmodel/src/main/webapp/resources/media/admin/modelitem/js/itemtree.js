@@ -14,7 +14,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    
 	    $(".label-bar", $page).addClass("al-save");
 	    $CPF.closeLoading();
-	   /* addEntityOPT();*/
     })
     
      //初始化  本模型的group 即 本模型的孩子
@@ -378,15 +377,13 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         
     });
     
-    //级联枚举孩子查看
+    //跳转到表达式定义页面
     $("#modelItemEdit").on("click", ".expression", function() {        
        
-    	alert("sdfs");
-    	return;
-    	
     	var $labelBar = $(this).closest(".label-bar");
         var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
-        Dialog.openDialog("admin/modelItem/getCasEnumChild?pmiCode=" + modelItemCode, "级联枚举孩子", "", {
+        
+        Dialog.openDialog("admin/expressionAndFilter/skipExpression?miCode=" + modelItemCode, "表达式页面", "", {
             width :1000,
             height : 500
         });

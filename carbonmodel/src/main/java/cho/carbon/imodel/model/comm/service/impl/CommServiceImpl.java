@@ -29,6 +29,11 @@ public class CommServiceImpl implements CommService{
 	}
 	
 	@Override
+	public <T> T get(Class<T> clazz, Integer id) {
+		return commDao.get(clazz, id);
+	}
+	
+	@Override
 	public void update(Object pojo) {
 		commDao.update(pojo);
 	}

@@ -21,6 +21,7 @@ public interface CommDao {
 	 * @return
 	 */
 	<T> T get(Class<T> clazz, String id);
+	<T> T get(Class<T> clazz, Integer id);
 
 	/**
 	 * 更新一个pojo对象

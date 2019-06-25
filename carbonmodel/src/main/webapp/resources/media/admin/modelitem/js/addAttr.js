@@ -116,7 +116,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				Dialog.notice(data.msg, "success");
 				 ////
 				var modelItem = data.modelItem;
-				debugger;
+
 				var page = $page.getLocatePage();
 				if(page.getPageObj() instanceof Dialog){
 					debugger;

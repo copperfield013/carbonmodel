@@ -32,6 +32,11 @@ public class CommDaoImpl implements CommDao{
 	}
 	
 	@Override
+	public <T> T get(Class<T> clazz, Integer id) {
+		return sFactory.getCurrentSession().get(clazz, id);
+	}
+	
+	@Override
 	public void update(Object pojo) {
 		sFactory.getCurrentSession().update(pojo);
 	}

@@ -101,4 +101,11 @@ public interface ModelItemService {
 	 * @return
 	 */
 	List getTwoAttrByMappingId(String mappingId);
+	
+	/**
+	 * 保存表达式
+	 * @param codeTxt
+	 * @param modelItemCode
+	 */
+	void saveExpress(String codeTxt, String modelItemCode);
 }
