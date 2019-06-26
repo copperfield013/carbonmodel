@@ -37,6 +37,11 @@ import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
 import cn.sowell.copframe.dto.ajax.NoticeType;
 import cn.sowell.copframe.dto.page.PageInfo;
 
+/**
+ * 	表达式和过滤条件
+ * @author so-well
+ *
+ */
 @Controller
 @RequestMapping(AdminConstants.URI_BASE + "/expressionAndFilter")
 public class ExpressionAndFilterController {
@@ -57,7 +62,7 @@ public class ExpressionAndFilterController {
 	}
 	
 	/**
-     * 跳转到表达式页面
+     *	 跳转到表达式页面
      * @param pmiCode
      * @return
      */
@@ -100,7 +105,7 @@ public class ExpressionAndFilterController {
 	}
     
    /**
-    * 
+    * 	保存表达式
     * @param codeTxt   表达式
     * @param modelItemCode  code 
     * @return
@@ -117,6 +122,25 @@ public class ExpressionAndFilterController {
 			logger.error("添加失败", e);
 			return AjaxPageResponse.FAILD("添加失败");
 		}
+	}
+    
+    /**
+     *	 跳转到过滤条件页面
+     * @param pmiCode
+     * @return
+     */
+    @RequestMapping(value = "/skipFilter")
+	public ModelAndView skipFilter(String miCode) {
+		try {
+			
+			ModelAndView modelAndView = new ModelAndView();
+			
+			//modelAndView.setViewName(AdminConstants.JSP_BASE + "/modelitem/expresAndFilter/expression.jsp");
+			return modelAndView;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

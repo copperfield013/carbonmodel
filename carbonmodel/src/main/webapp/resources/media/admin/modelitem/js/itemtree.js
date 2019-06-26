@@ -212,7 +212,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
     // 维度属性start
     /**
-     * 添加通用属性方法
+     * 添加维度属性方法
       */
     function addDimensionAttr(el, modelItem) {// 这个有用
         var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
@@ -223,7 +223,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         drag($(".dragEdit-wrap").length);
     };
     
-    //通用属性初始化方法
+    //维度属性初始化方法
     function initDimensionAttr(modelItem, $parent) {
     	var attrGroupHtml = getDimensionNode(modelItem);
 	    var $html = $(attrGroupHtml).prependTo($($parent));
@@ -231,7 +231,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         drag($(".dragEdit-wrap").length);
     }
     
-    //通用属性节点
+    //维度属性节点
     function getDimensionNode(modelItem) {
     	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         var attrGroupHtml = "<li class='add-attr clear-fix'>" +
@@ -245,7 +245,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='fa fa-keyboard-o expression'></i>"+
+	         "<i class='fa fa-keyboard-o expressionView'></i>"+
 	         "<i class='fa fa-edit icon-edit'></i>"+
 	         "<i class='glyphicon glyphicon-trash delModelItem'></i>" +
            /* "<i class='icon icon-add-sm group'></i>" +*/
@@ -264,7 +264,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
     //事实属性start
     /**
-     * 添加通用属性方法
+     * 添加事实属性方法
       */
     function addFactAttr(el, modelItem) {// 这个有用
         var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
@@ -275,7 +275,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         drag($(".dragEdit-wrap").length);
     };
     
-    //通用属性初始化方法
+    //事实属性初始化方法
     function initFactAttr(modelItem, $parent) {
     	var attrGroupHtml = getFactAttrNode(modelItem);
 	    var $html = $(attrGroupHtml).prependTo($($parent));
@@ -283,7 +283,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         drag($(".dragEdit-wrap").length);
     }
     
-    //通用属性节点
+    //事实属性节点
     function getFactAttrNode(modelItem) {
     	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         var attrGroupHtml = "<li class='add-attr clear-fix'>" +
@@ -300,8 +300,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         
 	         
 	        /* fa-filter*/
-	         "<i class='glyphicon glyphicon-filter'></i>"+
-	         "<i class='fa fa-keyboard-o expression'></i>"+
+	         "<i class='glyphicon glyphicon-filter filterView'></i>"+
+	         "<i class='fa fa-keyboard-o expressionView'></i>"+
 	        
 	         "<i class='fa fa-edit icon-edit'></i>"+
 	         "<i class='glyphicon glyphicon-trash delModelItem'></i>" +
@@ -378,12 +378,25 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     });
     
     //跳转到表达式定义页面
-    $("#modelItemEdit").on("click", ".expression", function() {        
+    $("#modelItemEdit").on("click", ".expressionView", function() {        
        
     	var $labelBar = $(this).closest(".label-bar");
         var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
         
         Dialog.openDialog("admin/expressionAndFilter/skipExpression?miCode=" + modelItemCode, "表达式页面", "", {
+            width :1000,
+            height : 500
+        });
+        
+    });
+    
+    //跳转到过滤条件定义页面
+    $("#modelItemEdit").on("click", ".filterView", function() {        
+       
+    	var $labelBar = $(this).closest(".label-bar");
+        var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
+        
+        Dialog.openDialog("admin/expressionAndFilter/skipFilter?miCode=" + modelItemCode, "过滤条件页面", "", {
             width :1000,
             height : 500
         });
