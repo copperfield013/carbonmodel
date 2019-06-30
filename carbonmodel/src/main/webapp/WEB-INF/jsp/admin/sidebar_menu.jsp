@@ -22,13 +22,13 @@
 <li>
     <a href="#" class="menu-dropdown">
         <i class="menu-icon fa fa-bookmark"></i>
-        <span class="menu-text">新数据模型</span>
+        <span class="menu-text">数据模型</span>
         <i></i>
     </a>
     <ul class="submenu">
         <li>
             <a class="tab" href="admin/modelItem/list" target="modelItem_list" title="新实体管理">
-                <span class="menu-text">新实体管理</span>
+                <span class="menu-text">实体管理</span>
             </a>
         </li>
     </ul>
@@ -37,34 +37,13 @@
  <li>
     <a href="#" class="menu-dropdown">
         <i class="menu-icon fa fa-bookmark"></i>
-        <span class="menu-text">数据模型</span>
+        <span class="menu-text">结构体</span>
         <i></i>
     </a>
     <ul class="submenu">
         <li>
-            <a class="tab" href="admin/dictionary/basicItem/list" target="basicItem_list" title="实体管理">
-                <span class="menu-text">实体管理</span>
-            </a>
-        </li>
-    </ul>
-     <ul class="submenu">
-        <li>
-            <a class="tab" href="admin/stat/state/list" target="state_list" title="建立关联">
-                <span class="menu-text">统计实体</span>
-            </a>
-        </li>
-    </ul>
-</li>
- <li>
-    <a href="#" class="menu-dropdown">
-        <i class="menu-icon fa fa-bookmark"></i>
-        <span class="menu-text">应用配置</span>
-        <i></i>
-    </a>
-    <ul class="submenu">
-        <li>
-            <a class="tab" href="admin/node/basicItemNode/list" target="basicItemNode_list" title="配置文件">
-                <span class="menu-text">配置文件</span>
+            <a class="tab" href="admin/structBase/list" target="strucBase_list" title="结构体列表">
+                <span class="menu-text">结构体配置</span>
             </a>
         </li>
     </ul>

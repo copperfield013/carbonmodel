@@ -43,17 +43,18 @@ public interface ModelItemDao {
 	 * @return 返回父亲下面指定类型的孩子
 	 * @throws Exception
 	 */
-	List<ModelItem> getModelItemByType(String parentCode, ModelItemType 
-			existMiType, ModelItemType noNiType, Integer miUsingState) throws Exception;
+	List<ModelItem> getModelItemByType(String parentCode, ModelItemType[] 
+			existMiTypes, ModelItemType[] noNiTypes, Integer miUsingState) throws Exception;
 	
 	/**
 	 * 
 	 * @param belongMode  属于模型Code
-	 * @param types    ModelItem Type 里面为
+	 * @param pTypes  父亲的类型， 是单行组还是多行组， 或者两者都有，   ModelItem Type 里面为
 	 * @param needCorrelation   是否需要伴生属性  true : 需要
+	 * @param 获取指定类型的孩子
 	 * @return   根据所传类型， 返回普通分组下的孩子 ， 多值分组下的孩子， 或者前两者
 	 */
-	List<ModelItem> getModelItemByBelongMode(String belongMode, ModelItemType[] types, boolean needCorrelation);
+	List<ModelItem> getModelItemByBelongMode(String belongMode, ModelItemType[] pTypes, ModelItemType[] chilTypes, boolean needCorrelation);
 	
 	/**
 	 * @param miCasEnumCode   级联枚举or级联引用的code
@@ -77,6 +78,7 @@ public interface ModelItemDao {
 
 	/**
 	 * 获取ModelItemType.MODEL
+	 * @param 
 	 * @return
 	 */
 	public List<ModelItem> getModelList();

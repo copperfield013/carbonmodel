@@ -22,11 +22,11 @@ public class MiEnum {
 	  private String code;//单独生成规则
 	
 	 @Column(name="pid")
-	  private String pid;
+	  private Integer pid;
 
 	 public MiEnum() {}
 	 
-	public MiEnum(String code, String pid) {
+	public MiEnum(String code, Integer pid) {
 		super();
 		this.code = code;
 		this.pid = pid;
@@ -40,11 +40,11 @@ public class MiEnum {
 		this.code = code;
 	}
 
-	public String getPid() {
+	public Integer getPid() {
 		return pid;
 	}
 
-	public void setPid(String pid) {
+	public void setPid(Integer pid) {
 		this.pid = pid;
 	}
 	 

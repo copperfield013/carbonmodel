@@ -1,0 +1,818 @@
+body, 
+html,
+p,
+ul,
+li {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+* {
+    box-sizing: border-box;
+}
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #eeeeee;
+    font-family: 'SimSun', 'Microsoft YaHei';  
+}
+#structBaseEdit {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+#structBaseEdit .entity_list {
+	padding-top: 2em;
+}
+#structBaseEdit .select2-container.select2-container-disabled .select2-choice,
+#structBaseEdit .select2-container.select2-container-disabled .select2-choice .select2-arrow {
+	background-color: inherit;
+	border: none;
+}
+#structBaseEdit .edit .select2-container.select2-container-disabled .select2-choice {
+	border: 1px solid #ddd;
+}
+#structBaseEdit .select2-container .select2-choice .select2-arrow b:before {
+	display: none;
+}
+#structBaseEdit .attr-relative.al-save .select2-container.select2-container-disabled .select2-choice,
+#structBaseEdit .attr-relative.al-save .select2-container.select2-container-disabled .select2-choice .select2-arrow {
+	background-color: inherit;
+	border: none;
+}
+#structBaseEdit .edit .select2-container .select2-choice .select2-arrow b:before {
+	display: block;
+}
+#structBaseEdit .attr-relative.al-save .select2-container .select2-choice .select2-arrow b:before {
+	display: none;
+}
+#structBaseEdit .entity_attr {
+	position: relative;
+    float: left;
+    height: 2.2em;
+    line-height: 2.2em;
+    padding: 0 1.1em;  
+    margin: 0 0 1.8em 1.8em;
+    cursor: pointer;
+    border: 1px solid #d9d9d9;   
+    color: #307b89; 
+}
+#structBaseEdit .entity_attr.active {
+	color: #307b89;
+    border: 1px solid #26a39a;
+}
+#structBaseEdit .collapse-content {
+    transition: all .4s linear;     
+}
+#structBaseEdit .collapse-content-inactive {
+     height: 0;
+     opacity: 0;
+     overflow: hidden;
+}
+#structBaseEdit .collapse-content-active {
+    height: auto;
+    opacity: 1;    
+}
+#structBaseEdit .text {
+    display: inline-block;
+    vertical-align: middle;
+}
+#structBaseEdit .clear-fix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+#structBaseEdit .edit-input {
+    border: none;    
+    height: 70%;
+    outline: none;   
+    color: #363636; 
+    background-color: inherit;
+    width: 150px;
+    padding-left: 1em;
+}
+
+#structBaseEdit .icon-label {
+    float: left;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;   
+    color: #ffffff; 
+    height: 40px;
+    line-height: 38px;
+    text-align: center;    
+    font-size: 14px;
+}
+#structBaseEdit .label-bar {    
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;   
+    height: 40px;
+    line-height: 35px;
+    border: 1px solid #f0f1f1;
+    border-left: none;
+    font-size: 14px;
+    padding-left: 20px;
+}
+#structBaseEdit .icon-label.attr {
+    background-color: #aeaeae;
+    width: 98px;
+}
+#structBaseEdit .label-bar.attr {
+    margin-left: 98px;
+}
+
+#structBaseEdit .icon-label.rattr {
+    background-color: #aeaeae;
+    width: 98px;
+}
+#structBaseEdit .label-bar.rattr {
+    margin-left: 98px;
+}
+#structBaseEdit .icon-label.tag {
+    background-color: #f2b15d;
+    width: 98px;
+}
+#structBaseEdit .label-bar.tag {
+    margin-left: 98px;
+    position: relative;
+}
+#structBaseEdit .icon-label.abc {
+    background-color: #6cc076;
+    width: 98px;
+}
+#structBaseEdit .label-bar.abc {
+    margin-left: 98px;
+}
+
+#structBaseEdit .icon-label.rabc {
+    background-color: #6cc076;
+    width: 98px;
+}
+#structBaseEdit .label-bar.rabc {
+    margin-left: 98px;
+}
+#structBaseEdit .icon-label.attr-group {
+    background-color: #5cbdfa;
+    width: 98px;
+}
+#structBaseEdit .label-bar.attr-group {
+    margin-left: 98px;
+    background-color: #f0f1f1;
+}
+#structBaseEdit .icon-label.attr-relative {
+    background-color: #5ed1e0;
+    width: 98px;
+}
+#structBaseEdit .label-bar.attr-relative {
+    margin-left: 98px;
+    background-color: #f0f1f1;
+}
+#structBaseEdit .icon-label.more-attr {
+    background-color: #665cfab8;
+    width: 98px;
+}
+#structBaseEdit .label-bar.more-attr {
+    margin-left: 98px;
+    background-color: #f0f1f1;
+}
+#structBaseEdit .icon {
+    display: inline-block;
+    vertical-align: middle;
+    background-size: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+#structBaseEdit .icon-simulate-trashsm {
+    display: inline-block;
+    vertical-align: middle;
+    width: 13px;
+}
+#structBaseEdit .icon-root {
+    width: 30px;
+    height: 29px;
+    background-image: url("../images/root.png");
+    margin: 0 16px 0 24px;
+}
+#structBaseEdit .icon-arrow {
+    width: 15px;
+    height: 9px;
+    background-image: url("../images/arrow.png"); 
+    transition: all .4s linear;
+    transform: rotate(0);   
+}
+#structBaseEdit .icon-arrow.active {
+    transform: rotate(180deg);
+}
+#structBaseEdit .icon-arrow-sm {
+    width: 13px;
+    height: 7px;
+    background-image: url("../images/arrow-sm.png");
+    transition: all .4s linear;
+    transform: rotate(0);    
+}
+#structBaseEdit .icon-arrow-sm.active {
+    transform: rotate(180deg);
+}
+#structBaseEdit .icon-trash {
+    width: 16px;
+    height: 18px;
+    background-image: url("../images/trash.png");
+    margin: 0 112px 0 24px;    
+}
+#structBaseEdit .icon-trash:hover {
+	background-image: url("../images/trash-hover.png");
+}
+#structBaseEdit .icon-trash-sm {
+    width: 14px;
+    height: 15px;
+    background-image: url("../images/trash-sm.png");
+    margin: 0 40px 0 24px;    
+}
+#structBaseEdit .icon-trash-sm:hover {
+	background-image: url("../images/trash-sm-hover.png");
+}
+#structBaseEdit .icon-add {
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/add.png");    
+}
+#structBaseEdit .icon-add-sm {
+    width: 14px;
+    height: 14px;
+    background-image: url("../images/add-sm.png");    
+}
+#structBaseEdit .icon-add:hover {
+	background-image: url("../images/add-hover.png");
+}
+#structBaseEdit .icon-add-sm:hover,
+#structBaseEdit .tag.icon-add-tag:hover,
+#structBaseEdit .icon-add-abc:hover,
+#structBaseEdit .icon-add-filterGroup:hover,
+#structBaseEdit .icon-add-filter:hover {
+	background-image: url("../images/add-sm-hover.png");
+}
+#structBaseEdit .icon-add-tag,
+#structBaseEdit .icon-add-tag-relative {
+    margin: 0 40px 0 0; 
+    width: 14px;
+    height: 14px;
+    background-image: url("../images/add-sm.png"); 
+}
+#structBaseEdit .edit .icon-add-tag {
+	margin: 0;
+}
+#structBaseEdit .icon-add-abc {    
+    width: 14px;
+    height: 14px;
+    background-image: url("../images/add-sm.png"); 
+}
+#structBaseEdit .icon-add-filterGroup {    
+    width: 14px;
+    height: 14px;
+    background-image: url("../images/add-sm.png"); 
+}
+
+#structBaseEdit .icon-add-filter {    
+    width: 14px;
+    height: 14px;
+    background-image: url("../images/add-sm.png"); 
+}
+#structBaseEdit .icon-attr {
+    width: 14px;
+    height: 16px;
+    background-image: url("../images/attr.png");  
+    margin-right: 7px;  
+}
+#structBaseEdit .icon-tag {
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/tag.png");    
+    margin-right: 7px;
+}
+#structBaseEdit .icon-attr-group {
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/attr-group.png");  
+    margin-right: 7px;  
+}
+#structBaseEdit .icon-more-attr {
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/more-attr.png"); 
+    margin-right: 7px;   
+}
+
+#structBaseEdit .icon-error-cross {
+    width: 15px;
+    height: 15px;
+    background-image: url("../images/error-cross.png");    
+    margin-right: 4px;
+}
+
+#structBaseEdit .icon-attr-relative {
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/relative.png"); 
+    margin-right: 7px;   
+}
+#structBaseEdit .icon-abc {
+    width: 18px;
+    height: 17px;
+    background-image: url("../images/abc.png");  
+    margin-right: 7px;  
+}
+#structBaseEdit .icon-card-tag {
+    margin-right: 16px;
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/card-tag.png");    
+}
+#structBaseEdit .icon-card-attr {
+    margin-right: 16px;
+    width: 14px;
+    height: 16px;
+    background-image: url("../images/card-attr.png");    
+}
+#structBaseEdit .icon-card-attr-group {
+    margin-right: 16px;
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/card-attr-group.png");    
+}
+#structBaseEdit .icon-card-more-attr {
+    margin-right: 16px;
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/card-more-attr.png");    
+}
+#structBaseEdit .icon-card-relative {
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/card-relative.png");    
+}
+#structBaseEdit .icon-mark {
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/mark.png");    
+}
+#structBaseEdit .icon-delete {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/delete.png");    
+}
+#structBaseEdit .icon-save {
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/save.png");
+}
+
+#structBaseEdit .icon-toleft {   
+    background-image: url("../images/toleft.png");
+}
+#structBaseEdit .icon-toleft.ban {   
+    background-image: url("../images/toleft-ban.png");
+}
+#structBaseEdit .icon-toright {   
+    background-image: url("../images/toright.png");
+}
+#structBaseEdit .icon-toright.ban {   
+    background-image: url("../images/toright-ban.png");
+}
+#structBaseEdit .icon.icon-trash-sm,
+#structBaseEdit .icon.icon-save  {
+    display: none;
+} 
+#structBaseEdit .icon-add-sm.group,
+#structBaseEdit .icon-add-abc.group,
+ #structBaseEdit .icon-add-filterGroup.group,
+ #structBaseEdit .icon-add-filter.group{
+	margin-right: 40px;
+}
+#structBaseEdit .edit .icon.icon-trash-sm, 
+#structBaseEdit .edit .icon.icon-save {
+    display: inline-block;
+}
+#structBaseEdit .edit .icon-add-sm.group {
+	margin-right: 0;
+}
+#structBaseEdit .edit .icon-add-abc.group {
+	margin-right: 40px;
+	margin-left: 0;
+}
+
+#structBaseEdit .edit .icon-add-filterGroup.group {
+	margin-right: 40px;
+	margin-left: 0;
+}
+#structBaseEdit .edit .icon-add-filter.group {
+	margin-right: 40px;
+	margin-left: 0;
+}
+#structBaseEdit .card {
+    width: 184px;        
+    color: #363636;
+    position: absolute;
+    -webkit-box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+#structBaseEdit .card .card-list {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 16px;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+#structBaseEdit .card .card-list:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+#structBaseEdit .card .card-list:last-child{
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+#structBaseEdit .card .card-list:hover {
+    background-color: #1ca6fe;
+    color: #ffffff;
+}
+#structBaseEdit .card .card-list:hover .icon-card-tag {
+    background-image: url("../images/tag.png");
+}
+#structBaseEdit .card .card-list:hover .icon-card-attr {
+    background-image: url("../images/attr.png");
+}
+#structBaseEdit .card .card-list:hover .icon-card-attr-group {
+    background-image: url("../images/attr-group.png");
+}
+#structBaseEdit .card .card-list:hover .icon-card-more-attr {
+    background-image: url("../images/more-attr.png");
+}
+#structBaseEdit .card .card-list:hover .icon-card-relative {
+    background-image: url("../images/relative.png");
+}
+
+#structBaseEdit .tag-card {
+    width: 180px;        
+    color: #363636;
+    position: absolute;
+    -webkit-box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 200px; 
+    background-color: #ffffff;
+}
+#structBaseEdit .tag-search {
+	text-indent: 5px;
+}
+#structBaseEdit .tag-card-search {
+	text-align: center;
+    margin-top: 10px;
+} 
+#structBaseEdit .tag-card .tag-card-list {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 24px;
+    cursor: pointer;
+    background-color: #ffffff;
+    position: relative;
+    display: block;
+}
+#structBaseEdit .tag-card .tag-card-info {
+	display: none;
+	text-align: center;
+}
+#structBaseEdit .tag-card .tag-card-info.tag-show {
+	display: block;
+}
+#structBaseEdit .tag-card .tag-card-list.tag-hide {
+	display: none;
+}
+#structBaseEdit .tag-card .tag-card-list:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+#structBaseEdit .tag-card .tag-card-list:last-child{
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+#structBaseEdit .tag-card .tag-checkbox {
+    display: inline-block;
+    vertical-align: middle;
+}
+#structBaseEdit .tag-card .tag-checkbox-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+#structBaseEdit .tag-card .tag-checkbox-inner {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-right: 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    background-color: #fff;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+#structBaseEdit .tag-card .tag-checkbox-checked .tag-checkbox-inner {
+    background-color: #1890ff;
+    border-color: #1890ff;
+}
+#structBaseEdit .tag-card .tag-checkbox-inner:after {
+    -webkit-transform: rotate(45deg) scale(0);
+    -ms-transform: rotate(45deg) scale(0);    
+    position: absolute;
+    left: 4.47142857px;
+    top: 0px;
+    display: table;
+    width: 5.71428571px;
+    height: 9.14285714px;
+    border: 2px solid #fff;
+    border-top: 0;
+    border-left: 0;
+    content: " ";
+    -webkit-transition: all .1s cubic-bezier(.71,-.46,.88,.6);
+    transition: all .1s cubic-bezier(.71,-.46,.88,.6);
+}
+#structBaseEdit .tag-card .tag-checkbox-checked .tag-checkbox-inner:after {
+    -webkit-transform: rotate(45deg) scale(1);
+    -ms-transform: rotate(45deg) scale(1);
+    transform: rotate(45deg) scale(1);
+    position: absolute;    
+    border: 2px solid #fff;
+    border-top: 0;
+    border-left: 0;
+    content: " ";
+    -webkit-transition: all .2s cubic-bezier(.12,.4,.29,1.46) .1s;
+    transition: all .2s cubic-bezier(.12,.4,.29,1.46) .1s;
+}
+
+#structBaseEdit .delete-list {
+    position: absolute;
+    background-image: url("../images/pop-1.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 259px;
+    height: 122px;
+    text-align: center;
+    padding-top: 32px;
+    font-size: 14px;
+}
+#structBaseEdit .delete-list p {
+    text-align: left;
+    padding-left: 2em;
+}
+#structBaseEdit .delete-list .delete-list-btn {
+    float: right;
+    margin-right: 32px;
+    margin-top: 10px;
+}
+#structBaseEdit .delete-list .confirm,
+#structBaseEdit .delete-list .cancel {
+    width: 48px;
+    height: 24px;
+    line-height: 24px;
+    display: inline-block;
+    border-radius: 2px;
+    cursor: pointer;
+}
+#structBaseEdit .delete-list .confirm {
+    background-color: #1890ff;
+    color: #ffffff;
+}
+#structBaseEdit .delete-list .cancel {
+    border: 1px solid #1890ff;
+    color: #1890ff;
+    background-color: #ffffff;
+    margin-right: 8px;
+}
+
+#structBaseEdit .delete-list-c {
+    position: absolute;
+    background-image: url("../images/pop-c.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 307px;
+    height: 130px;
+    text-align: center;
+    padding-top: 32px;
+    font-size: 14px;
+}
+#structBaseEdit .delete-list-c p {
+    text-align: left;
+    padding-left: 2em;
+}
+#structBaseEdit .delete-list-c .delete-list-btn {
+    float: right;
+    margin-right: 32px;
+    margin-top: 14px;
+}
+#structBaseEdit .delete-list-c .confirm,
+#structBaseEdit .delete-list-c .cancel,
+#structBaseEdit .delete-list-c .only-group {
+    width: 48px;
+    height: 24px;
+    line-height: 24px;
+    display: inline-block;
+    border-radius: 2px;
+    cursor: pointer;
+}
+#structBaseEdit .delete-list-c .confirm {
+    background-color: #1890ff;
+    color: #ffffff;
+    margin-right: 8px;
+}
+#structBaseEdit .delete-list-c .cancel {
+    border: 1px solid #1890ff;
+    color: #1890ff;
+    background-color: #ffffff;
+    margin-right: 8px;
+}
+#structBaseEdit .delete-list-c .only-group {
+    width: 74px;
+    background-color: #e4a100;
+    color: #ffffff;
+}
+
+
+#structBaseEdit .entity-edit-wrap {
+    width: 1200px;
+    background-color: #ffffff;
+    margin: 0 auto;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;    
+    padding-bottom: 40px;  
+    display: none;  
+}
+#structBaseEdit .entity-edit-wrap.active {
+	display: block;
+}
+
+
+#structBaseEdit .entity-title {
+    width: 100%;
+    height: 64px;
+    line-height: 64px;
+    font-size: 0;
+    border-bottom: 1px solid #f0f1f1;
+}
+#structBaseEdit .icon-label-master {
+    display: inline-block;
+    color: #6cc076; 
+    margin-right: 40px;   
+    font-size: 22px;
+}
+#structBaseEdit .entity-edit-wrap>.add-tag {
+    margin: 8px 80px; 
+}
+#structBaseEdit .add-tag .tag-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 260px;
+    right: 210px;
+    padding-top: 7px;
+    overflow: hidden;
+}
+#structBaseEdit .add-tag .tag-content>ul {
+    float: left;    
+    transition: margin-left .3s linear;
+}
+#structBaseEdit .add-tag .tag-content li{
+    position: relative;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 14px;
+    margin-right: 8px;
+    border: 1px solid #f0f1f1;
+    float: left;
+    border-radius: 4px;    
+}
+#structBaseEdit .add-tag .label-bar>.icon {
+    position: absolute;
+    width: 11px;
+    height: 14px;
+    padding: 0;
+    border: none; 
+    display: none;    
+}
+#structBaseEdit .add-tag .label-bar>.icon.active {
+    display: block;
+}
+#structBaseEdit .add-tag .label-bar>.icon.icon-toleft {
+    left: 240px;
+    top: 12px;
+}
+#structBaseEdit .add-tag .label-bar>.icon.icon-toright {
+    right: 185px;
+    top: 12px;
+}
+#structBaseEdit .add-tag .tag-content li .icon-delete {
+    width: 16px;
+    height: 16px;
+    margin-top: 0;
+    display: none;
+    cursor: pointer;
+}
+#structBaseEdit .add-tag .edit .tag-content li {
+    border-color: #1890ff;
+    color: #1890ff;
+}
+#structBaseEdit .add-tag .edit .tag-content li .icon-delete {
+    display: block;
+}
+#structBaseEdit .entity-title .edit-input {
+    font-size: 20px;    
+    width: 200px;
+    margin-right: 150px;
+    cursor: pointer;
+}
+#structBaseEdit .entity-title .entity-only-title {
+	font-size: 20px;
+	color: #9e9e9e;
+}
+
+#structBaseEdit .span-title {
+	font-size: 16px;
+    color: #6b5757;
+	padding: 33px;
+}
+
+#structBaseEdit .btn-wrap {
+    float: right;
+    margin-right: 40px;
+}
+
+#structBaseEdit .dragEdit-wrap-1 {
+    padding-left: 80px; 
+    padding-right: 80px;   
+}
+#structBaseEdit .dragEdit-wrap .add-tag {
+   
+}
+#structBaseEdit .drag-wrap-repeat {
+    padding-left: 40px;
+}
+#structBaseEdit .repeat .drag-wrap-repeat {
+    padding-left: 0;
+}
+#structBaseEdit .drag-wrap-repeat-more {
+    padding-left: 0px;
+}
+
+#structBaseEdit .dragEdit-wrap>li,
+#structBaseEdit .drag-wrap-repeat>li,
+#structBaseEdit .drag-wrap-repeat-more>li {
+    margin-top: 4px;    
+}
+#structBaseEdit .dragEdit-wrap .edit-input {
+    font-size: 14px;
+}
+
+#structBaseEdit .attr-group-drag-wrap,
+#structBaseEdit .more-attr-drag-wrap,
+#structBaseEdit .attr-relative-drag-wrap {
+    padding-left: 15px;
+}
+#structBaseEdit .repeat .attr-group-drag-wrap,
+#structBaseEdit .repeat .more-attr-drag-wrap,
+#structBaseEdit .repeat .attr-relative-drag-wrap {
+    padding-left: 15px;
+}
+#structBaseEdit .drag-wrap-repeat-more  .attr-group-drag-wrap,
+#structBaseEdit .drag-wrap-repeat-more  .more-attr-drag-wrap,
+#structBaseEdit .drag-wrap-repeat-more  .attr-relative-drag-wrap {
+    padding-left: 0px;
+}
+#structBaseEdit .attr-group-drag-wrap>li,
+#structBaseEdit .more-attr-drag-wrap>li,
+#structBaseEdit .attr-relative-drag-wrap>li {
+    margin-top: 4px;
+}
+
+#structBaseEdit .entity-ch-wrap {
+    margin-top: 4px;
+}
+

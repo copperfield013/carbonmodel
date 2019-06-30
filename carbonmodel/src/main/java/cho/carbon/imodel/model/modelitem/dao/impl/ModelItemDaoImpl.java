@@ -68,19 +68,32 @@ public class ModelItemDaoImpl implements ModelItemDao {
 	}
 
 	@Override
-	public List<ModelItem> getModelItemByType(String parentCode, ModelItemType existMiType, ModelItemType noNiType,Integer miUsingState) throws Exception {
+	public List<ModelItem> getModelItemByType(String parentCode, ModelItemType[] existMiTypes, ModelItemType[] noNiTypes,Integer miUsingState) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" select a.* ")
 		.append(" from  (")
 		.append(" SELECT b.* from t_cc_model_item b WHERE 1=1 ");
 		
-		if (noNiType != null) {
-			sb.append(" AND b.type<>:noNiType  ) a WHERE 1=1 ");
+		if (noNiTypes != null) {
+			String str = "";
+			for (ModelItemType modelItemType : noNiTypes) {
+				int index = modelItemType.getIndex();
+				str+=index + ",";
+			}
+			str = str.substring(0,str.length()-1);
+			
+			sb.append(" AND b.type NOT in ("+str+") ) a WHERE 1=1 ");
 		} else {
 			sb.append(" ) a   WHERE 1=1 ");
 		}
-		if (existMiType != null) {
-			sb.append(" AND a.type=:existMiType");
+		if (existMiTypes != null) {
+			String str = "";
+			for (ModelItemType modelItemType : existMiTypes) {
+				int index = modelItemType.getIndex();
+				str+=index + ",";
+			}
+			str = str.substring(0,str.length()-1);
+			sb.append("  AND a.type in ("+str+") ");
 		} 
 		
 		if (parentCode != null) {
@@ -91,12 +104,6 @@ public class ModelItemDaoImpl implements ModelItemDao {
 		}
 		Query createQuery = sFactory.getCurrentSession().createSQLQuery(sb.toString()).addEntity(ModelItem.class);
 		
-		if (noNiType != null) {
-			createQuery.setString("noNiType", noNiType.getIndex() + "");
-		}
-		if (existMiType != null) {
-			createQuery.setString("existMiType", existMiType.getIndex()+"");
-		}
 		if (parentCode != null) {
 			createQuery.setParameter("parentCode", parentCode);
 		}
@@ -108,22 +115,32 @@ public class ModelItemDaoImpl implements ModelItemDao {
 	}
 
 	@Override
-	public List<ModelItem> getModelItemByBelongMode(String belongMode, ModelItemType[] types, boolean needCorrelation) {
+	public List<ModelItem> getModelItemByBelongMode(String belongMode, ModelItemType[] pTypes, ModelItemType[] chilTypes, boolean needCorrelation) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" SELECT a.* from t_cc_model_item a ")
 		.append(" left join t_cc_model_item b on a.parent = b.code")
 		.append(" where a.belong_model =:belongMode ");
 		
-		if (types.length == 0) {
+		if (pTypes == null || pTypes.length == 0) {
 			sb.append(" AND b.type =" + ModelItemType.ONE_LINE_GROUP);
 		} else {
 			String str = "";
-			for (ModelItemType modelItemType : types) {
+			for (ModelItemType modelItemType : pTypes) {
 				int index = modelItemType.getIndex();
 				str+=index + ",";
 			}
 			str = str.substring(0,str.length()-1);
 			sb.append(" AND b.type in ("+str+") ");
+		}
+		
+		if (chilTypes != null && chilTypes.length != 0) {
+			String str = "";
+			for (ModelItemType modelItemType : chilTypes) {
+				int index = modelItemType.getIndex();
+				str+=index + ",";
+			}
+			str = str.substring(0,str.length()-1);
+			sb.append(" AND a.type in ("+str+") ");
 		}
 		
 		if (!needCorrelation) {
@@ -165,7 +182,7 @@ public class ModelItemDaoImpl implements ModelItemDao {
 
 	@Override
 	public List<ModelItem> getModelList() {
-		String hql = "from ModelItem b WHERE type='1'";
+		String hql = "from ModelItem b WHERE type in (1, 101, 102)";
 		return sFactory.getCurrentSession().createQuery(hql).list();
 	}
 	

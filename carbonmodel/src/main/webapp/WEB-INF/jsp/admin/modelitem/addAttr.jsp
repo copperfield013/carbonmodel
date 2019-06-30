@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="media/admin/modelitem/js/addAttr.js"></script>
 <%@ include file="/WEB-INF/jsp/common/base_empty.jsp"%>
+<script src="media/admin/plugins/beyond/js/select2/select2.js"></script>
+
 <div id="itemtreeAttrAdd" modelItemCode="${modelItemCode }" modelItemType="${modelItemType }" mipCode="${mipCode }">
 	<div class="page-header">
 		<div class="header-title">

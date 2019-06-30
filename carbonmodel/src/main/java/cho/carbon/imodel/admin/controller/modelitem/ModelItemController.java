@@ -85,7 +85,7 @@ public class ModelItemController {
 	
 	/**
 	 * 
-	 * @return 获取所有可选的来源实体
+	 * @return 获取所有MODEL
 	 */
 	@ResponseBody
 	@RequestMapping("/getModelList")
@@ -230,7 +230,7 @@ public class ModelItemController {
 				//获取所有实体模型
 		  		ModelItemType[] types2 = {ModelItemType.ONE_LINE_GROUP};
 		  		//获取所有模型下的属性， 单行下的孩子
-		  		 List<ModelItem> modelItemList = miService.getModelItemByBelongMode(miCode, types2, false);
+		  		 List<ModelItem> modelItemList = miService.getModelItemByBelongMode(miCode, types2,null, false);
 		    	map.put("modelItemList", modelItemList);
 				map.put("code", 200);
 				map.put("msg", "成功！");
@@ -256,7 +256,7 @@ public class ModelItemController {
 			try {
 				ModelItemType[] types = {ModelItemType.ONE_LINE_GROUP, ModelItemType.MULTI_LINE_GROUP, ModelItemType.GIANT_LINE_GROUP};
 				//获取所有模型下的属性， 包括多行和单行下的孩子
-				 List<ModelItem> modelItemList = miService.getModelItemByBelongMode(miCode, types , false);
+				 List<ModelItem> modelItemList = miService.getModelItemByBelongMode(miCode, types ,null,  false);
 		    	map.put("modelItemList", modelItemList);
 				map.put("code", 200);
 				map.put("msg", "成功！");
@@ -396,7 +396,8 @@ public class ModelItemController {
 				
 				ModelItem modelItem = commService.get(ModelItem.class, pmiCode);
 				//获取引用属性， 
-				List<ModelItem> modelItemList = miService.getModelItemByType(modelItem.getParent(), ModelItemType.REFERENCE_ITEM, null, null);
+				ModelItemType[] existMiTypes = { ModelItemType.REFERENCE_ITEM};
+				List<ModelItem> modelItemList = miService.getModelItemByType(modelItem.getParent(),existMiTypes, null, null);
 				model.addAttribute("pmiCode", pmiCode);
 				model.addAttribute("modelItemList", modelItemList);
 				return AdminConstants.JSP_BASE + "/modelitem/casReferenceChild/addCasRefChild.jsp";
@@ -537,7 +538,9 @@ public class ModelItemController {
 				Map<String, Object> map = new HashMap<String, Object>();
 				JSONObject jobj = new JSONObject(map);
 				try {
-					List<ModelItem> modelItemEnumList = miService.getModelItemByType(pmiCode, ModelItemType.ENUM_ITEM,null, null);
+					
+					ModelItemType[] existMiTypes = {ModelItemType.ENUM_ITEM};
+					List<ModelItem> modelItemEnumList = miService.getModelItemByType(pmiCode, existMiTypes,null, null);
 			    	map.put("modelItemEnumList", modelItemEnumList);
 					map.put("code", 200);
 					map.put("msg", "成功！");
@@ -562,7 +565,8 @@ public class ModelItemController {
 				Map<String, Object> map = new HashMap<String, Object>();
 				JSONObject jobj = new JSONObject(map);
 				try {
-					List<ModelItem> modelItemNoEnumList = miService.getModelItemByType(pmiCode, null,ModelItemType.ENUM_ITEM, null);
+					ModelItemType[] noNiTypes = {ModelItemType.ENUM_ITEM};
+					List<ModelItem> modelItemNoEnumList = miService.getModelItemByType(pmiCode, null, noNiTypes, null);
 			    	map.put("modelItemNoEnumList", modelItemNoEnumList);
 					map.put("code", 200);
 					map.put("msg", "成功！");

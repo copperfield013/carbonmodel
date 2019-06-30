@@ -81,7 +81,8 @@ public class ModelRelationTypeController {
 	@RequestMapping("/add")
 	public String add(Model model, String leftModelCode) {
 		try {
-			List<ModelItem> modelItemList = miService.getModelItemByType(null, ModelItemType.MODEL, null, Constants.USING_STATE_USING);
+			ModelItemType[] existMiTypes = {ModelItemType.MODEL};
+			List<ModelItem> modelItemList = miService.getModelItemByType(null, existMiTypes, null, Constants.USING_STATE_USING);
 			model.addAttribute("leftModelCode", leftModelCode);
 			model.addAttribute("modelItemList", modelItemList);
 			return AdminConstants.JSP_BASE + "/modelitem/confrelation/addRelation.jsp";

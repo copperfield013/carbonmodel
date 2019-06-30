@@ -20,6 +20,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					initAttrLabel(viewLabelList, $modelItemForm);
 					$CPF.closeLoading();
 				}
+				
+				//select 格式化
+				var $select =  $page.find("select");
+				 $select.css("width","100%").select2();
 			}
 			
 			$CPF.closeLoading();
@@ -34,6 +38,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			var htmLabel = DedeTagParse(viewLabelList[key]);
 			$modelItemForm.prepend(htmLabel);
 		}
+		
+		
 		
 	}
 	
@@ -82,7 +88,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			var strLabel = '<div class="form-group">';
 			strLabel+= '<label class="col-lg-2 control-label " for="'+viewLabel.name+'">'+viewLabel.showName+'</label>';
 			strLabel+= '<div class="col-lg-5">';
-			strLabel+= '<select  class="form-control '+viewLabel.viewClazz+'" name="'+viewLabel.name+'">';
+			strLabel+= '<select  class=" '+viewLabel.viewClazz+'" name="'+viewLabel.name+'">';
 			//这里存放optiong
 			var vDomainMap = viewLabel.valueDomain;
 			for ( var key in vDomainMap) {

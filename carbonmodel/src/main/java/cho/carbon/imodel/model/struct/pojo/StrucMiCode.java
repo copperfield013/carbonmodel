@@ -20,14 +20,14 @@ public class StrucMiCode {
 	private Integer sbId;
 	
 	@Column(name = "item_code")
-	private String item_code;
+	private String itemCode;
 	
 	public StrucMiCode() {}
 
-	public StrucMiCode(Integer sbId, String item_code) {
+	public StrucMiCode(Integer sbId, String itemCode) {
 		super();
 		this.sbId = sbId;
-		this.item_code = item_code;
+		this.itemCode = itemCode;
 	}
 
 	public Integer getSbId() {
@@ -38,12 +38,12 @@ public class StrucMiCode {
 		this.sbId = sbId;
 	}
 
-	public String getItem_code() {
-		return item_code;
+	public String getItemCode() {
+		return itemCode;
 	}
 
-	public void setItem_code(String item_code) {
-		this.item_code = item_code;
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
 	}
-	
+
 }

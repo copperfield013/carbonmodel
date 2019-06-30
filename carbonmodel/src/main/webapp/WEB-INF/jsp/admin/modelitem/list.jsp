@@ -40,10 +40,11 @@
 						<td>${item.name }</td>
 						<td>${item.usingState }</td>
 						<td>
-							<a id="update" itemCode="${item.code }"href="javascript:;"  title="修改">修改</a>
+							<a id="update" itemCode="${item.code }" href="javascript:;"  title="修改">修改</a>
 							<a class="tab" href="admin/modelItem/itemtree?itemCode=${item.code }" title="管理子节点" target="modelItem_tree" >管理子节点</a>
 							<a class="tab"  href="admin/modelRelationType/list?leftModelCode=${item.code }" title="配置<${item.name }>关系" target="modelItem_confRelationList" >配置关系</a>
 							
+							<a href="admin/structBase/quickCreateStrucBase?belongModel=${item.code }" confirm="确认生成【${item.name }】结构体？">生成结构体</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -78,6 +79,7 @@
                 height : 500
             });
         });
+
 
 	});
 </script>

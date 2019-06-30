@@ -105,7 +105,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 		if (modelItem == null) {
 			modelItem = new ModelItem("", "", modelItemType.getIndex(), "", "", 0, "");
 			miValue = new MiValue("", ItemValueType.STRING.getIndex() + "", "32", "", 0);
-			miEnum = new MiEnum("", "");
+			miEnum = new MiEnum("", null);
 			miReference = new MiReference("", "", "", "", "0");
 		} else {
 			miValue = commService.get(MiValue.class, modelItem.getCode());
@@ -149,7 +149,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 			//miValue
 			getViewLabelToMiValue(miValue, viewLabelList);
 			//miEnum
-			ViewLabel viewEnum = new ViewLabel("select", "text", "miEnum.pid", miEnum.getPid(), "枚举字典");	
+			ViewLabel viewEnum = new ViewLabel("select", "text", "miEnum.pid", miEnum.getPid() == null?"":miEnum.getPid()+"", "枚举字典");	
 			//获取值域
 			Map<String, String> valueDomain = new HashMap<String, String>();
 			List<CascadedictBasicItem> casenumItemList = casenumItemService.getCascaseDictPitem();
@@ -195,7 +195,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 	}
 
 	private void getViewLabelToMiEnum(MiEnum miEnum, List<ViewLabel> viewLabelList) throws Exception {
-			ViewLabel viewEnum = new ViewLabel("select", "text", "miEnum.pid", miEnum.getPid(), "枚举字典");	
+			ViewLabel viewEnum = new ViewLabel("select", "text", "miEnum.pid", miEnum.getPid()==null?"":miEnum.getPid()+"", "枚举字典");	
 			//获取值域
 			Map<String, String> valueDomain = new HashMap<String, String>();
 			List<CascadedictBasicItem> casenumItemList = casenumItemService.getParentAll();
@@ -240,7 +240,8 @@ public class ModelItemServiceImpl implements ModelItemService {
 		// 获取值域
 		Map<String, String> valueDomain = new LinkedHashMap<String, String>();
 		//获取所有实体模型
-		List<ModelItem> modelItemList = this.getModelItemByType(null, ModelItemType.MODEL, null, null);
+		ModelItemType[] existMiTypes = {ModelItemType.MODEL};
+		List<ModelItem> modelItemList = this.getModelItemByType(null, existMiTypes, null, null);
 	
 		for (ModelItem modelItem : modelItemList) {
 			valueDomain.put(modelItem.getCode(), modelItem.getName());
@@ -254,7 +255,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 		Map<String, String> valueDomain2 = new LinkedHashMap<String, String>();
 		ModelItemType[] types = {ModelItemType.ONE_LINE_GROUP, ModelItemType.MULTI_LINE_GROUP, ModelItemType.GIANT_LINE_GROUP};
 		//获取所有模型下的属性， 包括多行和单行下的孩子
-		 List<ModelItem> modelItemStairChild = this.getModelItemByBelongMode(modelItemList.get(0).getBelongModel(), types , false);
+		 List<ModelItem> modelItemStairChild = this.getModelItemByBelongMode(modelItemList.get(0).getBelongModel(), types ,null,  false);
 		for (ModelItem modelItem : modelItemStairChild) {
 			valueDomain2.put(modelItem.getCode(), modelItem.getName());
 		}
@@ -268,7 +269,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 		//获取所有实体模型
 		ModelItemType[] types2 = {ModelItemType.ONE_LINE_GROUP};
 		//获取所有模型下的属性， 单行下的孩子
-		 List<ModelItem> modelItemStairChild2 = this.getModelItemByBelongMode(modelItemList.get(0).getBelongModel(), types2, false);
+		 List<ModelItem> modelItemStairChild2 = this.getModelItemByBelongMode(modelItemList.get(0).getBelongModel(), types2,null, false);
 		
 		for (ModelItem modelItem : modelItemStairChild2) {
 			valueDomain3.put(modelItem.getCode(), modelItem.getName());
@@ -288,8 +289,8 @@ public class ModelItemServiceImpl implements ModelItemService {
 	}
 
 	@Override
-	public List<ModelItem> getModelItemByType(String parentCode, ModelItemType existMiType, ModelItemType noNiType, Integer miUsingState) throws Exception {
-		return modelItemDao.getModelItemByType(parentCode, existMiType, noNiType, miUsingState);
+	public List<ModelItem> getModelItemByType(String parentCode, ModelItemType[] existMiTypes, ModelItemType[] noNiTypes, Integer miUsingState) throws Exception {
+		return modelItemDao.getModelItemByType(parentCode, existMiTypes, noNiTypes, miUsingState);
 	}
 
 	@Override
@@ -298,8 +299,8 @@ public class ModelItemServiceImpl implements ModelItemService {
 	}
 
 	@Override
-	public List<ModelItem> getModelItemByBelongMode(String belongMode, ModelItemType[] types, boolean needCorrelation) {
-		return modelItemDao.getModelItemByBelongMode(belongMode, types, needCorrelation);
+	public List<ModelItem> getModelItemByBelongMode(String belongMode, ModelItemType[] pTypes,ModelItemType[] chilTypes, boolean needCorrelation) {
+		return modelItemDao.getModelItemByBelongMode(belongMode, pTypes, chilTypes, needCorrelation);
 	}
 
 	@Override
@@ -310,7 +311,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 	@Override
 	public List<CascadedictBasicItem> getCasEnumChild(String enumCode) throws Exception {
 		MiEnum miEnum = commService.get(MiEnum.class, enumCode);
-		return casenumItemService.getChildByParentId(Integer.parseInt(miEnum.getPid()));
+		return casenumItemService.getChildByParentId(miEnum.getPid());
 	}
 
 	@Override

@@ -9,7 +9,11 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-
+/**
+ * 类型
+ * @author so-well
+ *
+ */
 @Entity
 @Table(name = "t_cc_struc_field_value")
 public class StrucFieldValue {

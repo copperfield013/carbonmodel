@@ -36,7 +36,7 @@ public interface ModelItemService {
 	 * @return 返回父亲下面指定类型的孩子
 	 * @throws Exception
 	 */
-	List<ModelItem> getModelItemByType(String parentCode, ModelItemType existMiType, ModelItemType noNiType,Integer miUsingState) throws Exception;
+	List<ModelItem> getModelItemByType(String parentCode, ModelItemType[] existMiTypes, ModelItemType[] noNiTypes,Integer miUsingState) throws Exception;
 	
 	/**
 	 * 保存模型信息
@@ -73,7 +73,7 @@ public interface ModelItemService {
 	 * @param needCorrelation   是否需要伴生属性  true : 需要
 	 * @return   根据所传类型， 返回普通分组下的孩子 ， 多值分组下的孩子， 或者前两者
 	 */
-	List<ModelItem> getModelItemByBelongMode(String belongMode, ModelItemType[] types, boolean needCorrelation);
+	List<ModelItem> getModelItemByBelongMode(String belongMode, ModelItemType[] types,ModelItemType[] chilTypes, boolean needCorrelation);
 	
 	/**
 	 * @param miCasEnumCode   级联枚举or级联引用的code

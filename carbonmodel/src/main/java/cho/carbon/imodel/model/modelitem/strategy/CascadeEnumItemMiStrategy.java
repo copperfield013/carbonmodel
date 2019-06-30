@@ -53,7 +53,7 @@ public class CascadeEnumItemMiStrategy implements MiStrategy {
 	
 	private void createMiValueCas(ModelItem modelItem,MiEnum miEnum,String tableName, CommService commService, CascadedictBasicItemService casenumItemService, ModelItemService modelItemService, ModelItemCodeGeneratorService miCodeGenService) throws Exception {
 		// 枚举孩子 层深
-		Integer casCaseDepth = casenumItemService.getCasCaseDepth(Integer.parseInt(miEnum.getPid()));
+		Integer casCaseDepth = casenumItemService.getCasCaseDepth(miEnum.getPid());
 		//获取所填写数量
 		Integer casEnumChildCount = modelItem.getCasEnumChildCount();
 		

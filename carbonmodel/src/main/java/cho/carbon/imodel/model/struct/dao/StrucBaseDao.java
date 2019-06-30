@@ -1,0 +1,25 @@
+package cho.carbon.imodel.model.struct.dao;
+
+import java.util.List;
+
+import cho.carbon.imodel.model.struct.pojo.StrucBase;
+import cn.sowell.copframe.dto.page.PageInfo;
+
+public interface StrucBaseDao {
+
+	/**
+	 * 分页查询结构体数据
+	 * @param strucBase
+	 * @param pageInfo
+	 * @return
+	 */
+	List<StrucBase> queryList(StrucBase strucBase, PageInfo pageInfo);
+
+	/**
+	 * 根据父id， 获取下一阶梯的孩子
+	 * @param sbPid
+	 * @return
+	 */
+	List<StrucBase> getStructStairChild(Integer sbPid);
+	
+}

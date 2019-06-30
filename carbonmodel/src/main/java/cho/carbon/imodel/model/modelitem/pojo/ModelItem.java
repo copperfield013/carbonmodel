@@ -131,7 +131,7 @@ public class ModelItem {
 		
 		switch (this.type) {
 		case 1:
-			return ModelItemType.MODEL.getCName();
+			return "普通实体";
 		case 101:
 			return ModelItemType.STAT_MODEL.getCName();
 		case 102:

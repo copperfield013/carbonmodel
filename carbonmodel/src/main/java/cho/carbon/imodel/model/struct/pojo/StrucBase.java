@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import cho.carbon.meta.enun.StrucElementType;
 
 /**
  * 	结构体基础类
@@ -22,30 +25,33 @@ public class StrucBase {
 	private Integer id;
 	
 	@Column(name = "type")
-	private String type;
+	private Integer type;
 	
 	@Column(name = "title")
 	private String title;
 	
 	@Column(name = "opt")
-	private String opt;
+	private Integer opt;
 	
 	@Column(name = "corder")
 	private Integer corder;
 	
 	@Column(name = "parent_id")
-	private Integer parent_id;
+	private Integer parentId;
+	
+	 @Transient
+	private String showType;
 	
 	public StrucBase() {}
 
-	public StrucBase(Integer id, String type, String title, String opt, Integer corder, Integer parent_id) {
+	public StrucBase(Integer id, Integer type, String title, Integer opt, Integer corder, Integer parentId) {
 		super();
 		this.id = id;
 		this.type = type;
 		this.title = title;
 		this.opt = opt;
 		this.corder = corder;
-		this.parent_id = parent_id;
+		this.parentId = parentId;
 	}
 
 	public Integer getId() {
@@ -56,11 +62,11 @@ public class StrucBase {
 		this.id = id;
 	}
 
-	public String getType() {
+	public Integer getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
@@ -72,11 +78,11 @@ public class StrucBase {
 		this.title = title;
 	}
 
-	public String getOpt() {
+	public Integer getOpt() {
 		return opt;
 	}
 
-	public void setOpt(String opt) {
+	public void setOpt(Integer opt) {
 		this.opt = opt;
 	}
 
@@ -88,11 +94,40 @@ public class StrucBase {
 		this.corder = corder;
 	}
 
-	public Integer getParent_id() {
-		return parent_id;
+	public Integer getParentId() {
+		return parentId;
 	}
 
-	public void setParent_id(Integer parent_id) {
-		this.parent_id = parent_id;
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
+
+	public String getShowType() {
+		StrucElementType elementType = StrucElementType.getType(this.type);
+		
+		switch (elementType) {
+		case STRUC:
+			return StrucElementType.STRUC.getCnName();
+		case GROUP1D:
+			return StrucElementType.GROUP1D.getCnName();
+		case GROUP2D:
+			return StrucElementType.GROUP2D.getCnName();
+		case RSTRUC:
+			return StrucElementType.RSTRUC.getCnName();
+		case FIELD:
+			return StrucElementType.FIELD.getCnName();
+		case ENUMFIELD:
+			return StrucElementType.ENUMFIELD.getCnName();
+		case RFIELD:
+			return StrucElementType.RFIELD.getCnName();
+		case REFFIELD:
+			return StrucElementType.REFFIELD.getCnName();
+		case RREFFIELD:
+			return "R引用字段";
+		}
+		return "未知字段";
+	}
+	
+	
+	
 }
