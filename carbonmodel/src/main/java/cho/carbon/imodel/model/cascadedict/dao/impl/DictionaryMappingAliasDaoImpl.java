@@ -29,11 +29,11 @@ public class DictionaryMappingAliasDaoImpl implements DictionaryMappingAliasDao 
 	public List queryList(DictionaryMappingAliasCriteria criteria, PageInfo pageInfo) {
 		
 		String sql = "SELECT 	b.id itemId, 	b.parent_id,	b.corder,	b.name, b.using_state,"
-				+ "	c.id aliasId,	c.mapping_id,	c.enum_id,	c.alias_name,	c.priority_level, d.name parent_name FROM"
+				+ "	c.id aliasId,	c.mapping_id,	c.basic_item_id,	c.alias_name,	c.priority_level, d.name parent_name FROM"
 				+ "	t_cc_casenum_item b"
 				+ " LEFT OUTER JOIN ( "
 				+ " SELECT * from t_cc_casenum_mapping_alias  a "
-				+ " WHERE mapping_id ='"+criteria.getMappingId()+"' ) c ON b.id= c.enum_id "
+				+ " WHERE mapping_id ='"+criteria.getMappingId()+"' ) c ON b.id= c.basic_item_id "
 				+ " LEFT OUTER JOIN t_cc_casenum_item d 	on b.parent_id=d.id "
 				+ "WHERE  b.id != 0 ";
 		DeferedParamQuery dQuery = new DeferedParamQuery(sql);

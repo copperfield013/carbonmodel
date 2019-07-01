@@ -19,7 +19,7 @@ public class DictionaryMappingAlias {
 	@Column(name = "mapping_id")
 	private Integer mappingId;
 
-	@Column(name="enum_id")
+	@Column(name="basic_item_id")
 	private Integer basicItemId;
 
 	@Column(name = "alias_name")
