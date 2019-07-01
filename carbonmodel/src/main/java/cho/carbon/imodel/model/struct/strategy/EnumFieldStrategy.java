@@ -21,6 +21,9 @@ public class EnumFieldStrategy  implements StructBaseStrategy {
 		strucMiCode.setSbId(sbId);
 		//子集对应
 		StrucFieldSubenum strucFieldSubenum = strucBaseContainer.getStrucFieldSubenum();
+		if(strucFieldSubenum == null) {
+			strucFieldSubenum = new StrucFieldSubenum();
+		}
 		strucFieldSubenum.setSbId(sbId);
 		
 		StrucFieldValue strucFieldValue = strucBaseContainer.getStrucFieldValue();
