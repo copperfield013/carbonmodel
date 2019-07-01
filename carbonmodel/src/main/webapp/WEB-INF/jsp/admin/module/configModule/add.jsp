@@ -28,8 +28,8 @@
 						<label class="col-lg-2 control-label" for="mappingName">配置名称<font color="red">*</font></label>
 						<div class="col-lg-5">
 							<select data-bv-notempty="true" data-bv-notempty-message="配置名称必填"  style="width: 30%;" id="mappingId" class="ser-list" name="mappingId">
-								<c:forEach items="${abcList }" var="item">
-									<option value="${item.id }" data-id="${item.id }">${item.name }</option>
+								<c:forEach items="${strucList }" var="item">
+									<option value="${item.id }" data-id="${item.id }">${item.title }</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -49,9 +49,8 @@
 						<label class="col-lg-2 control-label" for="titleName">名称字段</label>
 						<div class="col-lg-5">
 							<select style="width: 30%;" id="titleName" class="ser-list" name="titleName">
-								<option selected="selected" value=""></option>
-								<c:forEach items="${childNode }" var="item">
-									<option value="${item.name }">${item.name }</option>
+								<c:forEach items="${strucChildList }" var="item">
+									<option value="${item.title }">${item.title }</option>
 								</c:forEach>
 							</select>
 						</div>

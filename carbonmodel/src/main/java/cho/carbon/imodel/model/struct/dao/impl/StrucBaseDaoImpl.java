@@ -51,7 +51,24 @@ public class StrucBaseDaoImpl implements StrucBaseDao {
 		String hql = "from StrucBase b WHERE parentId=:sbPid";
 		return sFactory.getCurrentSession().createQuery(hql).setParameter("sbPid", sbPid).list();
 	}
-	
+
+	@Override
+	public List<StrucBase> getAllStruc() {
+		String hql = "from StrucBase b WHERE type=1 ";
+		return sFactory.getCurrentSession().createQuery(hql).list();
+	}
+
+	@Override
+	public List<StrucBase> getGroup1DChild(Integer sbId) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(" SELECT b.* FROM `t_cc_struc_base` b")
+		.append(" inner JOIN (")
+		.append(" SELECT * FROM `t_cc_struc_base` a")
+		.append(" WHERE a.parent_id=:sbId AND a.type=101")
+		.append(" ) c on b.parent_id=c.id");
+		
+		return sFactory.getCurrentSession().createSQLQuery(sb.toString()).addEntity(StrucBase.class).setInteger("sbId", sbId).list();
+	}
 	
 	
 }

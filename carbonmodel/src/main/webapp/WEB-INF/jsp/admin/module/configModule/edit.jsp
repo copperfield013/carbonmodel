@@ -31,7 +31,7 @@
 					<div class="form-group">
 						<label class="col-lg-2 control-label" for="mappingId">配置名称<font color="red">*</font></label>
 						<div class="col-lg-5">
-							${abc.name }
+							${strucBase.title }
 						</div>
 					</div>
 					<div class="form-group">
@@ -50,8 +50,8 @@
 						<div class="col-lg-5">
 							<select style="width: 30%;" id="titleName" class="ser-list" name="titleName">
 								<option selected="selected" value=""></option>
-								<c:forEach items="${childNode }" var="item">
-									<option value="${item.name }" ${item.name eq module.titleName ? 'selected="selected"' : ''}>${item.name }</option>
+								<c:forEach items="${strucChildList }" var="item">
+									<option value="${item.title }" ${item.title eq module.titleName ? 'selected="selected"' : ''}>${item.title }</option>
 								</c:forEach>
 							</select>
 						</div>

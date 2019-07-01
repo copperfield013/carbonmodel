@@ -54,6 +54,11 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 	public List<StrucBase> queryList(StrucBase strucBase, PageInfo pageInfo) {
 		return strucBaseDao.queryList(strucBase, pageInfo);
 	}
+	
+	@Override
+	public List<StrucBase> getAllStruc() {
+		return strucBaseDao.getAllStruc();
+	}
 
 	@Override
 	public StrucBaseContainer saveOrUpdate(StrucBaseContainer strucBaseContainer) {
@@ -402,14 +407,20 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		sbc.setStrucFieldValue(strucFieldValue);
 		return sbc;
 	}
-		private void createGroupChil(ModelItem modelItem, StrucBase strucBaseGroup) throws Exception {
-			// 生成组的孩子的结构体
-			// 除了引用属性，其他都可以生成
-			ModelItemType[] noNiTypes = {ModelItemType.REFERENCE_ITEM,ModelItemType.CASCADE_REFERENCE_ITEM};
-			List<ModelItem> modelItemGroupChild = modelItemService.getModelItemByType(modelItem.getCode(), null, noNiTypes , Constants.USING_STATE_USING);
-			// 生成分组的孩子
-			quickCreateStrucGroup(strucBaseGroup, modelItemGroupChild);
-		}
+	
+	private void createGroupChil(ModelItem modelItem, StrucBase strucBaseGroup) throws Exception {
+		// 生成组的孩子的结构体
+		// 除了引用属性，其他都可以生成
+		ModelItemType[] noNiTypes = {ModelItemType.REFERENCE_ITEM,ModelItemType.CASCADE_REFERENCE_ITEM};
+		List<ModelItem> modelItemGroupChild = modelItemService.getModelItemByType(modelItem.getCode(), null, noNiTypes , Constants.USING_STATE_USING);
+		// 生成分组的孩子
+		quickCreateStrucGroup(strucBaseGroup, modelItemGroupChild);
+	}
+
+	@Override
+	public List<StrucBase> getGroup1DChild(Integer sbId) {
+		return strucBaseDao.getGroup1DChild(sbId);
+	}
 
 }
 

@@ -1,28 +1,20 @@
 package cho.carbon.imodel.admin.controller.module;
 
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONObject;
-
 import cho.carbon.imodel.admin.controller.AdminConstants;
+import cho.carbon.imodel.model.comm.service.CommService;
+import cho.carbon.imodel.model.struct.pojo.StrucBase;
 import cho.carbon.imodel.model.struct.service.StrucBaseService;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
 import cn.sowell.copframe.dto.page.PageInfo;
@@ -30,11 +22,6 @@ import cn.sowell.datacenter.entityResolver.config.ModuleConfigureMediator;
 import cn.sowell.datacenter.entityResolver.config.abst.Module;
 import cn.sowell.datacenter.entityResolver.config.param.CreateModuleParam;
 import cn.sowell.datacenter.entityResolver.config.param.QueryModuleCriteria;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
 @RequestMapping(AdminConstants.URI_MODULE + "/configModule")
@@ -45,6 +32,9 @@ public class ConfigModuleController {
 	
 	@Resource
 	StrucBaseService strucBaseService;
+	
+	@Resource
+	CommService commService;
 	
 	@Resource
 	SessionFactory sFactory;
@@ -61,30 +51,18 @@ public class ConfigModuleController {
 		return mv;
 	}
 	
-	/*
-	 * @RequestMapping(value = "/add", method = RequestMethod.POST) public
-	 * ModelAndView add(){ // 获取所有的配置文件 List<BasicItemNode> abcList =
-	 * strucBaseService.getAllAbc(); List<BasicItemNode> childNode =
-	 * strucBaseService.getAttribute(String.valueOf(abcList.get(0).getId()));
-	 * ModelAndView mv = new ModelAndView(); mv.addObject("abcList", abcList);
-	 * mv.addObject("childNode", childNode);
-	 * mv.setViewName(AdminConstants.JSP_MODULE + "/configModule/add.jsp"); return
-	 * mv; }
-	 */
 	
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value = "/childNodeList", method = RequestMethod.POST) public
-	 * ResponseEntity<BasicItemNodes> childNodeList(String parentId){ try {
-	 * List<BasicItemNode> childNodeList = strucBaseService.getAttribute(parentId);
-	 * Map<String, Object> map = new HashMap<String, Object>(); BasicItemNodes btn =
-	 * new BasicItemNodes(); btn.childNode(childNodeList); return new
-	 * ResponseEntity<BasicItemNodes>(btn, HttpStatus.OK); } catch (Exception e) {
-	 * return new ResponseEntity<BasicItemNodes>(HttpStatus.INTERNAL_SERVER_ERROR);
-	 * } }
-	 */
-	
+	  @RequestMapping(value = "/add", method = RequestMethod.POST) 
+	  public  ModelAndView add(){ // 获取所有的配置文件 
+		   List<StrucBase> strucList = strucBaseService.getAllStruc();
+		   List<StrucBase> strucChildList = strucBaseService.getGroup1DChild(strucList.get(0).getId());
+		  ModelAndView mv = new ModelAndView(); 
+		  mv.addObject("strucList", strucList);
+		  mv.addObject("strucChildList", strucChildList);
+		  mv.setViewName(AdminConstants.JSP_MODULE + "/configModule/add.jsp"); 
+		  return  mv;
+	  }
+	 
 	@ResponseBody
     @RequestMapping(value = "/do_add")
 	public AjaxPageResponse doAdd(String moduleName, String moduleTitle, Long mappingId, String codeName, String titleName){
@@ -140,21 +118,22 @@ public class ConfigModuleController {
 		}
 	}
 	
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value = "/edit", method = RequestMethod.POST) public
-	 * ModelAndView edit(String name){ Module module =
-	 * dBModuleConfigMediator.getModule(name);
-	 * 
-	 * BasicItemNode abc = strucBaseService.getAbc(module.getMappingId());
-	 * List<BasicItemNode> childNode =
-	 * strucBaseService.getAttribute(String.valueOf(abc.getId())); ModelAndView mv =
-	 * new ModelAndView(); mv.addObject("module", module); mv.addObject("childNode",
-	 * childNode); mv.addObject("abc", abc);
-	 * mv.setViewName(AdminConstants.JSP_MODULE + "/configModule/edit.jsp"); return
-	 * mv; }
-	 */
+	
+	  @ResponseBody
+	  @RequestMapping(value = "/edit", method = RequestMethod.POST) 
+	  public ModelAndView edit(String name){ 
+		  Module module = dBModuleConfigMediator.getModule(name);
+		  
+		  StrucBase strucBase = commService.get(StrucBase.class, module.getMappingId().intValue());
+		  List<StrucBase> strucChildList = strucBaseService.getGroup1DChild(strucBase.getId());
+		  ModelAndView mv =	  new ModelAndView();
+		  mv.addObject("module", module); 
+		  mv.addObject("strucChildList", strucChildList); 
+		  mv.addObject("strucBase", strucBase);
+		  mv.setViewName(AdminConstants.JSP_MODULE + "/configModule/edit.jsp"); return
+		  mv;
+	  }
+	 
 	
 	@ResponseBody
     @RequestMapping(value = "/do_edit",

@@ -21,5 +21,18 @@ public interface StrucBaseDao {
 	 * @return
 	 */
 	List<StrucBase> getStructStairChild(Integer sbPid);
+
+	/**
+	 * 获取所有结构体
+	 * @return
+	 */
+	List<StrucBase> getAllStruc();
+
+	/**
+	 * 获取结构体下， 所有Group1D的孩子
+	 * @param sbId
+	 * @return
+	 */
+	List<StrucBase> getGroup1DChild(Integer sbId);
 	
 }

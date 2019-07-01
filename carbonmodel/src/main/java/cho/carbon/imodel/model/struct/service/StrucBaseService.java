@@ -17,6 +17,12 @@ public interface StrucBaseService {
 	 * @return
 	 */
 	List<StrucBase> queryList(StrucBase strucBase, PageInfo pageInfo);
+	
+	/**
+	 * 获取所有结构体
+	 * @return
+	 */
+	List<StrucBase> getAllStruc();
 
 	/**
 	 * 	保存结构体
@@ -46,5 +52,12 @@ public interface StrucBaseService {
 	 * @param belongModel
 	 */
 	void quickCreateStrucBase(String belongModel) throws Exception ;
+
+	/**
+	 * 获取结构体下， 所有Group1D的孩子
+	 * @param id
+	 * @return
+	 */
+	List<StrucBase> getGroup1DChild(Integer sbId);
 
 }
