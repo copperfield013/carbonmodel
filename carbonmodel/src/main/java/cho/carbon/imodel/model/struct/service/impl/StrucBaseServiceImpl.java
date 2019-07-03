@@ -246,6 +246,8 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList3);
 					getVbRfieldStrucRelation(viewLabelList, strucRelation.isEmpty()? null:strucRelation.get(0), relationOne);
 					break;
+				case RREFFIELD:
+					
 				case REFFIELD:
 					
 					
@@ -272,11 +274,6 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					getViewLabelToStrucPointer(viewLabelList, strucPointer, allStruc);
 						
 					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList4);
-					getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue);
-					break;
-				case RREFFIELD:
-					
-					
 					getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue);
 					break;
 					
