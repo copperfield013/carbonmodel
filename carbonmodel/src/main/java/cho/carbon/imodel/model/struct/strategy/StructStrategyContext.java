@@ -2,35 +2,37 @@ package cho.carbon.imodel.model.struct.strategy;
 
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
+import cho.carbon.imodel.model.struct.service.StrucBaseService;
 import cho.carbon.imodel.model.struct.vo.StrucBaseContainer;
 import cho.carbon.meta.enun.StrucElementType;
 
 public class StructStrategyContext {
-	private CommService commServicet;
+	private CommService commService;
+	private StrucBaseService strucBaseService;
 	
-	public StructStrategyContext(CommService commService) {
-		this.commServicet = commService;
+	public StructStrategyContext(CommService commService, StrucBaseService strucBaseService) {
+		this.commService = commService;
+		this.strucBaseService = strucBaseService;
 	}
 
 	public void saveOrUpdate(StrucBaseContainer strucBaseContainer) {
 		StrucBase strucBase = strucBaseContainer.getStrucBase();
-		strucBase.setOpt(1);//这个先写默认， 以后再做
 		StrucElementType strucElementType = StrucElementType.getType(strucBase.getType());
 		
 		String flag = "";
 		//先保存为敬
 		if (strucBase.getId() == null) {
 			flag = "add";
-			commServicet.insert(strucBase);
+			commService.insert(strucBase);
 		}else {
-			commServicet.update(strucBase);
+			commService.update(strucBase);
 		}
 		
 		//执行策略
 		StructBaseStrategy structStrategy = StructStrategyFactory.getStructStrategy(strucElementType);
 		
 		if (structStrategy != null) {
-			structStrategy.saveOrUpdate(flag, strucBaseContainer, commServicet);
+			structStrategy.saveOrUpdate(flag, strucBaseContainer, commService, strucBaseService);
 		}
 		
 	}

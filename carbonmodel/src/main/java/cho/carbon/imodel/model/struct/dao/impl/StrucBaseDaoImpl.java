@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.struct.dao.StrucBaseDao;
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
+import cho.carbon.imodel.model.struct.pojo.StrucRelation;
 import cn.sowell.copframe.dao.deferedQuery.DeferedParamQuery;
 import cn.sowell.copframe.dao.deferedQuery.sqlFunc.WrapForCountFunction;
 import cn.sowell.copframe.dao.utils.QueryUtils;
@@ -68,6 +69,17 @@ public class StrucBaseDaoImpl implements StrucBaseDao {
 		.append(" ) c on b.parent_id=c.id");
 		
 		return sFactory.getCurrentSession().createSQLQuery(sb.toString()).addEntity(StrucBase.class).setInteger("sbId", sbId).list();
+	}
+
+	@Override
+	public List<StrucRelation> getStrucRelationBySbId(Integer sbId) {
+		
+		if (sbId == null) {
+			return new ArrayList<StrucRelation>();
+		}
+		
+		String hql = "from StrucRelation b WHERE sbId=:sbId ";
+		return sFactory.getCurrentSession().createQuery(hql).setInteger("sbId", sbId).list();
 	}
 	
 	

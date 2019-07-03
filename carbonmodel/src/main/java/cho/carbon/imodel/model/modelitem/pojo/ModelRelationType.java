@@ -32,7 +32,7 @@ public class ModelRelationType {
 	private Integer usingState;
 	
 	@Column(name="relation_type")
-	private String relationType;
+	private Integer relationType;
 	
 	@Column(name="giant")
 	private Integer giant; //  关系是巨型的
@@ -40,7 +40,7 @@ public class ModelRelationType {
 	public ModelRelationType() {}
 	
 	public ModelRelationType(String typeCode, String name, String leftModelCode, String rightModelCode,
-			String reverseCode, Integer usingState, String relationType, Integer giant) {
+			String reverseCode, Integer usingState, Integer relationType, Integer giant) {
 		this.typeCode = typeCode;
 		this.name = name;
 		this.leftModelCode = leftModelCode;
@@ -99,11 +99,11 @@ public class ModelRelationType {
 		this.usingState = usingState;
 	}
 
-	public String getRelationType() {
+	public Integer getRelationType() {
 		return relationType;
 	}
 
-	public void setRelationType(String relationType) {
+	public void setRelationType(Integer relationType) {
 		this.relationType = relationType;
 	}
 

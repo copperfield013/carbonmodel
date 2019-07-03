@@ -238,7 +238,6 @@ public class StrucBaseController {
 			}
 		}
 	    
-	    
 	    @ResponseBody
 		@RequestMapping("/getValueType")
 		public String getValueType(String miCode){
@@ -282,7 +281,7 @@ public class StrucBaseController {
 		public AjaxPageResponse quickCreateStrucBase(String belongModel) {
 			try {
 				
-				strucBaseService.quickCreateStrucBase(belongModel);
+				strucBaseService.createStrucBaseQuick(belongModel);
 				
 				return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("操作成功", "modelitem_list");
 			} catch (Exception e) {

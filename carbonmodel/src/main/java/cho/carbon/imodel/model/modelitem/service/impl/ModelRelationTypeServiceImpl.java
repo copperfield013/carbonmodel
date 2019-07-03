@@ -9,16 +9,18 @@ import org.springframework.stereotype.Service;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.Constants;
 import cho.carbon.imodel.model.modelitem.dao.ModelRelationTypeDao;
+import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelRelationTypeService;
+import cho.carbon.meta.enun.RelationType;
 import cn.sowell.copframe.dto.page.PageInfo;
 
 @Service
 public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 
 	@Resource
-	ModelRelationTypeDao dictionaryParentItemDao;
+	ModelRelationTypeDao modelRelationTypeDao;
 	
 	@Resource
 	ModelItemCodeGeneratorService miCodeGenService;
@@ -31,7 +33,7 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 	
 	@Override
 	public List<ModelRelationType> queryList(ModelRelationType criteria, PageInfo pageInfo) {
-		return dictionaryParentItemDao.queryList(criteria, pageInfo);
+		return modelRelationTypeDao.queryList(criteria, pageInfo);
 	}
 
 	@Override
@@ -61,7 +63,7 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 
 	@Override
 	public List<ModelRelationType> getEntityRelaByBitemId(String recordType) {
-		return dictionaryParentItemDao.getEntityRelaByBitemId(recordType);
+		return modelRelationTypeDao.getEntityRelaByBitemId(recordType);
 	}
 
 	@Override
@@ -112,7 +114,7 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 
 	@Override
 	public List<ModelRelationType> getEntityRelaByBitemId(String leftRecordType, String rightRecordType) {
-		return dictionaryParentItemDao.getEntityRelaByBitemId(leftRecordType, rightRecordType);
+		return modelRelationTypeDao.getEntityRelaByBitemId(leftRecordType, rightRecordType);
 	}
 
 	@Override
@@ -138,8 +140,13 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 	}
 
 	@Override
-	public List<ModelRelationType> getRelaByType(String leftRecordType, String relationType) {
-		return dictionaryParentItemDao.getRelaByType(leftRecordType, relationType);
+	public List<ModelRelationType> getRelaByType(String leftRecordType, RelationType relationType) {
+		return modelRelationTypeDao.getRelaByType(leftRecordType, relationType);
+	}
+
+	@Override
+	public List<ModelItem> getExRelaRightMi(String leftModelCode) {
+		return modelRelationTypeDao.getExRelaRightMi(leftModelCode);
 	}
 
 }

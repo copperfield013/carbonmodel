@@ -2,6 +2,7 @@ package cho.carbon.imodel.model.struct.strategy;
 
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
+import cho.carbon.imodel.model.struct.service.StrucBaseService;
 import cho.carbon.imodel.model.struct.vo.StrucBaseContainer;
 
 /**
@@ -12,7 +13,7 @@ import cho.carbon.imodel.model.struct.vo.StrucBaseContainer;
 public class StructStrategy  implements StructBaseStrategy {
 
 	@Override
-	public void saveOrUpdate(String flag, StrucBaseContainer strucBaseContainer, CommService commService) {
+	public void saveOrUpdate(String flag, StrucBaseContainer strucBaseContainer, CommService commService, StrucBaseService strucBaseService) {
 		
 		if ("add".contentEquals(flag)) {
 			StrucMiCode strucMiCode = strucBaseContainer.getStrucMiCode();
@@ -24,7 +25,7 @@ public class StructStrategy  implements StructBaseStrategy {
 	}
 
 	@Override
-	public void delStruct(StrucBaseContainer strucBaseContainer, CommService commServicet) {
+	public void delStruct(StrucBaseContainer strucBaseContainer, CommService commServicet, StrucBaseService strucBaseService) {
 		// TODO Auto-generated method stub
 		
 	}

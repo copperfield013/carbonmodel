@@ -2,7 +2,9 @@ package cho.carbon.imodel.model.modelitem.service;
 
 import java.util.List;
 
+import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
+import cho.carbon.meta.enun.RelationType;
 import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface ModelRelationTypeService {
@@ -27,7 +29,7 @@ public interface ModelRelationTypeService {
 	 * @param recordType
 	 * @return
 	 */
-	List<ModelRelationType> getRelaByType(String leftRecordType, String relationType);
+	List<ModelRelationType> getRelaByType(String leftRecordType, RelationType relationType);
 	
 	/**
 	 * 创建一个RecordRelationType对象
@@ -64,4 +66,11 @@ public interface ModelRelationTypeService {
 	List<ModelRelationType> getEntityRelaByBitemId(String leftRecordType, String rightRecordType);
 
 	void saveStatus(String typeCode, Integer usingState) throws Exception;
+	
+	/**
+	 * 获取与左MODEL 存在关系的右MODEL
+	 * @param leftModelCode
+	 * @return
+	 */
+	public List<ModelItem> getExRelaRightMi(String leftModelCode);
 }

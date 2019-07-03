@@ -3,6 +3,7 @@ package cho.carbon.imodel.model.struct.dao;
 import java.util.List;
 
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
+import cho.carbon.imodel.model.struct.pojo.StrucRelation;
 import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface StrucBaseDao {
@@ -34,5 +35,12 @@ public interface StrucBaseDao {
 	 * @return
 	 */
 	List<StrucBase> getGroup1DChild(Integer sbId);
+	
+	/**
+	 * 根据sbId, 获取StrucRelation
+	 * @param sbId
+	 * @return
+	 */
+	List<StrucRelation> getStrucRelationBySbId(Integer sbId);
 	
 }

@@ -94,7 +94,7 @@ public class ModelRelationTypeController {
 	
 	@ResponseBody
 	@RequestMapping("/doAdd")
-	public AjaxPageResponse doAdd(String leftModelCode,String rightModelCode, String leftName, String rightName,String leftRelationType,String rightRelationType, Integer leftgiant, Integer rightgiant, String symmetry){
+	public AjaxPageResponse doAdd(String leftModelCode,String rightModelCode, String leftName, String rightName,Integer leftRelationType,Integer rightRelationType, Integer leftgiant, Integer rightgiant, String symmetry){
 		ModelRelationType leftObj = new ModelRelationType();
 		ModelRelationType rightObj = new ModelRelationType();
 		
@@ -188,10 +188,11 @@ public class ModelRelationTypeController {
 	 */
 	@ResponseBody
 	@RequestMapping("/do_edit")
-	public String edit(String name, String typeCode, String relationType, Integer giant){
+	public String edit(String name, String typeCode, Integer relationType, Integer giant){
 		Map<String, Object> map = new HashMap<String, Object>();
 		JSONObject jobj = new JSONObject(map);
 		try {
+			
 			ModelRelationType recordRelationType = modelRelationTypeService.getRecordRelationType(typeCode);
 			recordRelationType.setName(name);
 			recordRelationType.setRelationType(relationType);
@@ -234,11 +235,14 @@ public class ModelRelationTypeController {
     //这里获取本实体下特定类型的关系
     @ResponseBody
 	@RequestMapping("/getRelation")
-	public String getRelation(String leftRecordType, String relationType){
+	public String getRelation(String leftRecordType, Integer relationType){
 		Map<String, Object> map = new HashMap<String, Object>();
 		JSONObject jobj = new JSONObject(map);
 		try {
-			List<ModelRelationType> relationList = modelRelationTypeService.getRelaByType(leftRecordType, relationType);
+			
+			RelationType relationType2 = RelationType.getRelationType(relationType);
+			
+			List<ModelRelationType> relationList = modelRelationTypeService.getRelaByType(leftRecordType, relationType2);
 			map.put("relationList", relationList);
 			map.put("code", 200);
 			map.put("msg", "操作成功");

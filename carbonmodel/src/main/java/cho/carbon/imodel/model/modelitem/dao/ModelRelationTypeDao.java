@@ -2,7 +2,9 @@ package cho.carbon.imodel.model.modelitem.dao;
 
 import java.util.List;
 
+import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
+import cho.carbon.meta.enun.RelationType;
 import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface ModelRelationTypeDao {
@@ -26,7 +28,7 @@ public interface ModelRelationTypeDao {
 	 * @param recordType
 	 * @return
 	 */
-	List<ModelRelationType> getEntityRelaByBitemId(String leftRecordType, String rightRecordType);
+	List<ModelRelationType> getEntityRelaByBitemId(String leftModelCode, String rightModelCode);
 	
 	
 	/**
@@ -34,7 +36,12 @@ public interface ModelRelationTypeDao {
 	 * @param recordType
 	 * @return
 	 */
-	List<ModelRelationType> getRelaByType(String leftRecordType, String relationType);
+	List<ModelRelationType> getRelaByType(String leftModelCode, RelationType relationType);
 	
-	
+	/**
+	 * 获取 与 左Model存在关系的右Model
+	 * @param leftModelCode  左模型code
+	 * @return
+	 */
+	public List<ModelItem> getExRelaRightMi(String leftModelCode);
 }

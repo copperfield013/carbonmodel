@@ -1,17 +1,21 @@
 package cho.carbon.imodel.model.struct.strategy;
 
+import java.util.List;
+
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.struct.pojo.StrucFieldValue;
 import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
+import cho.carbon.imodel.model.struct.pojo.StrucPointer;
+import cho.carbon.imodel.model.struct.pojo.StrucRelation;
 import cho.carbon.imodel.model.struct.service.StrucBaseService;
 import cho.carbon.imodel.model.struct.vo.StrucBaseContainer;
 
 /**
- * 	字段策略
+ * 	关系结构策略
  * @author so-well
  *
  */
-public class FieldStrategy  implements StructBaseStrategy {
+public class RStructStrategy  implements StructBaseStrategy {
 
 	@Override
 	public void saveOrUpdate(String flag, StrucBaseContainer strucBaseContainer, CommService commService, StrucBaseService strucBaseService) {
@@ -21,18 +25,32 @@ public class FieldStrategy  implements StructBaseStrategy {
 		StrucMiCode strucMiCode = strucBaseContainer.getStrucMiCode();
 		strucMiCode.setSbId(sbId);
 		
-		StrucFieldValue strucFieldValue = strucBaseContainer.getStrucFieldValue();
-		strucFieldValue.setSbId(sbId);
-		
+		StrucPointer strucPointer = strucBaseContainer.getStrucPointer();
+		strucPointer.setSbId(sbId);
 		
 		if ("add".contentEquals(flag)) {
 			commService.insert(strucMiCode);
-			commService.insert(strucFieldValue);
+			commService.insert(strucPointer);
+			
 		}  else {
 			commService.update(strucMiCode);
-			commService.update(strucFieldValue);
+			commService.update(strucPointer);
 		}
 		
+		//删除具体关系
+		List<StrucRelation> strucRelationBySbId = strucBaseService.getStrucRelationBySbId(sbId);
+		for (StrucRelation strucRelation : strucRelationBySbId) {
+			commService.delete(strucRelation);
+		}
+		
+		//重新添加关系
+		String modelRelationType = strucBaseContainer.getStrucRelation().getModelRelationType();
+		String[] modelRelas = modelRelationType.split(",");
+		for (int i = 0; i < modelRelas.length; i++) {
+			String modelRelaCode = modelRelas[i];
+			StrucRelation strucRela = new StrucRelation(null, sbId, modelRelaCode);
+			commService.insert(strucRela);
+		}
 	}
 
 	@Override

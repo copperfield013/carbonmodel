@@ -1,9 +1,8 @@
 package cho.carbon.imodel.model.modelitem.vo;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class ViewLabel {
+public class ViewLabel implements Comparable{
 	
 	/* <input name="name" type="text" class="edit-input" value="${btNode.name}"> */
 	
@@ -19,6 +18,12 @@ public class ViewLabel {
 	
 	private String viewClazz;//页面class标记
 	
+	//排序字段
+	private Integer corder=0;
+	
+	//值域为多的时候
+	//private  Map<String, String> multValue;
+	
 	public ViewLabel() {}
 	
 	public ViewLabel(String label, String type, String name, String value, String showName) {
@@ -28,6 +33,17 @@ public class ViewLabel {
 		this.name = name;
 		this.value = value;
 		this.showName = showName;
+	}
+	
+	//排序
+	public ViewLabel(String label, String type, String name, String value, String showName, Integer corder) {
+		super();
+		this.label = label;
+		this.type = type;
+		this.name = name;
+		this.value = value;
+		this.showName = showName;
+		this.corder = corder;
 	}
 
 	public String getLabel() {
@@ -85,5 +101,20 @@ public class ViewLabel {
 	public void setViewClazz(String viewClazz) {
 		this.viewClazz = viewClazz;
 	}
-	
+
+	public Integer getCorder() {
+		return corder;
+	}
+
+	public void setCorder(Integer corder) {
+		this.corder = corder;
+	}
+
+	@Override
+	public int compareTo(Object obj) {
+		ViewLabel vb = (ViewLabel)obj;
+		
+		return this.corder -vb.getCorder();
+	}
+
 }

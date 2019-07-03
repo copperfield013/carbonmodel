@@ -14,7 +14,12 @@ public class StructStrategyFactory {
 			return  new FieldStrategy();
 		case ENUMFIELD:
 			return new EnumFieldStrategy();
-
+		case RFIELD:
+			return new RfieldStrategy();
+		case REFFIELD:
+			return new RefFieldStrategy();
+		case RSTRUC:
+			return new RStructStrategy();
 			
 			
 		}

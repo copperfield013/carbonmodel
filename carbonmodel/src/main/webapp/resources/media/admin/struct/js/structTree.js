@@ -33,27 +33,15 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					var strucBase = strucBaseList[key];
 					
 					// 通用初始化属性
-					initGroup(strucBase, $parent);
-					
-					/*if (strucBase.type == 101 || strucBase.type == 102) {//单行属性分组
+					if (strucBase.type == 101) {//单行属性分组
 						initGroup(strucBase, $parent);
-					} *//*else if (strucBase.type == 6) { //多行属性组 or  巨多行属性
+					} else if (strucBase.type == 102) {
 						initMoreGroup(strucBase, $parent);
-					} else if (strucBase.type == 206) {
-						//级联枚举属性
-						initCascadeEnumAttr(strucBase, $parent);
-					} else if (strucBase.type == 207) {
-						//级联枚举属性
-						initCascadeReferenceAttr(strucBase, $parent);
-					} else if (strucBase.type == 211) {
-						//维度属性
-						initDimensionAttr(strucBase, $parent);
-					} else if (strucBase.type == 212) {
-						//事实属性
-						initFactAttr(strucBase, $parent);
+					} else if (strucBase.type == 103) {
+						initRStruc(strucBase, $parent);
 					}else {
 						initCommAttr(strucBase, $parent);
-					}*/
+					}
 					
 				}
 				
@@ -114,8 +102,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     }
     
     //多行组初始化方法
-    function initMoreGroup(modelItem, $parent) {
-    	var attrGroupHtml = getGroupMoreNode(modelItem);
+    function initMoreGroup(strucBase, $parent) {
+    	var attrGroupHtml = getGroupMoreNode(strucBase);
 	    var $html = $(attrGroupHtml).prependTo($($parent));
 	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
         drag($(".dragEdit-wrap").length);
@@ -124,9 +112,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     /**
      * 多行组
       */
-    function addMoreGroup(el, modelItem) {// 这个有用
+    function addMoreGroup(el, strucBase) {// 这个有用
         var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var attrGroupHtml = getGroupMoreNode(modelItem);
+        var attrGroupHtml = getGroupMoreNode(strucBase);
         var $html = $(attrGroupHtml).prependTo($content);  
 	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
 	    addUnfold(el)
@@ -134,20 +122,19 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     };
     
     //多行组
-    function getGroupMoreNode(modelItem) {
+    function getGroupMoreNode(strucBase) {
     	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         var attrGroupHtml = "<li class='attr-group'>" +
-            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
+            "<div class='attr-group-title collapse-header'   data-sbid='"+strucBase.id+"'  data-structType='"+strucBase.type+"' data-sbPid='"+strucBase.parentId+"'>" +
             "<div class='icon-label more-attr'>" +
             "<i class='icon icon-attr-group'></i>" +
-            "<span class='text'>"+modelItem.showType+"</span>" +
+            "<span class='text'>"+strucBase.showType+"</span>" +
             "</div>" +
             "<div class='label-bar al-save attr-group'>" +
-            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+            "<span id='spanCode' class='span-title'>"+strucBase.id+"</span>"+
+            "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
-	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='fa fa-pagelines confTwoLeverAttr'></i>"+
+	        
 	         "<i class='fa fa-edit icon-edit'></i>"+
             "<i class='icon icon-add-sm group'></i>" +
             
@@ -163,13 +150,67 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	  return attrGroupHtml;
     }
     
+    /////////////////////
+    
+    //	关系结构初始化方法
+    function initRStruc(strucBase, $parent) {
+    	var attrGroupHtml = getRStrucNode(strucBase);
+	    var $html = $(attrGroupHtml).prependTo($($parent));
+	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
+        drag($(".dragEdit-wrap").length);
+    }
+    
+    /**
+     * 关系结构
+      */
+    function addRStruc(el, strucBase) {// 这个有用
+        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
+        var attrGroupHtml = getRStrucNode(strucBase);
+        var $html = $(attrGroupHtml).prependTo($content);  
+	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
+	    addUnfold(el)
+        drag($(".dragEdit-wrap").length);
+    };
+    
+    //关系结构
+    function getRStrucNode(strucBase) {
+    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
+        var attrGroupHtml = "<li class='attr-group'>" +
+            "<div class='attr-group-title collapse-header' data-sbid='"+strucBase.id+"'  data-structType='"+strucBase.type+"' data-sbPid='"+strucBase.parentId+"'>" +
+            "<div class='icon-label attr-group'>" +
+            "<i class='icon icon-attr-relative'></i>" +
+            "<span class='text'>"+strucBase.showType+"</span>" +
+            "</div>" +
+            "<div class='label-bar al-save attr-group'>" +
+            "<span id='spanCode' class='span-title'>"+strucBase.id+"</span>"+
+            "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
+	         attrGroupHtml += "<div class='btn-wrap'>" +
+	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
+	         "<i class='fa fa-edit icon-edit'></i>"+
+            "<i class='icon icon-add'></i>" +
+            
+            	"<i class='glyphicon glyphicon-trash delModelItem'></i>" +
+            "<i class='icon icon-arrow-sm active'></i>" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
+            "</ul>" +
+            "</li>";
+	         
+	  return attrGroupHtml;
+    }
+    
+    
+    ////////////////////////
+    
     
     /**
      * 添加通用属性方法
       */
-    function addCommAttr(el, modelItem) {// 这个有用
+    function addCommAttr(el, strucBase) {// 这个有用
         var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var attrGroupHtml = getCommAttrNode(modelItem);
+        var attrGroupHtml = getCommAttrNode(strucBase);
         var $html = $(attrGroupHtml).prependTo($content);  
 	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
 	    addUnfold(el)
@@ -177,25 +218,25 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     };
     
     //通用属性初始化方法
-    function initCommAttr(modelItem, $parent) {
-    	var attrGroupHtml = getCommAttrNode(modelItem);
+    function initCommAttr(strucBase, $parent) {
+    	var attrGroupHtml = getCommAttrNode(strucBase);
 	    var $html = $(attrGroupHtml).prependTo($($parent));
 	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
         drag($(".dragEdit-wrap").length);
     }
     
     //通用属性节点
-    function getCommAttrNode(modelItem) {
+    function getCommAttrNode(strucBase) {
     	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         var attrGroupHtml = "<li class='add-attr clear-fix'>" +
-            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
+            "<div class='attr-group-title collapse-header'  data-sbid='"+strucBase.id+"'  data-structType='"+strucBase.type+"' data-sbPid='"+strucBase.parentId+"'>" +
             "<div class='icon-label attr'>" +
             "<i class='icon icon-attr'></i>" +
-            "<span class='text'>"+modelItem.showType+"</span>" +
+            "<span class='text'>"+strucBase.showType+"</span>" +
             "</div>" +
             "<div class='label-bar al-save attr'>" +
-            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+            "<span id='spanCode' class='span-title'>"+strucBase.id+"</span>"+
+            "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
 	         "<i class='fa fa-edit icon-edit'></i>"+
@@ -212,284 +253,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         
 	  return attrGroupHtml;
     }
-    
-    // 维度属性start
-    /**
-     * 添加维度属性方法
-      */
-    function addDimensionAttr(el, modelItem) {// 这个有用
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var attrGroupHtml = getDimensionNode(modelItem);
-        var $html = $(attrGroupHtml).prependTo($content);  
-	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
-	    addUnfold(el)
-        drag($(".dragEdit-wrap").length);
-    };
-    
-    //维度属性初始化方法
-    function initDimensionAttr(modelItem, $parent) {
-    	var attrGroupHtml = getDimensionNode(modelItem);
-	    var $html = $(attrGroupHtml).prependTo($($parent));
-	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
-        drag($(".dragEdit-wrap").length);
-    }
-    
-    //维度属性节点
-    function getDimensionNode(modelItem) {
-    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        var attrGroupHtml = "<li class='add-attr clear-fix'>" +
-            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
-            "<div class='icon-label attr'>" +
-            "<i class='icon icon-attr'></i>" +
-            "<span class='text'>"+modelItem.showType+"</span>" +
-            "</div>" +
-            "<div class='label-bar al-save attr'>" +
-            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
-	         attrGroupHtml += "<div class='btn-wrap'>" +
-	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='fa fa-keyboard-o expressionView'></i>"+
-	         "<i class='fa fa-edit icon-edit'></i>"+
-	         "<i class='glyphicon glyphicon-trash delModelItem'></i>" +
-           /* "<i class='icon icon-add-sm group'></i>" +*/
-           /* "<i class='icon delModelItem'></i>" +*/
-            /*"<i class='icon icon-arrow-sm active'></i>" +*/
-            "</div>" +
-            "</div>" +
-            "</div>" +
-            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>";
-	         
-	  return attrGroupHtml;
-    }
-    // 维度属性end
-    
-    //事实属性start
-    /**
-     * 添加事实属性方法
-      */
-    function addFactAttr(el, modelItem) {// 这个有用
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var attrGroupHtml = getFactAttrNode(modelItem);
-        var $html = $(attrGroupHtml).prependTo($content);  
-	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
-	    addUnfold(el)
-        drag($(".dragEdit-wrap").length);
-    };
-    
-    //事实属性初始化方法
-    function initFactAttr(modelItem, $parent) {
-    	var attrGroupHtml = getFactAttrNode(modelItem);
-	    var $html = $(attrGroupHtml).prependTo($($parent));
-	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
-        drag($(".dragEdit-wrap").length);
-    }
-    
-    //事实属性节点
-    function getFactAttrNode(modelItem) {
-    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        var attrGroupHtml = "<li class='add-attr clear-fix'>" +
-            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
-            "<div class='icon-label attr'>" +
-            "<i class='icon icon-attr'></i>" +
-            "<span class='text'>"+modelItem.showType+"</span>" +
-            "</div>" +
-            "<div class='label-bar al-save attr'>" +
-            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
-	         attrGroupHtml += "<div class='btn-wrap'>" +
-	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         
-	         
-	        /* fa-filter*/
-	         "<i class='glyphicon glyphicon-filter filterView'></i>"+
-	         "<i class='fa fa-keyboard-o expressionView'></i>"+
-	        
-	         "<i class='fa fa-edit icon-edit'></i>"+
-	         "<i class='glyphicon glyphicon-trash delModelItem'></i>" +
-           /* "<i class='icon icon-add-sm group'></i>" +*/
-           /* "<i class='icon delModelItem'></i>" +*/
-            /*"<i class='icon icon-arrow-sm active'></i>" +*/
-            "</div>" +
-            "</div>" +
-            "</div>" +
-            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>";
-	         
-	  return attrGroupHtml;
-    }
-    //事实属性end
-    
-    //下面是级联枚举加载方法
-    /**
-     * 添加级联枚举属性方法
-      */
-    function addCascadeEnumAttr(el, modelItem) {// 这个有用
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var attrGroupHtml = getCascadeEnumAttrNode(modelItem);
-        var $html = $(attrGroupHtml).prependTo($content);  
-	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
-	    addUnfold(el)
-        drag($(".dragEdit-wrap").length);
-    };
-    
-    //级联枚举初始化方法
-    function initCascadeEnumAttr(modelItem, $parent) {
-    	var attrGroupHtml = getCascadeEnumAttrNode(modelItem);
-	    var $html = $(attrGroupHtml).prependTo($($parent));
-	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
-        drag($(".dragEdit-wrap").length);
-    }
-    
-    //级联枚举
-    function getCascadeEnumAttrNode(modelItem) {
-    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        var attrGroupHtml = "<li class='add-attr clear-fix'>" +
-            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
-            "<div class='icon-label attr'>" +
-            "<i class='icon icon-attr'></i>" +
-            "<span class='text'>"+modelItem.showType+"</span>" +
-            "</div>" +
-            "<div class='label-bar al-save attr'>" +
-            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
-	         attrGroupHtml += "<div class='btn-wrap'>" +
-	         "<i class='fa fa-pagelines confCascadeEnumChild'></i>"+
-            "<i class='fa fa-edit icon-edit'></i>"+
-            "<i class='glyphicon glyphicon-trash delModelItem'></i>" +
-            "</div>" +
-            "</div>" +
-            "</div>" +
-            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>";
-	         
-	  return attrGroupHtml;
-    }
-    
-    //级联枚举孩子查看
-    $("#structBaseEdit").on("click", ".confCascadeEnumChild", function() {        
-        var $labelBar = $(this).closest(".label-bar");
-        var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
-        Dialog.openDialog("admin/modelItem/getCasEnumChild?pmiCode=" + modelItemCode, "级联枚举孩子", "", {
-            width :1000,
-            height : 500
-        });
-        
-    });
-    
-    //跳转到表达式定义页面
-    $("#structBaseEdit").on("click", ".expressionView", function() {        
-       
-    	var $labelBar = $(this).closest(".label-bar");
-        var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
-        
-        Dialog.openDialog("admin/expressionAndFilter/skipExpression?miCode=" + modelItemCode, "表达式页面", "", {
-            width :1000,
-            height : 500
-        });
-        
-    });
-    
-    //跳转到过滤条件定义页面
-    $("#structBaseEdit").on("click", ".filterView", function() {        
-       
-    	var $labelBar = $(this).closest(".label-bar");
-        var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
-        
-        Dialog.openDialog("admin/expressionAndFilter/skipFilter?miCode=" + modelItemCode, "过滤条件页面", "", {
-            width :1000,
-            height : 500
-        });
-        
-    });
-    
-    //下面是级联引用加载方法
-    /**
-     * 添加级联引用属性方法
-      */
-    function addCascadeReferenceAttr(el, modelItem) {// 这个有用
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var attrGroupHtml = getCascadeReferenceAttrNode(modelItem);
-        var $html = $(attrGroupHtml).prependTo($content);  
-	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
-	    addUnfold(el)
-        drag($(".dragEdit-wrap").length);
-    };
-    
-    //级联引用初始化方法
-    function initCascadeReferenceAttr(modelItem, $parent) {
-    	var attrGroupHtml = getCascadeReferenceAttrNode(modelItem);
-	    var $html = $(attrGroupHtml).prependTo($($parent));
-	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
-        drag($(".dragEdit-wrap").length);
-    }
-    
-    //级联引用
-    function getCascadeReferenceAttrNode(modelItem) {
-    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        var attrGroupHtml = "<li class='add-attr clear-fix'>" +
-            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
-            "<div class='icon-label attr'>" +
-            "<i class='icon icon-attr'></i>" +
-            "<span class='text'>"+modelItem.showType+"</span>" +
-            "</div>" +
-            "<div class='label-bar al-save attr'>" +
-            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
-	         attrGroupHtml += "<div class='btn-wrap'>" +
-	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-          /*  "<i class='icon icon-save icon-edit'></i>" +*/
-           /* "<i class='icon icon-add-sm group'></i>" +*/
-	         "<i class='fa fa-pagelines confCascadeReferenceChild'></i>"+
-            "<i class='fa fa-edit icon-edit'></i>"+
-            "<i class='glyphicon glyphicon-trash delModelItem'></i>" +
-           /* "<i class='icon delModelItem'></i>" +*/
-            /*"<i class='icon icon-arrow-sm active'></i>" +*/
-            "</div>" +
-            "</div>" +
-            "</div>" +
-            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>";
-	         
-	  return attrGroupHtml;
-    }
-    
-    
-    //级联引用孩子添加
-    $("#structBaseEdit").on("click", ".confCascadeReferenceChild", function() {        
-        var $labelBar = $(this).closest(".label-bar");
-        
-        var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
-        Dialog.openDialog("admin/modelItem/getCasRefChild?pmiCode=" + modelItemCode, "级联引用孩子", "", {
-            width :1000,
-            height : 500
-        });
-        
-    });
-     
-    //二级属性孩子树
-    $("#structBaseEdit").on("click", ".confTwoLeverAttr", function() {        
-    	
-        var $labelBar = $(this).closest(".label-bar");
-        var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
-        
-        // 这里要弹出标签页
-        Dialog.openDialog("admin/modelItem/addTwoLevelMaping?moreLineCode=" + modelItemCode, "二级属性组", "", {
-            width :1000,
-            height : 500
-        });
-        
-    });
-    
-    
     
 	function addUnfold(el) {	
-		
-		debugger;
 		
 		if($(el).hasClass("icon-add") && $(el).siblings(".icon-arrow").hasClass("active")) {
         	$(el).siblings(".icon-arrow").trigger("click");        	
@@ -585,176 +350,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    });     
     };
     
-    //abc初始化方法
-    function initAbc(abcattr, abcattrCode, id, name, opt, order, parent) {
-    	var dragWrapLen = $(".dragEdit-wrap", $page).length + 1 ;
-    	var chLength = $(".entity-ch-wrap", $page).length;
-		 var nest = "no-repeat";
-		 if(chLength >= 2) {
-			 nest = "repeat"
-		 }
-    	var abcHtml = "<li class='entity-ch-wrap "+nest+" abc'>" +
-			        "<div class='attr-abc-title collapse-header'data-abcattrCode='"+abcattrCode+"'  data-order='"+order+"' data-id='"+id+"'>"
-    				+"<div class='icon-label abc'>";
-					if(abcattrCode=="") {
-						abcHtml = abcHtml +  "<i class='icon icon-error-cross'></i>";
-					} 
-    	 			abcHtml = abcHtml +  "<i class='icon icon-abc'></i><span class='text'>ABC</span>" +
-			        "</div>" +
-			        "<div class='label-bar abc'>" +
-			        "<input class='edit-input text' value='"+name+"'>"+
-			        "<span class='entity-only-title' data-abcattrcode='"+abcattrCode+"' data-abcattr='"+abcattr+"'>"+abcattr+"</span>"
-			        abcHtml += "<select disabled class='node-ops-type'>";	
-    	 			var nodePosType = nodePosTypeABC;
-				    for(var i=0; i<nodePosType.length; i++) {
-				    	if(nodePosType[i] === opt) {
-				    		abcHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-				    	}else {
-				    		abcHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-				    	}
-			            	         
-			         };
-			         abcHtml += "</select>";
-			         abcHtml += "<div class='btn-wrap'>" +
-			        "<i class='icon icon-save'></i>" +
-			        "<i class='icon icon-add-abc group'></i>" +
-			        "<i class='icon icon-arrow-sm active'></i>" +
-			        "</div>" +
-			        "</div>" +
-			        "</div>" +
-			        "<ul class='drag-wrap-repeat need-ajax dragEdit-wrap collapse-content collapse-content-inactive' id='dragEdit-"+dragWrapLen+"'>" +
-			        "</ul>" +
-			        "</li>"		    
-	    var $html = $(abcHtml).appendTo($(parent));	    
-	    $html.find("select").css({"width":"15%","marginLeft":"60px"}).select2();
-    }
-    
-    
-    //rabc初始化方法
-    function  initRabc(id, name, order, parent,relAbcnodeId, allAbc) {
-    	var dragWrapLen = $(".dragEdit-wrap", $page).length + 1 ;
-    	var abcHtml = "<li class='entity-ch-wrap rabc'>" +
-        "<div class='attr-abc-title collapse-header' data-order='"+order+"' data-id='"+id+"'>" +
-        "<div class='icon-label rabc'>" +
-        "<i class='icon icon-abc'></i><span class='text'>RABC</span>" +
-        "</div>" +
-        "<div class='label-bar rabc al-save' data-id='"+id+"'>";
-         
-        abcHtml += "<input class='edit-input text' value='"+name+"'>"+
-        "<select disabled class='relAbcnodeId'>";
-        
-	    for(var i=0; i<allAbc.length; i++) {
-	    	if (allAbc[i].id == relAbcnodeId) {
-	    		abcHtml += "<option value='"+allAbc[i].id+"' selected>"+allAbc[i].name+"</option>"; 
-	    	} else {
-	    		abcHtml += "<option value='"+allAbc[i].id+"'>"+allAbc[i].name+"</option>"; 
-	    	}
-         };
-         abcHtml += "</select>";
-         
-         abcHtml += "<div class='btn-wrap'>" +
-        "<i class='icon icon-save'></i>" +
-        "<i class='icon delModelItem'></i>" +
-       /* "<i class='icon icon-add-abc group'></i>" +	            
-        "<i class='icon icon-arrow-sm'></i>" +*/
-        "</div>" +
-        "</div>" +
-        "</div>" +
-        "<ul class='drag-wrap-repeat dragEdit-wrap collapse-content collapse-content-active' id='dragEdit-"+dragWrapLen+"'>" +
-        "</ul>" +
-        "</li>"	    
-	    var $html = $(abcHtml).appendTo($(parent));	    
-	    $html.find("select").css({"width":"15%","marginLeft":"60px"}).select2();
-    }
-    
-  //普通 引用属性初始化方法
-    function initRefattribute(abcattr,abcattrCode,dataType,id,name,opt,order,parent,commList, relAbcnodeId, allAbc) {  
-    	var dataTypeList = dataTypeCASCADETYPEList;
-			var attrHtml = "<li class='add-attr clear-fix'>"
-				+"<div class='icon-label attr' data-type='14'>";
-            if(abcattrCode=="") {
-            	attrHtml=attrHtml+"<i class='icon icon-error-cross'></i>";
-            }
-            attrHtml=attrHtml+"<i class='icon icon-attr'></i>" +
-            "<span class='text'>引用属性</span>" +
-            "</div>" +
-            "<div class='label-bar refattribute-attr al-save' data-type='14'  data-order='"+order+"' data-id='"+id+"'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr'>"            
-            for(var i=0; i<commList.length; i++) {  
-            	
-            	if(commList[i][0] == abcattrCode) {
-            		attrHtml += "<option item-data-type='"+commList[i][2]+"' data-id='"+commList[i][0]+"' value='"+commList[i][1]+"' selected>"+commList[i][1]+"</option>";
-            		
-            		if ("5" == commList[i][2]) {
-    					dataTypeList=dataTypeSTRINGList;
-    				} else if ("6"== commList[i][2]) {
-    					dataTypeList=dataTypeDATEList;
-    				}else if ("7"== commList[i][2]) {
-    					dataTypeList=dataTypeTIMEList;
-    				}else if ("1"== commList[i][2]) {
-    					dataTypeList=dataTypeINTList;
-    				}else if ("15"== commList[i][2]) {
-    					dataTypeList=dataTypeDOUBLEList;
-    				}else if ("11"== commList[i][2]) {
-    					dataTypeList=dataTypeREFERENCEList;
-    				}else if ("8"== commList[i][2]) {
-    					dataTypeList=dataTypeFILEList;
-    				}else if ("14"== commList[i][2]) {
-    					dataTypeList=dataTypeENUMList;
-    				}else if ("17"== commList[i][2]) {
-    					dataTypeList=dataTypeCASCADETYPEList;
-    				}
-            	}else {
-            		attrHtml += "<option item-data-type='"+commList[i][2]+"' data-id='"+commList[i][0]+"' value='"+commList[i][1]+"'>"+commList[i][1]+"</option>";
-            	}
-            	
-            }
-			attrHtml += "</select>";
-			attrHtml += "<select disabled class='data-type attr-type'>";    
-			
-		    	for(var i=0; i<dataTypeList.length; i++) {
-		    		if(dataTypeList[i][0] == dataType) {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>";
-		    		}else {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>";
-		    		}
-	            	          
-	            };
-	            attrHtml += "</select>";
-				attrHtml += "<select disabled class='node-ops-type'>";	
-				var nodePosType=nodePosTypeREFATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] == opt) {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";
-			    	}
-		            	          
-		        };
-		        attrHtml += "</select>";
-		        attrHtml += "<select disabled class='relAbcnodeId'>";
-			    for(var i=0; i<allAbc.length; i++) {
-			    	if (relAbcnodeId == allAbc[i].id) {
-			    		attrHtml += "<option selected='selected' value='"+allAbc[i].id+"'>"+allAbc[i].name+"</option>"; 
-			    	} else {
-			    		attrHtml += "<option value='"+allAbc[i].id+"'>"+allAbc[i].name+"</option>"; 
-			    	}
-		         };
-			         
-		        attrHtml += "</select>";
-		        attrHtml += "<div class='btn-wrap'>" +
-		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon delModelItem'></i>" +
-		        "<i class='icon-simulate-trashsm'></i>" +
-		        "</div>" +
-		        "</div>" +
-		        "</li>";		           		        
-		        var $html = $(attrHtml).prependTo($(parent));
-		        $html.find("select").css({"width":"11%","marginLeft":"16px"}).select2();
-    }
-    
-    
   //普通 引用->引用属性初始化方法
     function initrRefattribute(abcattr,abcattrCode,dataType,id,name,opt,order,parent,commList, relAbcnodeId, allAbc, subdomain, rRefattributeList) {  
     	var dataTypeList = dataTypeCASCADETYPEList;
@@ -849,109 +444,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     }
     
     
-    //关系属性初始化方法
-    function initRattr(abcattrCode,dataType, id, name, opt, order, parent, commList, subdomain, relationList) {  
-    	var dataTypeList = dataTypeSTRINGList;
-    	var rightRecordType;
-			var attrHtml = "<li class='add-attr clear-fix'>"
-				+"<div class='icon-label attr'>";
-            if(abcattrCode=="") {
-            	attrHtml=attrHtml+"<i class='icon icon-error-cross'></i>";
-            }
-            attrHtml=attrHtml+"<i class='icon icon-attr'></i>" +
-            "<span class='text'>关系属性</span>" +
-            "</div>" +
-            "<div class='label-bar rattr  al-save'  data-type='8' data-order='"+order+"' data-id='"+id+"'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr relationCode' title='<对一>关系'>";    
-            for(var i=0; i<relationList.length; i++) {   
-            	if (relationList[i].name==subdomain) {
-            		rightRecordType=relationList[i].rightRecordType;
-            		attrHtml += "<option data-id='"+relationList[i].typeCode+"' data-rightId='"+relationList[i].rightRecordType+"' value='"+relationList[i].name+"' selected>"+relationList[i].name+"</option>";
-            	} else {
-            		attrHtml += "<option data-id='"+relationList[i].typeCode+"' data-rightId='"+relationList[i].rightRecordType+"' value='"+relationList[i].name+"'>"+relationList[i].name+"</option>";
-            	}
-            }
-            attrHtml += "</select>";
-            attrHtml += "<select disabled class='abc-attr rattrType'>"; 
-			 Ajax.ajax('admin/dictionary/basicItem/getComm', {
-				   entityId:rightRecordType
-			   }, function(data){		    	
-		            var data = data.commList;
-					if (data.length == 0) {
-		                Dialog.notice("请在模型中添加属性", "warning");
-		                $CPF.closeLoading();    
-		                return;
-			          } 
-		            for(var i=0; i<data.length; i++) {
-		            	if(data[i][0] == abcattrCode) {
-		            		attrHtml += "<option item-data-type='"+data[i][2]+"' data-id='"+data[i][0]+"' value='"+data[i][1]+"' selected>"+data[i][1]+"</option>";
-		            	
-		            		if ("5" == data[i][2]) {
-		    					dataTypeList=dataTypeSTRINGList;
-		    				} else if ("6"== data[i][2]) {
-		    					dataTypeList=dataTypeDATEList;
-		    				}else if ("7"== data[i][2]) {
-		    					dataTypeList=dataTypeTIMEList;
-		    				}else if ("1"== data[i][2]) {
-		    					dataTypeList=dataTypeINTList;
-		    				}else if ("15"== data[i][2]) {
-		    					dataTypeList=dataTypeDOUBLEList;
-		    				}else if ("11"== data[i][2]) {
-		    					dataTypeList=dataTypeREFERENCEList;
-		    				}else if ("8"== data[i][2]) {
-		    					dataTypeList=dataTypeFILEList;
-		    				}else if ("14"== data[i][2]) {
-		    					dataTypeList=dataTypeENUMList;
-		    				}else if ("17"== data[i][2]) {
-		    					dataTypeList=dataTypeCASCADETYPEList;
-		    				}
-		            	
-		            	}else {
-		            		attrHtml += "<option item-data-type='"+data[i][2]+"' data-id='"+data[i][0]+"' value='"+data[i][1]+"'>"+data[i][1]+"</option>";
-		            	}
-		            }
-					attrHtml += "</select>";
-			
-			attrHtml += "<select disabled class='data-type attr-type'>";      
-			//Ajax.ajax('admin/node/basicItemNode/getDataType', {
-			//	dataType:commList[0][2]
-			//}, function(data){		
-			//	var dataTypeList = data.dataType;  
-		    	for(var i=0; i<dataTypeList.length; i++) {
-		    		if(dataTypeList[i][0] == dataType) {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>";
-		    		}else {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>";
-		    		}
-	            	          
-	            };
-	            attrHtml += "</select>";
-				attrHtml += "<select disabled class='node-ops-type'>";		
-				var nodePosType=nodePosTypeATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] == opt) {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";
-			    	}
-		            	          
-		        };
-		        attrHtml += "</select>";
-		        attrHtml += "<div class='btn-wrap'>" +
-		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon delModelItem'></i>" +
-		        "<i class='icon-simulate-trashsm'></i>" +
-		        "</div>" +
-		        "</div>" +
-		        "</li>";		           		        
-		        var $html = $(attrHtml).prependTo($(parent));
-		        $html.find("select").css({"width":"13%","marginLeft":"16px"}).select2();
-		        
-		       // drag($(".dragEdit-wrap").length);
-		 // }, {async: false})
-		})
-    }
 	
     //多值属性下的属性初始化方法
     function initAttrM(abcattr,abcattrCode,dataType,id,name,opt,order,parent,repeatChildList) {  
@@ -1045,59 +537,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     }
     
     
-    //标签初始化方法
-    function initTag(subdomain,abcattrCode, id,name,opt,order,parent,isRelative) {  
-    	subdomain = subdomain.split(",");    	
-    	var tagHtml = "<li class='add-tag clear-fix'>" +
-	        "<div class='icon-label tag'>" +
-	        "<i class='icon icon-tag'></i>" +
-	        "<span class='text'>标签</span>" +
-	        "</div>" +
-	        "<div class='label-bar al-save tag' data-order='"+order+"' data-id='"+id+"'>" +
-	        "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-	        "<span class='icon icon-toleft'></span>" +
-	        "<div class='tag-content'>" +
-	        "<ul class='clear-fix'>" ;
-	        for(var i=0; i<subdomain.length; i++) {
-	        	if(subdomain[i] == "") {
-	        		break;
-	        	}
-	        	tagHtml += "<li data-id='' data-text='" + subdomain[i] + "'>" +
-	            "<span>" + subdomain[i] + "</span>" +
-	            "<i class='icon icon-delete'></i>" +
-	            "</li>"
-	        }	        
-	        tagHtml += "</ul>" +
-	        "</div>" +
-	        "<span class='icon icon-toright ban'></span>";
-	        tagHtml += "<select disabled class='node-ops-type'>";		
-	        
-	        var nodePosType = nodePosTypeLABEL;
-		    for(var i=0; i<nodePosType.length; i++) {
-		    	if(nodePosType[i] === opt) {
-		    		tagHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-		    	}else {
-		    		tagHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-		    	}
-	            	         
-	         };
-	         tagHtml += "</select>";
-	         tagHtml += "<div class='btn-wrap'>" +
-	        "<i class='icon tag icon-save'></i>" 
-	        if(isRelative) {
-	        	tagHtml += "<i class='icon tag icon-add-tag-relative'></i>"
-	        }else {
-	        	tagHtml += "<i class='icon tag icon-add-tag'></i>"
-	        }
-	        
-	        tagHtml += "<i class='icon delModelItem'></i>" +
-	        "</div>" +
-	        "</div>" +
-	        "</li>"
-	    var Tag = $(tagHtml).prependTo($(parent));	        
-	    menuWidth(Tag.find(".tag-content").children("ul")[0]);
-	    Tag.find("select").css({"width":"7%","marginLeft":"2px"}).select2();
-    }
     
     //多值属性初始化方法
     function initMoreAttr(abcattrCode,abcattr,dataType,id,name,opt,order,parent,repeatList) {    
@@ -1194,42 +633,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		    drag($(".dragEdit-wrap").length);		    			                                    
     }
     
-    function initFilters(nodeId,entityId, binFilter, binFilterBody, source) {
-    	 var parent = $(".collapse-header[data-id='" + nodeId + "']", $page).next(".collapse-content")[0];
-         var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-         $CPF.showLoading();
-             var relativeHtml = "<li class='attr-relative'>" +
-             "<div class='attr-relative-title collapse-header' source='"+source+"' entityId='"+entityId+"' data-order='' data-id='"+binFilterBody.id+"'>" +
-             "<div class='icon-label attr-relative'>" +
-             "<i class='icon icon-attr-relative'></i><span class='text'>filters</span>" +
-             "</div>" +
-             "<div class='label-bar filters al-save'>" +
-             "<input type='text' class='edit-input text' value='"+binFilterBody.name+"'>";
-             relativeHtml += "<select disabled class='node-ops-type'>";	
-             var nodePosType = optFILTERS;
-             for(var key in nodePosType) {
- 		    	if(binFilterBody.opt == key) {
- 		    		relativeHtml += "<option value='"+key+"' selected>"+nodePosType[key]+"</option>";  	
- 		    	}else {
- 		    		relativeHtml += "<option value='"+key+"'>"+nodePosType[key]+"</option>"; 
- 		    	}
- 	         }
- 	        relativeHtml += "</select>";
- 	        relativeHtml += "<div class='btn-wrap'>" +
-             "<i class='icon icon-save'></i>" +  
-             "<i class='icon icon-add-filterGroup group'></i>" +
-             "<i class='icon delModelItem'></i>" +
-             "<i class='icon icon-arrow-sm active'></i>" +
-             "</div>" +
-             "</div>" +
-             "</div>" +            
-             "<ul class='attr-relative-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-             "</ul>" +
-             "</li>";         		    
- 		    var $html = $(relativeHtml).prependTo($(parent));
- 		    $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
- 		    $CPF.closeLoading();
-    }
 	/**
      * 获取实体信息方法 示例     
      */
@@ -1261,7 +664,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
           "<i class='icon icon-card-more-attr'></i>" +
           "<span class='text'>添加二维组</span>" +
           "</li>"+
-          "</li>" +
+          "<li class='card-list add-RSTRUC' structType='103' structShowName='添加关系结构'>" +
+          "<i class='icon icon-card-more-attr'></i>" +
+          "<span class='text'>添加关系结构</span>" +
+          "</li>"+
           "</ul>";
 
         var wrap = $("#structBaseEdit");
@@ -1289,21 +695,30 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         var structtype = $(el).closest(".collapse-header").attr("data-structtype");
         
         var html = "<ul class='card'>";
+        html += "<li class='card-list add_FIELD' structType='2' structShowName='添加字段'>" +
+        "<i class='icon icon-card-attr'></i>" +
+        "<span class='text'>添加字段</span>" +
+        "</li>" +
+        "<li class='card-list add_ENUMFIELD' structType='201' structShowName='添加枚举字段'>" +
+        "<i class='icon icon-card-attr'></i>" +
+        "<span class='text'>添加枚举字段</span>" +
+        "</li>";
+       
+        if (structtype == 101) {
+        	html += "<li class='card-list add_RFIELD' structType='202' structShowName='添加RFIELD'>" +
+            "<i class='icon icon-card-attr'></i>" +
+            "<span class='text'>添加关系字段</span>" +
+            "</li>";
+        } else {
+        	
+        }
         
-            html += "<li class='card-list add_FIELD' structType='2' structShowName='添加字段'>" +
-                "<i class='icon icon-card-attr'></i>" +
-                "<span class='text'>添加字段</span>" +
-                "</li>" +
-                "<li class='card-list add_ENUMFIELD' structType='201' structShowName='添加枚举字段'>" +
-                "<i class='icon icon-card-attr'></i>" +
-                "<span class='text'>添加枚举字段</span>" +
-                "</li>" +
-                "<li class='card-list add_RFIELD' structType='202' structShowName='添加RFIELD'>" +
-                "<i class='icon icon-card-attr'></i>" +
-                "<span class='text'>添加关系字段</span>" +
-                "</li>" +
-                "</ul>";
-
+        html += "<li class='card-list add_RFIELD' structType='203' structShowName='添加REFFIELD'>" +
+	        "<i class='icon icon-card-attr'></i>" +
+	        "<span class='text'>添加引用字段</span>" +
+	        "</li>";
+           
+        html +="</ul>";
         var wrap = $("#structBaseEdit");
         var offsetx = $(el).offset().left;
         var offsety = $(el).offset().top;
@@ -4023,13 +3438,19 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
          	   afterSave	: function(strucBase){
 					if(strucBase){
 						console.log(strucBase.id);
-						addGroup(el, strucBase);
+						
+						if (strucBase.type == 101) {//单行属性分组
+ 							addGroup(el, strucBase);
+						} else if (strucBase.type == 102) {
+							addMoreGroup(strucBase, $parent);
+						}
 					}
 				}
 			}
         });
     	
       } else {
+    	  
     	  var sbPid = $(el).closest(".collapse-header").attr("data-sbid");
      	 //这个暂时没用到
           var structType = $(this).attr("structType");
@@ -4043,47 +3464,20 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
           	   afterSave	: function(strucBase){
  					if(strucBase){
  						console.log(strucBase.id);
- 						addGroup(el, strucBase);
+ 						
+ 						if (strucBase.type == 103) {
+ 							// 添加关系结构
+ 							addRStruc(el, strucBase);
+						} else {
+							addCommAttr(strucBase, $parent);
+						}
+						
  					}
  				}
  			}
          });
      	
-      }/*else {
-    	
-    	  var mipCode = $(el).closest(".collapse-header").attr("data-code");
-          var modelItemType = $(this).attr("modelItemType");
-          var modelItemShowName = $(this).attr("modelItemShowName");
-       	//这里要弹出框， 保存并回显
-       	 Dialog.openDialog("admin/modelItem/addAttr?modelItemType="+modelItemType+"&mipCode=" +mipCode, modelItemShowName, undefined, {
-                width :920,
-                height : 400,
-                events		: {
-    				afterSave	: function(modelItem){
-    					if(modelItem){
-    						console.log(modelItem.code);
-    						if (modelItem.type == 206) {
-    							addCascadeEnumAttr(el, modelItem);
-    						} else if (modelItem.type == 207) {
-    							addCascadeReferenceAttr(el, modelItem);
-    						} else if (modelItem.type == 211) {
-    							//添加维度属性
-    							addDimensionAttr(el, modelItem);
-    							
-    						} else if (modelItem.type == 212) {
-    							//添加事实属性
-    							addFactAttr(el, modelItem);
-    							
-    						}else {
-    							addCommAttr(el, modelItem);
-    						}
-    						
-    						
-    					}
-    				}
-    			}
-            });
-      }*/
+      }
         
         removePop();
         $(el).removeClass("active");
@@ -4312,80 +3706,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	getEntity(this);
     }) 
     
-    //修改名称
-    $("#structBaseEdit").on("change", "select.abc-attr", function(){
-    	var _value = $(this).find("option:selected").val();
-    	var $input = $(this).siblings(".edit-input");
-    	var _options = $(this).find("option");
-    	$input.val(_value);
-    	
-    	//修改关系属性对应实体的值
-    	var $rattr = $(this).siblings(".rattrType.select2-offscreen");
-    	var rightEntityId = $(this).find("option:selected").attr("data-rightid");
-    	
-    	if ($rattr.hasClass("rattrType")) {
-    	 Ajax.ajax('admin/dictionary/basicItem/getComm', {
-			   entityId:rightEntityId
-		   }, function(data){		    	
-	            var data = data.commList;
-	            var rattrHtml="";
-				if (data.length == 0) {
-	                Dialog.notice("请在模型中添加属性", "warning");
-	                $CPF.closeLoading();    
-	                return;
-		          } 
-	            for(var i=0; i<data.length; i++) {
-	            	rattrHtml += "<option item-data-type='"+data[i][2]+"' data-id='"+data[i][0]+"' value='"+data[i][1]+"'>"+data[i][1]+"</option>";                
-	            }
-	            
-	            $rattr.children().remove();
-	            $rattr.append(rattrHtml); 
-	            $rattr.css({"width":"15%","marginLeft":"16px"}).select2();
-		   });
-    	} else {
-    		
-    		//修改dataType的值
-        	var $dataType = $(this).siblings(".data-type.select2-offscreen");
-        	var itemDataType = $(this).find("option:selected").attr("item-data-type");
-        	
-        	if ($dataType.hasClass("attr-type")) {
-        		Ajax.ajax('admin/node/basicItemNode/getDataType', {
-                    dataType:itemDataType
-                }, function(data){     
-                     var dataTypeList = data.dataType;
-                     var attrHtml="";
-                     for(var i=0; i<dataTypeList.length; i++) {
-                         if(i == 0) {
-                             attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>";  
-                         }else {
-                             attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>"; 
-                         }                           
-                     };
-                     $dataType.children().remove();
-                     $dataType.append(attrHtml); 
-                     $dataType.css({"width":"13%","marginLeft":"16px"}).select2();
-                });
-        	}
-    		
-    	}
-    	 
-    	
-    	
-    	/*var isOption = false;
-    	var isDefault = false;    	
-    	if($input.val() == "属性名" || $input.val() == "多值属性名称"){
-    		isDefault = true;
-    	}
-    	for(var i=0; i<_options.length; i++) {    		    	    		    
-    		if($(_options[i]).attr("value") == $input.val()){
-    			isOption = true;
-    			break;
-    		}
-    	}
-    	if(isOption || isDefault) {
-    		$input.val(_value);
-    	}    	    	    	*/
-    })
     
     function saveSuccess(el) {
 		 $(el).closest(".label-bar").removeClass("edit");

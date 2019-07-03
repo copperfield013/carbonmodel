@@ -99,7 +99,27 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			}
 			strLabel+='</select></div></div>';
 			return strLabel;
-		}
+		} else if (viewLabel.label =="multSelect") {
+			
+			var strLabel = '<div class="form-group">';
+			strLabel+= '<label class="col-lg-2 control-label " for="'+viewLabel.name+'">'+viewLabel.showName+'</label>';
+			strLabel+= '<div class="col-lg-5">';
+			strLabel+= '<select multiple="multiple"  class=" '+viewLabel.viewClazz+'" name="'+viewLabel.name+'">';
+			//这里存放optiong
+			debugger;
+			
+			var vDomainMap = viewLabel.valueDomain;
+			for ( var key in vDomainMap) {
+				
+				if (viewLabel.value.indexOf(key) > -1) {
+					strLabel+='<option selected value="'+key+'">'+vDomainMap[key]+'</option>';
+				} else {
+					strLabel+='<option value="'+key+'">'+vDomainMap[key]+'</option>';
+				}
+			}
+			strLabel+='</select></div></div>';
+			return strLabel;
+		} 
 		
 		return "";
 	}
