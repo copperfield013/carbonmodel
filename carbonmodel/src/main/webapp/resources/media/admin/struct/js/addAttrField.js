@@ -224,12 +224,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    	 if ($multStrucRela.length>=1) {
 	    		 // 获取左实体code
 	    		var sbPid =  $("#structTreeFieldAdd").attr("sbPid");
-	    		 debugger;
 	    		Ajax.ajax('admin/structBase/getStrucMiCode', {
 	    			sbId:sbPid
 		    	 }, function(data) {
 		    		 var strucMiCode = data.strucMiCode;
-		    		 debugger;
 		    		// 获取多选关系值域
 		    		 Ajax.ajax('admin/modelRelationType/getModelRela', {
 		    			 leftModelCode:strucMiCode.itemCode,
@@ -237,7 +235,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			    	 }, function(data) {
 			    		 var modelRelaList = data.modelRelaList;
 			    		 var str = "";  
-			    		 debugger;
 		            	for (var key in modelRelaList) { //遍历json数组时，这么写p为索引，0,1
 		                   str = str + "<option value=\"" + modelRelaList[key].typeCode + "\">" + modelRelaList[key].name + "</option>"; 
 		                }
@@ -248,6 +245,33 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		         }); 
 	    		 
 	    	 }
+	    	 
+	    	 //更改子集
+	    	 var $subsetStrucFileldEnum = $(".subsetStrucFileldEnum");
+	    	 if ($subsetStrucFileldEnum.length>=1) {
+	    		 // 获取子集数据
+	    		 // 根据实体miCode , 获取 miEnum, 根据pid， 获取子集
+	    		 Ajax.ajax('admin/modelItem/getMiEnum', {
+	    			 miCode:miCode
+			    	 }, function(data) {
+			    		 var miEnum = data.miEnum;
+			    		 Ajax.ajax('admin/cascadedict/cascadedictSubsection/getSubSelectByParentId', {
+			    			 parentId:miEnum.pid
+					    	 }, function(data) {
+					    		 debugger;
+					    		 var childList = data.childList;
+					    		
+					    		 var str = "";  
+				            	for (var key in childList) { //遍历json数组时，这么写p为索引，0,1
+				                   str = str + "<option value=\"" + childList[key].id + "\">" + childList[key].name + "</option>"; 
+				                }
+				                	
+				            	$subsetStrucFileldEnum.empty().append(str);
+					    		 
+					    	 })
+			    	 })
+	    	 }
+	    	 
 	    	 
 	    });
 	

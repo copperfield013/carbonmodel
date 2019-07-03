@@ -195,11 +195,21 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 						modelItemList2 = modelItemService.getModelItemByType(p2.getItemCode(), types2, null, Constants.USING_STATE_USING);
 					}
 					
+					String enumCode = "";
+					
+					if (!modelItemList2.isEmpty()) {
+						ModelItem modelItem = modelItemList2.get(0);
+						enumCode = modelItem.getCode();
+					}
+					
+					if (strucMiCode !=null && strucMiCode.getItemCode() !="") {
+						enumCode = strucMiCode.getItemCode();
+					}
 					
 				// 这个对应的美剧子集
-				ModelItem modelItem = modelItemList2.get(0);
+				
 				// 获取子集下拉框
-				MiEnum miEnum = commService.get(MiEnum.class, modelItem.getCode());
+				MiEnum miEnum = commService.get(MiEnum.class, enumCode);
 				// 获取他的子集 值域
 				List<CascadedictSubsection> subSelectByParentId = casSubsectionService.getSubSelectByParentId(miEnum.getPid());
 				//枚举对应的子集
@@ -212,7 +222,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 				  }
 				  
 				 subViewLabel.setValueDomain(valueDomain);
-				
+				 subViewLabel.setViewClazz("subsetStrucFileldEnum");
 				viewLabelList.add(subViewLabel);
 				getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList2);
 				getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue);

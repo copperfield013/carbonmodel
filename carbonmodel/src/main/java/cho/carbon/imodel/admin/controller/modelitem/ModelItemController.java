@@ -21,6 +21,7 @@ import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
+import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
@@ -29,6 +30,7 @@ import cho.carbon.imodel.model.modelitem.service.MiTableDBService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.modelitem.vo.ViewLabel;
+import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
 import cho.carbon.meta.enun.ModelItemType;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
 import cn.sowell.copframe.dto.ajax.NoticeType;
@@ -509,11 +511,11 @@ public class ModelItemController {
 		 	 */
 		 	@ResponseBody
 			@RequestMapping("/getMiEnumChild")
-			public String getMiEnumChild(String enumCode){
+			public String getMiEnumChild(String miCode){
 				Map<String, Object> map = new HashMap<String, Object>();
 				JSONObject jobj = new JSONObject(map);
 				try {
-					List<CascadedictBasicItem> casEnumChild = miService.getCasEnumChild(enumCode);
+					List<CascadedictBasicItem> casEnumChild = miService.getCasEnumChild(miCode);
 					map.put("casEnumChild", casEnumChild);
 					map.put("code", 200);
 					map.put("msg", "成功！");
@@ -605,5 +607,30 @@ public class ModelItemController {
 				}
 		 
 		 	} 	
+		 	
+		 	/**
+		 	 * 根据miCode , 获取 MiEnum
+		 	 * @param miCode
+		 	 * @return
+		 	 */
+		    @ResponseBody
+			@RequestMapping("/getMiEnum")
+			public String getMiEnum(String miCode){
+				Map<String, Object> map = new HashMap<String, Object>();
+				JSONObject jobj = new JSONObject(map);
+				try {
+					MiEnum miEnum = commService.get(MiEnum.class, miCode);
+					map.put("miEnum", miEnum);
+					map.put("code", 200);
+					map.put("msg", "成功！");
+					return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+				} catch (Exception e) {
+					logger.error("添加失败", e);
+					e.printStackTrace();
+					map.put("code", 400);
+					map.put("msg", "操作失败！");
+					return jobj.toString();
+				}
+			}
 		 	
 }
