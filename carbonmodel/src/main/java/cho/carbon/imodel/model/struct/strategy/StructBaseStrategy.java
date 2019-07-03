@@ -10,5 +10,5 @@ public interface StructBaseStrategy {
 	public void saveOrUpdate(String flag, StrucBaseContainer strucBaseContainer, CommService commServicet, StrucBaseService strucBaseService);
 	
 	//删除结构体
-	public void delStruct(StrucBaseContainer strucBaseContainer, CommService commServicet, StrucBaseService strucBaseService);
+	public void delStruct(Integer sbId, CommService commService, StrucBaseService strucBaseService);
 }

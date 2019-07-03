@@ -37,4 +37,18 @@ public class StructStrategyContext {
 		
 	}
 	
+	public void delStruct(Integer sbId) {
+		//执行策略
+		
+		StrucBase strucBase = commService.get(StrucBase.class, sbId);
+		StrucElementType strucElementType = StrucElementType.getType(strucBase.getType());
+		StructBaseStrategy structStrategy = StructStrategyFactory.getStructStrategy(strucElementType);
+		
+		if (structStrategy != null) {
+			structStrategy.delStruct(sbId, commService, strucBaseService);
+		}
+		
+		commService.delete(strucBase);
+	}
+	
 }

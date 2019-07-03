@@ -272,27 +272,33 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					
 				case RSTRUC:
 					// 存在关系的右实体
-				StrucMiCode  p3 = commService.get(StrucMiCode.class, sbPid);
-				String leftModelCode = p3.getItemCode();
-				List<ModelItem> exRelaRightMi = modelRelaService.getExRelaRightMi(leftModelCode );
+					StrucMiCode  p3 = commService.get(StrucMiCode.class, sbPid);
+					String leftModelCode = p3.getItemCode();
+					List<ModelItem> exRelaRightMi = modelRelaService.getExRelaRightMi(leftModelCode);
+						
+					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, exRelaRightMi);
+					// 多选 和右实体存在的关系
+					ModelItem rightModel= exRelaRightMi.isEmpty()?null:exRelaRightMi.get(0);
+					String rightModelCode = null;
+					if (rightModel != null) {
+						rightModelCode = rightModel.getCode();
+					}
 					
-				getViewLabelToStrucMiCode(viewLabelList, strucMiCode, exRelaRightMi);
-				// 多选 和右实体存在的关系
-				ModelItem rightModel= exRelaRightMi.isEmpty()?null:exRelaRightMi.get(0);
-					
-				// 左右实体共同的code
-				List<ModelRelationType>  modelRelaList= modelRelaService.getEntityRelaByBitemId(leftModelCode, rightModel.getCode());
-				
-				
-				
-				List<StrucRelation> strucRelation1 = this.getStrucRelationBySbId(strucBase.getId());
-				
-				getVbMultRfieldStrucRelation(viewLabelList, strucRelation1, modelRelaList);
-				
-				// 指向结构体
-				getViewLabelToStrucPointer(viewLabelList, strucPointer, allStruc);
+					if (strucMiCode != null && strucMiCode.getItemCode()!="") {
+						rightModelCode = strucMiCode.getItemCode();
+					}
+						
+					// 左右实体共同的code
+					List<ModelRelationType>  modelRelaList= modelRelaService.getEntityRelaByBitemId(leftModelCode, rightModelCode);
 					
 					
+					
+					List<StrucRelation> strucRelation1 = this.getStrucRelationBySbId(strucBase.getId());
+					
+					getVbMultRfieldStrucRelation(viewLabelList, strucRelation1, modelRelaList);
+					
+					// 指向结构体
+					getViewLabelToStrucPointer(viewLabelList, strucPointer, allStruc);
 					
 					break;
 			}
@@ -342,19 +348,20 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucRelation.id", strucRelation.getId()==null?"":"" +strucRelation.getId(), null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucRelation.sbId", strucRelation.getSbId()==null?"":strucRelation.getSbId()+"", null));
 		
-		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucRelation.modelRelationType",strucRelation.getModelRelationType()==null?"":strucRelation.getModelRelationType() , "选择关系");
+		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucRelation.modelRelationType",strucRelation.getModelRelationType()==null?"":strucRelation.getModelRelationType() , "选择关系", 16);
 		// 获取值域
 		Map<String, String> valueDomain = new HashMap<String, String>();
 		  for (ModelRelationType modelRelation : relationOne) {
 			  valueDomain.put(modelRelation.getTypeCode() + "", modelRelation.getName()); 
 		  }
 		  itemCodeVb.setValueDomain(valueDomain);
-		
+		  itemCodeVb.setViewClazz("radioStrucRela");
+		  
 		viewLabelList.add(itemCodeVb);
 	}
 	
 	/**
-	 * 获取 多选关系字段的结构
+	 * 	获取 多选关系字段的结构
 	 * @param viewLabelList
 	 * @param strucRelation
 	 * @param relationOne
@@ -366,8 +373,11 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		 for (StrucRelation sr: strucRelation) {
 			 value +=  sr.getModelRelationType()+",";
 		  }
-		 
-		 value = value.substring(0, value.length()-1);
+		
+		 if (!value.isEmpty()) {
+			 value = value.substring(0, value.length()-1);
+		 }
+		
 		ViewLabel itemCodeVb = new ViewLabel("multSelect", "text", "strucRelation.modelRelationType",value , "多选关系", 10);
 		
 		// 获取可选值域
@@ -376,7 +386,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 			  valueDomain.put(modelRelation.getTypeCode() + "", modelRelation.getName()); 
 		  }
 		  itemCodeVb.setValueDomain(valueDomain);
-		
+		  itemCodeVb.setViewClazz("multStrucRela");
 		viewLabelList.add(itemCodeVb);
 	}
 
@@ -580,6 +590,12 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 	@Override
 	public List<StrucRelation> getStrucRelationBySbId(Integer sbId) {
 		return strucBaseDao.getStrucRelationBySbId(sbId);
+	}
+
+	@Override
+	public void deleteStruct(Integer sbId) {
+		StructStrategyContext context = new StructStrategyContext(commService, this);
+		context.delStruct(sbId);
 	}
 
 }

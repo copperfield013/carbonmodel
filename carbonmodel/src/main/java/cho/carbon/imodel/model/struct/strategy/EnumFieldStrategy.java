@@ -43,9 +43,16 @@ public class EnumFieldStrategy  implements StructBaseStrategy {
 	}
 
 	@Override
-	public void delStruct(StrucBaseContainer strucBaseContainer, CommService commServicet, StrucBaseService strucBaseService) {
+	public void delStruct(Integer sbId, CommService commService, StrucBaseService strucBaseService) {
 		
+		StrucMiCode strucMiCode = new StrucMiCode(sbId, null);
+		StrucFieldSubenum strucFieldSubenum = new StrucFieldSubenum(sbId, null);
+		StrucFieldValue strucFieldValue = new StrucFieldValue(sbId, null);
 		
+		commService.insert(strucMiCode);
+		commService.insert(strucFieldSubenum);
+		commService.insert(strucFieldValue);
 	}
+
 	
 }

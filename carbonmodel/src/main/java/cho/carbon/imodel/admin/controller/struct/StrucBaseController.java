@@ -103,6 +103,34 @@ public class StrucBaseController {
 			return jobj.toString();
 		}
 	}
+    
+    @ResponseBody
+   	@RequestMapping("/delStruct")
+   	public String delStruct(Integer sbId){
+   		Map<String, Object> map = new HashMap<String, Object>();
+   		JSONObject jobj = new JSONObject(map);
+   		try {
+   			
+   			List<StrucBase> structStairChild = strucBaseService.getStructStairChild(sbId);
+   			
+   			if (!structStairChild.isEmpty()) {
+   				map.put("code", 400);
+   	   			map.put("msg", "请先删除孩子！");
+   	   			return jobj.toString();
+   			}
+   			
+   			strucBaseService.deleteStruct(sbId);
+   			map.put("code", 200);
+   			map.put("msg", "成功！");
+   			return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+   		} catch (Exception e) {
+   			logger.error("操作失败", e);
+   			e.printStackTrace();
+   			map.put("code", 400);
+   			map.put("msg", "操作失败！");
+   			return jobj.toString();
+   		}
+   	}
 	
 	/**
 	 * 	跳转到结构体添加页面
@@ -259,6 +287,32 @@ public class StrucBaseController {
 			  }
 				
 				map.put("valueTypeMap", valueTypeMap);
+				map.put("code", 200);
+				map.put("msg", "成功！");
+				return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+			} catch (Exception e) {
+				logger.error("添加失败", e);
+				e.printStackTrace();
+				map.put("code", 400);
+				map.put("msg", "操作失败！");
+				return jobj.toString();
+			}
+		}
+	    
+	    /**
+	     * 	根据 sbId 获取strucMiCode
+	     * @param sbId
+	     * @return
+	     */
+	    @ResponseBody
+		@RequestMapping("/getStrucMiCode")
+		public String getStrucMiCode(Integer sbId){
+			Map<String, Object> map = new HashMap<String, Object>();
+			JSONObject jobj = new JSONObject(map);
+			try {
+				StrucMiCode strucMiCode = commService.get(StrucMiCode.class, sbId);
+				
+				map.put("strucMiCode", strucMiCode);
 				map.put("code", 200);
 				map.put("msg", "成功！");
 				return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);

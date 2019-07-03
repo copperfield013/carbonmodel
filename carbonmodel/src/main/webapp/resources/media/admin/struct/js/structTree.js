@@ -89,7 +89,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         "<i class='fa fa-edit icon-edit'></i>"+
             "<i class='icon icon-add-sm group'></i>" +
             
-            	"<i class='glyphicon glyphicon-trash delModelItem'></i>" +
+            	"<i class='glyphicon glyphicon-trash delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -138,7 +138,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         "<i class='fa fa-edit icon-edit'></i>"+
             "<i class='icon icon-add-sm group'></i>" +
             
-            	"<i class='glyphicon glyphicon-trash delModelItem'></i>" +
+            	"<i class='glyphicon glyphicon-trash delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -149,8 +149,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         
 	  return attrGroupHtml;
     }
-    
-    /////////////////////
     
     //	关系结构初始化方法
     function initRStruc(strucBase, $parent) {
@@ -177,7 +175,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         var attrGroupHtml = "<li class='attr-group'>" +
             "<div class='attr-group-title collapse-header' data-sbid='"+strucBase.id+"'  data-structType='"+strucBase.type+"' data-sbPid='"+strucBase.parentId+"'>" +
-            "<div class='icon-label attr-group'>" +
+            "<div class='icon-label attr-relative'>" +
             "<i class='icon icon-attr-relative'></i>" +
             "<span class='text'>"+strucBase.showType+"</span>" +
             "</div>" +
@@ -189,7 +187,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         "<i class='fa fa-edit icon-edit'></i>"+
             "<i class='icon icon-add'></i>" +
             
-            	"<i class='glyphicon glyphicon-trash delModelItem'></i>" +
+            	"<i class='glyphicon glyphicon-trash delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -200,10 +198,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         
 	  return attrGroupHtml;
     }
-    
-    
-    ////////////////////////
-    
     
     /**
      * 添加通用属性方法
@@ -240,9 +234,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
 	         "<i class='fa fa-edit icon-edit'></i>"+
-	         "<i class='glyphicon glyphicon-trash delModelItem'></i>" +
+	         "<i class='glyphicon glyphicon-trash delStruct'></i>" +
            /* "<i class='icon icon-add-sm group'></i>" +*/
-           /* "<i class='icon delModelItem'></i>" +*/
+           /* "<i class='icon delStruct'></i>" +*/
             /*"<i class='icon icon-arrow-sm active'></i>" +*/
             "</div>" +
             "</div>" +
@@ -434,7 +428,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		        attrHtml += "</select>";
 		        attrHtml += "<div class='btn-wrap'>" +
 		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon delModelItem'></i>" +
+		        "<i class='icon delStruct'></i>" +
 		        "<i class='icon-simulate-trashsm'></i>" +
 		        "</div>" +
 		        "</div>" +
@@ -525,7 +519,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		        attrHtml += "</select>";
 		        attrHtml += "<div class='btn-wrap'>" +
 		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon delModelItem'></i>" +
+		        "<i class='icon delStruct'></i>" +
 		        "<i class='icon-simulate-trashsm'></i>" +
 		        "</div>" +
 		        "</div>" +
@@ -576,7 +570,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		   moreAttrHtml += "<div class='btn-wrap'>" +
 		   "<i class='icon icon-save'></i>" +
 		   "<i class='icon icon-add-sm group'></i>" +
-		   "<i class='icon delModelItem'></i>" +
+		   "<i class='icon delStruct'></i>" +
 		   "<i class='icon icon-arrow-sm active'></i>" +
 		   "</div>" +
 		   "</div>" +
@@ -620,7 +614,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	        relativeHtml += "</select>";
 	        relativeHtml += "<div class='btn-wrap'>" +
             "<i class='icon icon-save'></i>" + 
-            "<i class='icon delModelItem'></i>" +
+            "<i class='icon delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -1048,7 +1042,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         $(".icon-add-tag").removeClass("active");
         $(".icon-add-tag-relative").removeClass("active");
         $(".icon-trash").removeClass("active");
-        $(".delModelItem").removeClass("active");
+        $(".delStruct").removeClass("active");
 
     };
 
@@ -1156,7 +1150,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         tagHtml += "<div class='btn-wrap'>" +
             "<i class='icon tag icon-save'></i>" +
             "<i class='icon tag icon-add-tag'></i>" +
-            "<i class='icon delModelItem'></i>" +
+            "<i class='icon delStruct'></i>" +
             "<i class='icon icon-simulate-trashsm'></i>" +            
             "</div>" +
             "</div>" +
@@ -1256,7 +1250,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		         
 		         attrHtml += "<div class='btn-wrap'>" +
 		         "<i class='icon icon-save'></i>" +
-		         "<i class='icon delModelItem'></i>" +
+		         "<i class='icon delStruct'></i>" +
 		         "<i class='icon-simulate-trashsm'></i>" +
 		         "</div>" +
 		         "</div>" +
@@ -1347,7 +1341,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		         
 		         attrHtml += "<div class='btn-wrap'>" +
 		         "<i class='icon icon-save'></i>" +
-		         "<i class='icon delModelItem'></i>" +
+		         "<i class='icon delStruct'></i>" +
 		         "<i class='icon-simulate-trashsm'></i>" +
 		         "</div>" +
 		         "</div>" +
@@ -1427,7 +1421,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		         attrHtml += "</select>";
 		         attrHtml += "<div class='btn-wrap'>" +
 		         "<i class='icon icon-save'></i>" +
-		         "<i class='icon delModelItem'></i>" +
+		         "<i class='icon delStruct'></i>" +
 		         "<i class='icon-simulate-trashsm'></i>" +
 		         "</div>" +
 		         "</div>" +
@@ -1505,7 +1499,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		        attrHtml += "</select>";
 		        attrHtml += "<div class='btn-wrap'>" +
 		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon delModelItem'></i>" +
+		        "<i class='icon delStruct'></i>" +
 		        "<i class='icon-simulate-trashsm'></i>" +
 		        "</div>" +
 		        "</div>" +
@@ -1647,83 +1641,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		});
     };
     
-    //引用-> 引用属性删除方法
-    function rRefattributeAttrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
     
-    //引用属性保存修改方法
-    function refattributeAttrSave(el) {
-    	var $attrBar = $(el).closest(".label-bar");
-    	var type = $attrBar.attr("data-type");
-    	var dataType = $attrBar.children(".data-type").find("option:selected").val();
-    	var opt = $attrBar.children(".node-ops-type").find("option:selected").val();
-    	var name = $attrBar.children(".edit-input").val();    	
-    	var order = $attrBar.attr("data-order");
-    	var id = $attrBar.attr("data-id");
-    	var parentId = $attrBar.closest(".collapse-content").prev(".collapse-header")
-    						.attr("data-id"); 
-    	var abcattr = $attrBar.children(".abc-attr").find("option:selected").val();
-    	var abcattrCode = $attrBar.children(".abc-attr").find("option:selected").attr("data-id");
-    	var relAbcnodeId = $attrBar.children(".relAbcnodeId").find("option:selected").val();
-    	switch (opt) {
-	        case "读":
-	            opt = 1;
-	            break;
-	        case "写":
-	            opt = 2;
-	            break;
-	        case "补":
-	            opt = 3;
-	            break;
-	        case "增":
-	            opt = 4;
-	            break;
-	        case "并":
-	            opt = 5;
-	            break;
-	        default:
-	            break;
-	    }
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/basicItemNode/saveOrUpdate', {
-			 type: type,
-			 name: name,
-			 abcattr: abcattr,
-			 abcattrCode: abcattrCode,
-			 dataType: dataType,
-			 opt: opt,
-			 order: order,
-			 parentId: parentId,
-			 id: id,
-			 relAbcnodeId:relAbcnodeId
-		 }, function(data) {
-			 if(data.state == "400") {
-				 Dialog.notice(data.msg, "warning");
-				 $CPF.closeLoading();
-				 return;
-			 }
-			 var data = data.node;
-			 //设置当前节点order和id
-			 var order = data.order;
-			 var id = data.id;
-			 $attrBar.attr("data-order",order)
-			 	.attr("data-id", id);
-			 saveSuccess(el)
-			 $CPF.closeLoading();
-		});
-    };
     
     //引用属性删除方法
     function refattributeAttrDelete(el) {    	
@@ -1741,81 +1659,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	}    	
     }
     
-    //级联属性保存修改方法
-    function cascadeAttrSave(el) {
-    	var $attrBar = $(el).closest(".label-bar");
-    	var type = $attrBar.attr("data-type");
-    	var dataType = $attrBar.children(".data-type").find("option:selected").val();
-    	var opt = $attrBar.children(".node-ops-type").find("option:selected").val();
-    	var name = $attrBar.children(".edit-input").val();    	
-    	var order = $attrBar.attr("data-order");
-    	var id = $attrBar.attr("data-id");
-    	var parentId = $attrBar.closest(".collapse-content").prev(".collapse-header")
-    						.attr("data-id"); 
-    	var abcattr = $attrBar.children(".abc-attr").find("option:selected").val();
-    	var abcattrCode = $attrBar.children(".abc-attr").find("option:selected").attr("data-id");
-    	switch (opt) {
-	        case "读":
-	            opt = 1;
-	            break;
-	        case "写":
-	            opt = 2;
-	            break;
-	        case "补":
-	            opt = 3;
-	            break;
-	        case "增":
-	            opt = 4;
-	            break;
-	        case "并":
-	            opt = 5;
-	            break;
-	        default:
-	            break;
-	    }
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/basicItemNode/saveOrUpdate', {
-			 type: type,
-			 name: name,
-			 abcattr: abcattr,
-			 abcattrCode: abcattrCode,
-			 dataType: dataType,
-			 opt: opt,
-			 order: order,
-			 parentId: parentId,
-			 id: id
-		 }, function(data) {
-			 if(data.state == "400") {
-				 Dialog.notice(data.msg, "warning");
-				 $CPF.closeLoading();
-				 return;
-			 }
-			 var data = data.node;
-			 //设置当前节点order和id
-			 var order = data.order;
-			 var id = data.id;
-			 $attrBar.attr("data-order",order)
-			 	.attr("data-id", id);
-			 saveSuccess(el)
-			 $CPF.closeLoading();
-		});
-    };
-    
-    //级联属性删除方法
-    function cascadeAttrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
     
     //rabc属性删除方法
     function rabcDelete(el) {  
@@ -1834,83 +1677,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	}    	
     }
     
-    /**
-     * 添加属性方法
-      */
-    function addAttr(el) {
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var entityId = $(el).closest(".collapse-header").attr("data-abcattrcode");
-        if (entityId == undefined) {
-        	entityId = $(el).closest(".collapse-header").closest(".collapse-content").siblings(".collapse-header").attr("data-abcattrcode");
-        }
-        if($(el).closest(".collapse-header").hasClass("attr-abc-title")) {
-        	entityId = $(el).closest(".attr-relative")
-        		.find(".attr-relative-title")
-        		.find(".label-bar")
-        		.find(".abc-attr ")
-        		.find("option:selected").attr("data-id");
-        }
-        $CPF.showLoading();
-		Ajax.ajax('admin/dictionary/basicItem/getComm?entityId', {
-			entityId: entityId
-		}, function(data) {			
-			var data = data.commList;
-			if (data.length == 0) {
-                Dialog.notice("请在模型中添加属性", "warning");
-                $CPF.closeLoading();    
-                return;
-	          } 
-			var attrHtml = "<li class='add-attr clear-fix'>" +
-            "<div class='icon-label attr' data-order='' data-id=''>" +
-            "<i class='icon icon-attr'></i>" +
-            "<span class='text'>属性</span>" +
-            "</div>" +
-            "<div class='label-bar attr  edit' data-order='' data-id=''>" +
-            "<input type='text' class='edit-input text' value='属性名'>" +
-            "<select class='abc-attr'>"            
-            for(var i=0; i<data.length; i++) {
-            	attrHtml += "<option item-data-type='"+data[i][2]+"' data-id='"+data[i][0]+"' value='"+data[i][1]+"'>"+data[i][1]+"</option>";                
-            }
-			attrHtml += "</select>";
-			attrHtml += "<select class='data-type attr-type'>";            
-		   Ajax.ajax('admin/node/basicItemNode/getDataType', {
-			   dataType:data[0][2]
-		   }, function(data){		    	
-		    	var dataTypeList = data.dataType;
-		    	for(var i=0; i<dataTypeList.length; i++) {
-		    		if(dataTypeList[i][0] === "STRING") {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>"; 	
-		    		}else {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>"; 
-		    		}	            	        
-	            };
-	            attrHtml += "</select>";
-				attrHtml += "<select class='node-ops-type'>";	
-				var nodePosType = nodePosTypeATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] === "写") {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-			    	}
-		            	         
-		        };
-		        attrHtml += "</select>";
-		        attrHtml += "<div class='btn-wrap'>" +
-		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon delModelItem'></i>" +
-		        "<i class='icon-simulate-trashsm'></i>" +
-		        "</div>" +
-		        "</div>" +
-		        "</li>";
-		        
-		        var $html = $(attrHtml).prependTo($content);
-		        $html.find("select").css({"width":"13%","marginLeft":"16px"}).select2();
-		        addUnfold(el);
-		        $CPF.closeLoading();			    		   
-		    })
-	    });		                      
-    };
     
     /**
      * 添加多值属性下属性方法
@@ -1964,7 +1730,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		        attrHtml += "</select>";
 		        attrHtml += "<div class='btn-wrap'>" +
 		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon delModelItem'></i>" +
+		        "<i class='icon delStruct'></i>" +
 		        "<i class='icon-simulate-trashsm'></i>" +
 		        "</div>" +
 		        "</div>" +
@@ -1978,170 +1744,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    });		                      
     };
 
-   /* *//**
-     * 添加多值属性方法
-      *//*
-    function addMoreGroup(el) {
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var entityId =$(el).closest(".collapse-header").attr("data-abcattrcode");               
-        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        $CPF.showLoading();
-		Ajax.ajax('admin/dictionary/basicItem/getRepeat?entityId', {
-			entityId: entityId
-		}, function(data) {			
-			var data = data.repeat;		
-			
-			if (data.length == 0) {
-				Dialog.notice("请在模型中添加多值属性", "warning");
-				$CPF.closeLoading();	
-				return;
-			}
-            var moreAttrHtml = "<li class='more-attr clear-fix'>" +
-            "<div class='more-attr-title collapse-header' data-order='' data-id=''>" +
-            "<div class='icon-label more-attr'>" +
-            "<i class='icon icon-more-attr'></i>" +
-            "<span class='text'>多值属性</span>" +
-            "</div>" +
-            "<div class='label-bar more-attr edit'>" +
-            "<input type='text' class='edit-input text' value='多值属性名称'>" +
-            "<select class='abc-attr'>"
-            for(var i=0; i<data.length; i++) {
-            	moreAttrHtml += "<option data-id='"+data[i].code+"' value='"+data[i].cnName+"'>"+data[i].cnName+"</option>";                
-            }
-            moreAttrHtml += "</select>";                    		    	    			    
-	        moreAttrHtml += "<select class='node-ops-type'>";
-	        var nodePosType = nodePosTypeMULTIATTR;
-			for(var i=0; i<nodePosType.length; i++) {
-			    if(nodePosType[i] === "写"){
-			    	moreAttrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    }else {
-			    	moreAttrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";	
-			    }
-			    		          
-		    };
-		    moreAttrHtml += "</select>";
-		    moreAttrHtml += "<div class='btn-wrap'>" +
-		    "<i class='icon icon-save'></i>" +
-		    "<i class='icon icon-add-sm group'></i>" +
-		    "<i class='icon delModelItem'></i>" +
-		    "<i class='icon icon-arrow-sm'></i>" +
-		    "</div>" +
-		    "</div>" +
-		    "</div>" +
-		    "<ul class='more-attr-drag-wrap dragEdit-wrap collapse-content collapse-content-active' id='dragEdit-"+dragWrapLen+"'>" +
-		    "</ul>" +
-		    "</li>"		            
-		    var $html = $(moreAttrHtml).prependTo($content);
-		    $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-		    drag($(".dragEdit-wrap").length);
-		    addUnfold(el);
-		    $CPF.closeLoading();			 		    		  
-	    });                                       
-    };*/
-    
-    /**
-     * 添加关系属性方法
-      */
-    function addRattr(el) {
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var entityId = $(el).closest(".collapse-header").attr("data-abcattrcode");
-        if (entityId == undefined) {
-        	entityId = $(el).closest(".collapse-header").closest(".collapse-content").siblings(".collapse-header").attr("data-abcattrcode");
-        }
-        
-        if($(el).closest(".collapse-header").hasClass("attr-abc-title")) {
-        	entityId = $(el).closest(".attr-relative")
-        		.find(".attr-relative-title")
-        		.find(".label-bar")
-        		.find(".abc-attr ")
-        		.find("option:selected").attr("data-id");
-        }
-        $CPF.showLoading();
-		Ajax.ajax('admin/dictionary/recordRelationType/getRelation', {
-			leftRecordType: entityId,
-			relationType: 6
-		}, function(data) {			
-			var relationList = data.relationList;
-			if (relationList.length == 0) {
-                Dialog.notice("请在模型中添加<对一>的关系", "warning");
-                $CPF.closeLoading();    
-                return;
-	          } 
-			
-			if (data.code == 400) {
-				Dialog.notice("操作失败！刷新后重试", "warning");
-				$CPF.closeLoading();		
-				return;
-			}
-			
-			var attrHtml = "<li class='add-attr clear-fix'>" +
-            "<div class='icon-label attr' data-type='8' data-order='' data-id=''>" +
-            "<i class='icon icon-attr'></i>" +
-            "<span class='text'>关系属性</span>" +
-            "</div>" +
-            "<div class='label-bar rattr edit' data-type='8' data-order='' data-id=''>" +
-            "<input type='text' class='edit-input text' value='"+relationList[0].name+"'>" +
-            "<select class='abc-attr relationCode'>"            
-	            for(var i=0; i<relationList.length; i++) {            	
-	            	attrHtml += "<option data-id='"+relationList[i].typeCode+"' data-rightId='"+relationList[i].rightRecordType+"' value='"+relationList[i].name+"'>"+relationList[i].name+"</option>";                
-	            }
-			attrHtml += "</select>";
-			
-			var rightRecordType = relationList[0].rightRecordType;
-			
-		   Ajax.ajax('admin/dictionary/basicItem/getComm', {
-			   entityId:rightRecordType
-		   }, function(data){		    	
-	            var data = data.commList;
-				if (data.length == 0) {
-	                Dialog.notice("请在模型中添加属性", "warning");
-	                $CPF.closeLoading();    
-	                return;
-		          } 
-				attrHtml +=  "<select class='abc-attr rattrType'>"            
-	            for(var i=0; i<data.length; i++) {
-	            	attrHtml += "<option item-data-type='"+data[i][2]+"' data-id='"+data[i][0]+"' value='"+data[i][1]+"'>"+data[i][1]+"</option>";                
-	            }
-				attrHtml += "</select>";
-				
-				attrHtml += "<select class='data-type attr-type'>";            
-				   Ajax.ajax('admin/node/basicItemNode/getDataType', {
-					   dataType:data[0][2]
-				   }, function(data){		
-					   
-				    	var dataTypeList = data.dataType;
-				    	for(var i=0; i<dataTypeList.length; i++) {
-				    		attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>"; 
-			            };
-			            attrHtml += "</select>";
-				  
-				attrHtml += "<select class='node-ops-type'>";	
-				var nodePosType = nodePosTypeRATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] === "写") {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-			    	}
-		            	         
-		         };
-		         attrHtml += "</select>";
-		         attrHtml += "<div class='btn-wrap'>" +
-		         "<i class='icon icon-save'></i>" +
-		         "<i class='icon delModelItem'></i>" +
-		         "<i class='icon-simulate-trashsm'></i>" +
-		         "</div>" +
-		         "</div>" +
-		         "</li>";
-		         var $html = $(attrHtml).prependTo($content);
-		         $html.find("select").css({"width":"13%","marginLeft":"16px"}).select2();		            
-		         addUnfold(el);
-		         $CPF.closeLoading();		
-				 });
-		    });
-			
-	    });		                      
-    };
 
     /**
      * 添加关系方法
@@ -2186,7 +1788,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	        relativeHtml += "</select>";
 	        relativeHtml += "<div class='btn-wrap'>" +
             "<i class='icon icon-save'></i>" +  
-            "<i class='icon delModelItem'></i>" +
+            "<i class='icon delStruct'></i>" +
             "<i class='icon icon-arrow-sm'></i>" +
             "</div>" +
             "</div>" +
@@ -2236,7 +1838,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	        relativeHtml += "<div class='btn-wrap'>" +
             "<i class='icon icon-save'></i>" +  
             "<i class='icon icon-add-filterGroup group'></i>" +
-            "<i class='icon delModelItem'></i>" +
+            "<i class='icon delStruct'></i>" +
             "<i class='icon icon-arrow-sm'></i>" +
             "</div>" +
             "</div>" +
@@ -2251,131 +1853,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		    $CPF.closeLoading();			    
     }; 
     
-    
-    /**
-     * 添加过滤条件 filterGroup
-      */
-    function addFilterGroup(el) {
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        
-       var entityId = $(el).closest(".collapse-header").attr("entityId");
-       var source = $(el).closest(".collapse-header").attr("source");
-        
-        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        $CPF.showLoading();
-            var relativeHtml = "<li class='attr-relative'>" +
-            "<div class='attr-relative-title collapse-header' source='"+source+"' entityId='"+entityId+"' data-order='' data-id=''>" +
-            "<div class='icon-label attr-relative'>" +
-            "<i class='icon icon-attr-relative'></i><span class='text'>Group</span>" +
-            "</div>" +
-            "<div class='label-bar filterGroup edit'>" +
-            "<input type='text' class='edit-input text' value='filterGroup名称'>";
-            relativeHtml += "<select class='node-ops-type'>";	
-            var nodePosType = optFILTERS;
-            for(var key in nodePosType) {
- 		    	relativeHtml += "<option value='"+key+"'>"+nodePosType[key]+"</option>"; 
- 	         }
-	        relativeHtml += "</select>";
-	        relativeHtml += "<div class='btn-wrap'>" +
-            "<i class='icon icon-save'></i>" +  
-            "<i class='icon icon-add-filter group'></i>" +
-            "<i class='icon delModelItem'></i>" +
-            "<i class='icon icon-arrow-sm'></i>" +
-            "</div>" +
-            "</div>" +
-            "</div>" +            
-            "<ul class='attr-relative-drag-wrap dragEdit-wrap collapse-content collapse-content-active' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>";         		    
-		    var $html = $(relativeHtml).prependTo($content);
-           $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-            addUnfold(el);
-		    drag($(".dragEdit-wrap").length);
-		    $CPF.closeLoading();			    
-    }; 
-    
-    
-    /**
-     * 添加过滤条件 filter
-      */
-    function addFilter(el) {
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        
-        var entityId = $(el).closest(".collapse-header").attr("entityId");
-        var source = $(el).closest(".collapse-header").attr("source");
-        
-        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        $CPF.showLoading();
-            var relativeHtml = "<li class='attr-relative'>" +
-            "<div class='attr-relative-title collapse-header' source='"+source+"' entityId='"+entityId+"' data-order='' data-id=''>" +
-            "<div class='icon-label attr-relative'>" +
-            "<i class='icon icon-attr-relative'></i><span class='text'>filter</span>" +
-            "</div>" +
-            "<div class='label-bar filter edit'>" +
-            "<input type='text' class='edit-input filterName text' value='filter名称'>";
-            
-            relativeHtml += "<select class='abcattrCodeData'>";	
-            //getCriteriaSymbol
-    	    Ajax.ajax('admin/dictionary/basicItem/getComm', {
-    	    	entityId:entityId
-    	    }, function(data){		
-    	    	var entityData = data.commList;
-    	    	 Ajax.ajax('admin/dictionary/basicItem/getRepeatChild', {
-    	    		 repeatId:entityId
-    	    	    }, function(data){		
-    	    	    	var repeatData = data.repeatChild;
-    	    	if (source == "moreAttr") {
-    	    		 for(var key in repeatData) {
-    	 		    	relativeHtml += "<option value='"+repeatData[key].code+"'>"+repeatData[key].cnName+"</option>"; 
-    	 	         };
-    	    	} else {
-    	    		 for(var key in entityData) {
-    	 		    	relativeHtml += "<option value='"+entityData[key][0]+"'>"+entityData[key][1]+"</option>"; 
-    	 	         };
-    	    	}
-		   
-	        relativeHtml += "</select>";
-            
-            relativeHtml += "<select class='node-Symbol-type'>";	
-            //getCriteriaSymbol
-    	    Ajax.ajax('admin/node/binFilterBody/getCriteriaSymbol', {
-    	    	dataType:12
-    	    }, function(data){		
-    	    	var nodeSymbolType = data.symbolMap;
-		    for(var key in nodeSymbolType) {
-		    	relativeHtml += "<option value='"+key+"'>"+nodeSymbolType[key]+"</option>"; 
-	         };
-	        relativeHtml += "</select>"+
-	        "<input type='text' class='edit-input valueStr text' value='value'>";
-            
-            relativeHtml += "<select class='node-ops-type'>";	
-            var nodePosType = optFILTERS;
-            for(var key in nodePosType) {
- 		    	relativeHtml += "<option value='"+key+"'>"+nodePosType[key]+"</option>"; 
- 	         }
-	        relativeHtml += "</select>";
-	        relativeHtml += "<div class='btn-wrap'>" +
-            "<i class='icon icon-save'></i>" +  
-            /*"<i class='icon icon-add-filter group'></i>" +*/
-            "<i class='icon delModelItem'></i>" +
-           /* "<i class='icon icon-arrow-sm'></i>" +*/
-            "</div>" +
-            "</div>" +
-            "</div>" +            
-            "<ul class='attr-relative-drag-wrap dragEdit-wrap collapse-content collapse-content-active' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>";         		    
-		    var $html = $(relativeHtml).prependTo($content);
-            $html.find("select").css({"width":"13%","marginLeft":"16px"}).select2();
-            $html.find("select.node-ops-type").css({"width":"8%","marginLeft":"16px"}).select2();
-            
-            addUnfold(el);
-		    drag($(".dragEdit-wrap").length);
-		    $CPF.closeLoading();	
-    	    })
-    	    })
-    	    })
-    }; 
     
     
     /**
@@ -2428,7 +1905,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         relativeHtml += "<div class='btn-wrap'>" +
             "<i class='icon icon-save'></i>" +  
             "<i class='icon icon-add-filterGroup group'></i>" +
-            "<i class='icon delModelItem'></i>" +
+            "<i class='icon delStruct'></i>" +
             "<i class='icon icon-arrow-sm'></i>" +
             "</div>" +
             "</div>" +
@@ -2905,7 +2382,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	            /*});*/
 		         rabcHtml += "<div class='btn-wrap'>" +
 	            "<i class='icon icon-save'></i>" +
-	            "<i class='icon delModelItem'></i>" +
+	            "<i class='icon delStruct'></i>" +
 	            /*"<i class='icon icon-add-abc group'></i>" +	          
 	             "<i class='icon icon-arrow-sm'></i>" + */ 
 	            "</div>" +
@@ -3238,44 +2715,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		});
     };
     
-    //删除Filters的请求方法
-    function deleteAjaxFilters(id, callback) {
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/binFilterBody/doDelete', {			
-			 id: id
-		 }, function(data) {
-			 
-			 if(data.code == "400") {
-				 Dialog.notice(data.msg, "error");
-				 $CPF.closeLoading();
-				 return;
-			 }
-			 
-			 callback();
-			 removePop();
-			 $CPF.closeLoading();
-		});
-    };
-       
-    
-    
-    
-    //关系删除方法
-    function relativeDelete(el) {
-    	var $relativeBar = $(el).closest(".label-bar");
-    	var id = $relativeBar.closest(".collapse-header").attr("data-id");
-    	var isDelChil = true;
-    	var callback = function() {
-    		$relativeBar.closest("li.attr-relative").remove();    		
-    	};
-    	if($relativeBar.hasClass("al-save")){
-    		deleteAjax(id, isDelChil, callback);	
-    	}else {
-    		callback();
-    		removePop();
-    	}  
-    }; 
-
     $page.on("click", function () {    	
         removePop();
     });
@@ -3397,7 +2836,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     });
     
     //删除属性事件绑定
-    $("#structBaseEdit").on("click", ".icon-trash , .delModelItem", function (e) {
+    $("#structBaseEdit").on("click", ".icon-trash , .delStruct", function (e) {
         e.stopPropagation();
         removePop();
         var $label = $(this).closest(".label-bar");
@@ -3619,13 +3058,13 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     $("#structBaseEdit").on("click", ".opera.confirm", function(e) {  
     	e.stopPropagation();    
         var entityTitle = $(".icon-trash.active").closest(".entity-title");
-        var labelBar = $(".delModelItem.active").closest(".label-bar");
+        var labelBar = $(".delStruct.active").closest(".label-bar");
         if(entityTitle.length > 0) {
         	var el = $(".icon-trash.active")[0];
         	entityDelete(el);
         	return;
         }
-        var el = $(".delModelItem.active")[0];  
+        var el = $(".delStruct.active")[0];  
         
         attrDelete(el);  
     })
@@ -3633,12 +3072,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
      //属性删除方法
     function attrDelete(el) {    	
     	var $attrBar = $(el).closest(".label-bar");    	
-    	var miCode = $attrBar.closest(".collapse-header").attr("data-code");
+    	var sbId = $attrBar.closest(".collapse-header").attr("data-sbid");
     	var callback = function() {
     		$attrBar.parent().remove();    		
     	};    	
     	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(miCode, callback);
+    		deleteAjax(sbId, callback);
     	}else {
     		callback();
     		removePop();
@@ -3647,7 +3086,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
     function entityDelete(el) {
     	var $entityTitle = $(el).closest(".entity-title");
-    	var miCode = $entityTitle.attr("data-code");
+    	var sbId = $entityTitle.attr("data-sbid");
     	var callback = function() {
     		$entityTitle.next(".collapse-content").html();
     		$entityTitle.parent(".entity-edit-wrap")
@@ -3655,7 +3094,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     			.addClass("edit");
     	};
     	if($entityTitle.hasClass("al-save")) {
-    		deleteAjax(miCode, callback);
+    		deleteAjax(sbId, callback);
     	}else {
     		callback();
     		removePop();
@@ -3664,10 +3103,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
     
     //删除的请求方法
-    function deleteAjax(miCode, callback) {
+    function deleteAjax(sbId, callback) {
     	$CPF.showLoading();
-    	Ajax.ajax('admin/modelItem/delModelItem', {			
-    		miCode: miCode
+    	Ajax.ajax('admin/structBase/delStruct', {			
+    		sbId: sbId
 		 }, function(data) {	
 			 
 			 if (data.code == 200) {
@@ -3685,8 +3124,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     //删除-仅组
     $("#structBaseEdit").on("click", ".opera.only-group", function(e) { 
     	e.stopPropagation();
-    	var el = $(".delModelItem.active")[0];       
-        var labelBar = $(".delModelItem.active").closest(".label-bar");        
+    	var el = $(".delStruct.active")[0];       
+        var labelBar = $(".delStruct.active").closest(".label-bar");        
         if(labelBar.hasClass("more-attr")) {
         	moreAttrDelete(el, false);
         }else if(labelBar.hasClass("attr-group")) {

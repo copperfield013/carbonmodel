@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 
 import cho.carbon.imodel.admin.controller.AdminConstants;
+import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.Constants;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
@@ -41,6 +42,9 @@ public class ModelRelationTypeController {
 	
 	@Resource
 	ModelItemService miService;
+	
+	@Resource
+	CommService commService;
 	
 	
 	Logger logger = Logger.getLogger(ModelRelationTypeController.class);
@@ -179,6 +183,28 @@ public class ModelRelationTypeController {
 		}
 	}
 	
+	/**
+	 * 根据关系code， 获取本关系对象
+	 * @param typeCode
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getModelRelation")
+	public String getModelRelation(String typeCode){
+		Map<String, Object> map = new HashMap<String, Object>();
+		JSONObject jobj = new JSONObject(map);
+		try {
+			ModelRelationType modelRelationType = commService.get(ModelRelationType.class, typeCode);
+			map.put("modelRelationType", modelRelationType);
+			map.put("code", 200);
+			map.put("msg", "成功！");
+			return jobj.toJSONString();
+		} catch (Exception e) {
+			map.put("code", 400);
+			map.put("msg", "失败！");
+			return jobj.toJSONString();
+		}
+	}
 	
 	/**
 	 * 保存编辑后的 关系名称
@@ -244,6 +270,33 @@ public class ModelRelationTypeController {
 			
 			List<ModelRelationType> relationList = modelRelationTypeService.getRelaByType(leftRecordType, relationType2);
 			map.put("relationList", relationList);
+			map.put("code", 200);
+			map.put("msg", "操作成功");
+			return jobj.toString();
+		} catch (Exception e) {
+			logger.error("操作失败", e);
+			map.put("code", 400);
+			map.put("msg", "操作失败");
+			return jobj.toString();
+		}
+	}
+    
+    
+    /**
+     * 	获取左model和右model共同的关系
+     * @param leftModelCode
+     * @param rightModelCode
+     * @return
+     */
+    @ResponseBody
+	@RequestMapping("/getModelRela")
+	public String getModelRela(String leftModelCode, String rightModelCode){
+		Map<String, Object> map = new HashMap<String, Object>();
+		JSONObject jobj = new JSONObject(map);
+		try {
+			
+			List<ModelRelationType> modelRelaList = modelRelationTypeService.getEntityRelaByBitemId(leftModelCode, rightModelCode);
+			map.put("modelRelaList", modelRelaList);
 			map.put("code", 200);
 			map.put("msg", "操作成功");
 			return jobj.toString();

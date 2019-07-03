@@ -157,8 +157,44 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		}); 
 	 });
 	 
+	 // 关系属性 改变的时候 ， 改变miCode
+	 $($page).on("change", ".radioStrucRela", function() {
+		 var relaCode = $(this).val();
+		 
+		 var $strucMiCodeItemCode = $(".strucMiCodeItemCode");
+		 
+		 if ($strucMiCodeItemCode.length>=1) {
+			 Ajax.ajax('admin/modelRelationType/getModelRelation', {
+				 typeCode:relaCode
+	    	 }, function(data) {
+	    		 
+	    		 if (data.code==200) {
+	    			 var modelRela = data.modelRelationType;
+	    			 Ajax.ajax('admin//modelItem/getShowCode', {
+	    				 miCode:modelRela.rightModelCode
+	    	    	 }, function(data) {
+	    	    		 var modelItemList = data.modelItemList;
+	    	    		 var str = "";  
+	    	    		 
+	    	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
+	    	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 
+	    	            }
+	    	            	
+	    	        		$strucMiCodeItemCode.empty().append(str);
+	    	            }); 
+	    			 
+	    			 
+	    		 } else {
+	    			 
+	    			 //这里报错
+	    		 }
+	    		
+	            }); 
+		 }
+		 
+	 });
 	 
-	  //
+	  	//
 	    $($page).on("change", ".strucMiCodeItemCode", function() {  
 	    	var miCode = $(this).val();
 	    	 var cnName = $(this).find("option:selected").text();
@@ -166,18 +202,52 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    	
 	    	var $strucFieldValueType = $(".strucFieldValueType");
 	    	
-	    	 Ajax.ajax('admin/structBase/getValueType', {
-	    		 miCode:miCode
-	    	 }, function(data) {
-	    		 var valueTypeMap = data.valueTypeMap;
-	    		 var str = "";  
+	    	// 改变数据类型
+	    	if ($strucFieldValueType.length>=1) {
+	    		Ajax.ajax('admin/structBase/getValueType', {
+		    		 miCode:miCode
+		    	 }, function(data) {
+		    		 var valueTypeMap = data.valueTypeMap;
+		    		 var str = "";  
+		    		 
+	            	for (var key in valueTypeMap) { //遍历json数组时，这么写p为索引，0,1
+	                   str = str + "<option value=\"" + key + "\">" + valueTypeMap[key] + "</option>"; 
+	                }
+	                	
+	                	$strucFieldValueType.empty().append(str);
+		            }); 
+	    	 }
+	    	
+	    	 // 实体code， 改变的时候， 改变多选关系值域
+	    	 
+	    	 var $multStrucRela = $(".multStrucRela");
+	    	 if ($multStrucRela.length>=1) {
+	    		 // 获取左实体code
+	    		var sbPid =  $("#structTreeFieldAdd").attr("sbPid");
+	    		 debugger;
+	    		Ajax.ajax('admin/structBase/getStrucMiCode', {
+	    			sbId:sbPid
+		    	 }, function(data) {
+		    		 var strucMiCode = data.strucMiCode;
+		    		 debugger;
+		    		// 获取多选关系值域
+		    		 Ajax.ajax('admin/modelRelationType/getModelRela', {
+		    			 leftModelCode:strucMiCode.itemCode,
+		    			rightModelCode:miCode
+			    	 }, function(data) {
+			    		 var modelRelaList = data.modelRelaList;
+			    		 var str = "";  
+			    		 debugger;
+		            	for (var key in modelRelaList) { //遍历json数组时，这么写p为索引，0,1
+		                   str = str + "<option value=\"" + modelRelaList[key].typeCode + "\">" + modelRelaList[key].name + "</option>"; 
+		                }
+		                	
+		            	$multStrucRela.empty().append(str);
+			            }); 
+		    		 
+		         }); 
 	    		 
-            	for (var key in valueTypeMap) { //遍历json数组时，这么写p为索引，0,1
-                   str = str + "<option value=\"" + key + "\">" + valueTypeMap[key] + "</option>"; 
-                }
-                	
-                	$strucFieldValueType.empty().append(str);
-	            }); 
+	    	 }
 	    	 
 	    });
 	

@@ -36,9 +36,13 @@ public class FieldStrategy  implements StructBaseStrategy {
 	}
 
 	@Override
-	public void delStruct(StrucBaseContainer strucBaseContainer, CommService commServicet, StrucBaseService strucBaseService) {
-		// TODO Auto-generated method stub
+	public void delStruct(Integer sbId, CommService commService, StrucBaseService strucBaseService) {
 		
+		StrucMiCode strucMiCode = new StrucMiCode(sbId, null);
+		StrucFieldValue strucFieldValue = new StrucFieldValue(sbId, null);
+		commService.delete(strucMiCode);
+		commService.delete(strucFieldValue);
 	}
+
 	
 }

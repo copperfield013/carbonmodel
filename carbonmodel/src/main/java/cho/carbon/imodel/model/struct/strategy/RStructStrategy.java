@@ -54,8 +54,18 @@ public class RStructStrategy  implements StructBaseStrategy {
 	}
 
 	@Override
-	public void delStruct(StrucBaseContainer strucBaseContainer, CommService commServicet, StrucBaseService strucBaseService) {
-		// TODO Auto-generated method stub
+	public void delStruct(Integer sbId, CommService commService, StrucBaseService strucBaseService) {
+		StrucMiCode strucMiCode = new StrucMiCode(sbId, null);
+		StrucPointer strucPointer = new StrucPointer(sbId, null);
+		
+		commService.delete(strucMiCode);
+		commService.delete(strucPointer);
+		
+		//删除具体关系
+		List<StrucRelation> strucRelationBySbId = strucBaseService.getStrucRelationBySbId(sbId);
+		for (StrucRelation strucRelation : strucRelationBySbId) {
+			commService.delete(strucRelation);
+		}
 		
 	}
 	

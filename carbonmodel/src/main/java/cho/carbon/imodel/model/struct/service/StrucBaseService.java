@@ -68,4 +68,10 @@ public interface StrucBaseService {
 	 */
 	List<StrucRelation> getStrucRelationBySbId(Integer sbId);
 
+	/**
+	 * 	删除结构体
+	 * @param sbId
+	 */
+	void deleteStruct(Integer sbId);
+
 }

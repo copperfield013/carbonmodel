@@ -1,5 +1,7 @@
 package cho.carbon.imodel.model.struct.strategy;
 
+import java.util.List;
+
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.struct.pojo.StrucFieldValue;
 import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
@@ -26,26 +28,45 @@ public class RfieldStrategy  implements StructBaseStrategy {
 		strucFieldValue.setSbId(sbId);
 		
 		
-		StrucRelation strucRelation = strucBaseContainer.getStrucRelation();
-		strucRelation.setSbId(sbId);
-		
-		
 		if ("add".contentEquals(flag)) {
 			commService.insert(strucMiCode);
 			commService.insert(strucFieldValue);
-			commService.insert(strucRelation);
 		}  else {
 			commService.update(strucMiCode);
 			commService.update(strucFieldValue);
-			commService.update(strucRelation);
+		}
+		
+		
+		//删除具体关系
+		List<StrucRelation> strucRelationBySbId = strucBaseService.getStrucRelationBySbId(sbId);
+		for (StrucRelation strucRelation : strucRelationBySbId) {
+			commService.delete(strucRelation);
+		}
+		
+		//重新添加关系
+		String modelRelationType = strucBaseContainer.getStrucRelation().getModelRelationType();
+		String[] modelRelas = modelRelationType.split(",");
+		for (int i = 0; i < modelRelas.length; i++) {
+			String modelRelaCode = modelRelas[i];
+			StrucRelation strucRela = new StrucRelation(null, sbId, modelRelaCode);
+			commService.insert(strucRela);
 		}
 		
 	}
 
 	@Override
-	public void delStruct(StrucBaseContainer strucBaseContainer, CommService commServicet, StrucBaseService strucBaseService) {
-		// TODO Auto-generated method stub
+	public void delStruct(Integer sbId, CommService commService, StrucBaseService strucBaseService) {
+		StrucMiCode strucMiCode = new StrucMiCode(sbId, null);
+		StrucFieldValue strucFieldValue = new StrucFieldValue(sbId, null);
 		
+		commService.delete(strucMiCode);
+		commService.delete(strucFieldValue);
+		//删除具体关系
+		List<StrucRelation> strucRelationBySbId = strucBaseService.getStrucRelationBySbId(sbId);
+		for (StrucRelation strucRelation : strucRelationBySbId) {
+			commService.delete(strucRelation);
+		}
 	}
+
 	
 }
