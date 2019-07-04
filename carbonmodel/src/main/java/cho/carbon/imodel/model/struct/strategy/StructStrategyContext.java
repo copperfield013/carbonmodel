@@ -1,6 +1,7 @@
 package cho.carbon.imodel.model.struct.strategy;
 
 import java.util.List;
+import java.util.Random;
 
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
@@ -56,15 +57,21 @@ public class StructStrategyContext {
 	public void copyStruct(Integer sbId) throws CloneNotSupportedException {
 		
 		StrucBase strucBase = commService.get(StrucBase.class, sbId);
+		String title = strucBase.getTitle();
+		
+		title = "【"+title+"】复制结构" + System.currentTimeMillis();
 		//复制结构体
-		shuntStruc(strucBase, null);
+		shuntStruc(strucBase, null, title);
 	}
 	
-	private void shuntStruc(StrucBase strucBase, Integer pSbId) throws CloneNotSupportedException {
+	private void shuntStruc(StrucBase strucBase, Integer pSbId, String title) throws CloneNotSupportedException {
 		//克隆对象
 		StrucBase cloneStrucBase = (StrucBase)strucBase.clone();
 		cloneStrucBase.setId(null);
 		cloneStrucBase.setParentId(pSbId);
+		if (title!=null) {
+			cloneStrucBase.setTitle(title);
+		}
 		commService.insert(cloneStrucBase);
 		
 		//克隆此对象， 并固化
@@ -82,7 +89,7 @@ public class StructStrategyContext {
 				List<StrucBase> structStairChild = strucBaseService.getStructStairChild(strucBase.getId());
 				//继续克隆孩子啊
 				for (StrucBase strucBase2 : structStairChild) {
-					shuntStruc(strucBase2, cloneStrucBase.getId());
+					shuntStruc(strucBase2, cloneStrucBase.getId(), null);
 				}
 				break;
 		}
