@@ -431,7 +431,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucMiCode.id", sbId, null));
 
-		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucMiCode.itemCode",itemCode , "选择实体", 15);
+		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucMiCode.itemCode",itemCode , "选择模型", 15);
 		// 获取值域
 		Map<String, String> valueDomain = new HashMap<String, String>();
 		  for (ModelItem modelItem : modelItemList) {
