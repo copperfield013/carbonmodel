@@ -68,5 +68,29 @@ public class RStructStrategy  implements StructBaseStrategy {
 		}
 		
 	}
+
+	@Override
+	public void copyStruct(Integer sourceSbId, Integer cloneSbId, CommService commService,
+			StrucBaseService strucBaseService) throws CloneNotSupportedException {
+		
+		StrucMiCode strucMiCode = commService.get(StrucMiCode.class, sourceSbId);
+		StrucMiCode cloneStrucMiCode = (StrucMiCode)strucMiCode.clone();
+		cloneStrucMiCode.setSbId(cloneSbId);
+		commService.insert(cloneStrucMiCode);
+		
+		StrucPointer strucPointer = commService.get(StrucPointer.class, sourceSbId);
+		StrucPointer cloneStrucPointer = (StrucPointer)strucPointer.clone();
+		cloneStrucPointer.setSbId(cloneSbId);
+		commService.insert(cloneStrucPointer);
+		
+		//克隆具体关系
+		List<StrucRelation> strucRelationBySbId = strucBaseService.getStrucRelationBySbId(sourceSbId);
+		for (StrucRelation strucRelation : strucRelationBySbId) {
+			StrucRelation cloneStrucRelation = (StrucRelation)strucRelation.clone();
+			cloneStrucRelation.setId(null);
+			cloneStrucRelation.setSbId(cloneSbId);
+			commService.insert(cloneStrucRelation);
+		}
+	}
 	
 }

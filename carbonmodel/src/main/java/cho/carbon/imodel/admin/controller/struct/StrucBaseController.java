@@ -344,4 +344,18 @@ public class StrucBaseController {
 			}
 		}
 	    
+	    
+	    @ResponseBody
+		@RequestMapping(value = "/copyStruct")
+		public AjaxPageResponse copyStruct(Integer sbId) {
+			try {
+				strucBaseService.createCopyStruct(sbId);
+				
+				return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("操作成功", "strucBase_list");
+			} catch (Exception e) {
+				logger.error("操作失败", e);
+				return AjaxPageResponse.FAILD("操作失败");
+			}
+		}
+	    
 }

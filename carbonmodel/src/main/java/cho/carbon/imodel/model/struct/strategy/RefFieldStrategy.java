@@ -51,4 +51,25 @@ public class RefFieldStrategy  implements StructBaseStrategy {
 		commService.delete(strucPointer);
 	}
 
+	@Override
+	public void copyStruct(Integer sourceSbId, Integer cloneSbId, CommService commService,
+			StrucBaseService strucBaseService) throws CloneNotSupportedException {
+
+
+		StrucMiCode strucMiCode = commService.get(StrucMiCode.class, sourceSbId);
+		StrucMiCode cloneStrucMiCode = (StrucMiCode)strucMiCode.clone();
+		cloneStrucMiCode.setSbId(cloneSbId);
+		commService.insert(cloneStrucMiCode);
+		
+		StrucFieldValue strucFieldValue = commService.get(StrucFieldValue.class, sourceSbId);
+		StrucFieldValue cloneStrucFieldValue = (StrucFieldValue)strucFieldValue.clone();
+		cloneStrucFieldValue.setSbId(cloneSbId);
+		commService.insert(cloneStrucFieldValue);
+		
+		StrucPointer strucPointer = commService.get(StrucPointer.class, sourceSbId);
+		StrucPointer cloneStrucPointer = (StrucPointer)strucPointer.clone();
+		cloneStrucPointer.setSbId(cloneSbId);
+		commService.insert(cloneStrucPointer);
+	}
+
 }

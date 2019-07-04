@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "t_cc_struc_micode")
-public class StrucMiCode {
+public class StrucMiCode implements Cloneable {
 	
 	@Id
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -46,4 +46,9 @@ public class StrucMiCode {
 		this.itemCode = itemCode;
 	}
 
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return (StrucMiCode)super.clone();
+	}
 }

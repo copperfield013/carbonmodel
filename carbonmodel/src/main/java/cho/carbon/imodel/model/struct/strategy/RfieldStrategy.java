@@ -68,5 +68,30 @@ public class RfieldStrategy  implements StructBaseStrategy {
 		}
 	}
 
+	@Override
+	public void copyStruct(Integer sourceSbId, Integer cloneSbId, CommService commService,
+			StrucBaseService strucBaseService) throws CloneNotSupportedException {
+		
+		
+		StrucMiCode strucMiCode = commService.get(StrucMiCode.class, sourceSbId);
+		StrucMiCode cloneStrucMiCode = (StrucMiCode)strucMiCode.clone();
+		cloneStrucMiCode.setSbId(cloneSbId);
+		commService.insert(cloneStrucMiCode);
+		
+		StrucFieldValue strucFieldValue = commService.get(StrucFieldValue.class, sourceSbId);
+		StrucFieldValue cloneStrucFieldValue = (StrucFieldValue)strucFieldValue.clone();
+		cloneStrucFieldValue.setSbId(cloneSbId);
+		commService.insert(cloneStrucFieldValue);
+		
+		//克隆具体关系
+		List<StrucRelation> strucRelationBySbId = strucBaseService.getStrucRelationBySbId(sourceSbId);
+		for (StrucRelation strucRelation : strucRelationBySbId) {
+			StrucRelation cloneStrucRelation = (StrucRelation)strucRelation.clone();
+			cloneStrucRelation.setSbId(cloneSbId);
+			cloneStrucRelation.setId(null);
+			commService.insert(cloneStrucRelation);
+		}
+	}
+
 	
 }

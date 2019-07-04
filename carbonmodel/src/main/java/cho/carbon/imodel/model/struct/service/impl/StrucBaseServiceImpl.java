@@ -651,6 +651,12 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		context.delStruct(sbId);
 	}
 
+	@Override
+	public void createCopyStruct(Integer sbId) throws Exception {
+		StructStrategyContext context = new StructStrategyContext(commService, this);
+		context.copyStruct(sbId);
+	}
+
 }
 
 

@@ -17,7 +17,7 @@ import cho.carbon.meta.enun.StrucElementType;
  */
 @Entity
 @Table(name = "t_cc_struc_base")
-public class StrucBase {
+public class StrucBase implements Cloneable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -128,6 +128,10 @@ public class StrucBase {
 		return "未知字段";
 	}
 	
-	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		
+		return (StrucBase)super.clone();
+	}
 	
 }

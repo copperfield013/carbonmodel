@@ -16,7 +16,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "t_cc_struc_field_value")
-public class StrucFieldValue {
+public class StrucFieldValue implements Cloneable {
 	
 	@Id
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -50,4 +50,9 @@ public class StrucFieldValue {
 		this.valueType = valueType;
 	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return (StrucFieldValue)super.clone();
+	}
+	
 }

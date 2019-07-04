@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_cc_struc_relation")
-public class StrucRelation {
+public class StrucRelation implements Cloneable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,4 +56,8 @@ public class StrucRelation {
 		this.modelRelationType = modelRelationType;
 	}
 	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return (StrucRelation)super.clone();
+	}
 }

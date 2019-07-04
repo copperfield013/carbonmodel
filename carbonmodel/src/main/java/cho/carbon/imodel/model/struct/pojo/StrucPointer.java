@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "t_cc_struc_pointer")
-public class StrucPointer {
+public class StrucPointer implements Cloneable {
 	
 	@Id
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -46,4 +46,8 @@ public class StrucPointer {
 		this.pointer = pointer;
 	}
 	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return (StrucPointer)super.clone();
+	}
 }

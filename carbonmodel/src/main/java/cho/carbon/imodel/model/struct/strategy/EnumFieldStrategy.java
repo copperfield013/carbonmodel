@@ -16,9 +16,9 @@ public class EnumFieldStrategy  implements StructBaseStrategy {
 
 	@Override
 	public void saveOrUpdate(String flag, StrucBaseContainer strucBaseContainer, CommService commService, StrucBaseService strucBaseService) {
-		StrucMiCode strucMiCode = strucBaseContainer.getStrucMiCode();
-		
 		Integer sbId = strucBaseContainer.getStrucBase().getId();
+		
+		StrucMiCode strucMiCode = strucBaseContainer.getStrucMiCode();
 		strucMiCode.setSbId(sbId);
 		//子集对应
 		StrucFieldSubenum strucFieldSubenum = strucBaseContainer.getStrucFieldSubenum();
@@ -52,6 +52,26 @@ public class EnumFieldStrategy  implements StructBaseStrategy {
 		commService.insert(strucMiCode);
 		commService.insert(strucFieldSubenum);
 		commService.insert(strucFieldValue);
+	}
+
+	@Override
+	public void copyStruct(Integer sourceSbId, Integer cloneSbId, CommService commService,
+			StrucBaseService strucBaseService) throws CloneNotSupportedException {
+		
+		StrucMiCode strucMiCode = commService.get(StrucMiCode.class, sourceSbId);
+		StrucMiCode cloneStrucMiCode = (StrucMiCode)strucMiCode.clone();
+		cloneStrucMiCode.setSbId(cloneSbId);
+		commService.insert(cloneStrucMiCode);
+		
+		StrucFieldSubenum strucFieldSubenum = commService.get(StrucFieldSubenum.class, sourceSbId);
+		StrucFieldSubenum cloneStrucFieldSubenum = (StrucFieldSubenum)strucFieldSubenum.clone();
+		cloneStrucFieldSubenum.setSbId(cloneSbId);
+		commService.insert(cloneStrucFieldSubenum);
+		
+		StrucFieldValue strucFieldValue = commService.get(StrucFieldValue.class, sourceSbId);
+		StrucFieldValue cloneStrucFieldValue = (StrucFieldValue)strucFieldValue.clone();
+		cloneStrucFieldValue.setSbId(cloneSbId);
+		commService.insert(cloneStrucFieldValue);
 	}
 
 	

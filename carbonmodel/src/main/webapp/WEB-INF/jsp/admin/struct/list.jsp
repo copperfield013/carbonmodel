@@ -32,10 +32,13 @@
 						
 							<a id="edit" structId="${item.id }" href="javascript:;"  title="修改" >修改</a>
 							<a class="tab" href="admin/structBase/structTree?sbId=${item.id }" title="配置子结构" target="struct_tree" >配置子结构</a>
+							<a href="admin/structBase/copyStruct?sbId=${item.id }" confirm="确认复制【${item.title }】？">复制</a>
+							
+							
 							<%-- <a title="预览" nodeId="${item.id }" id="preview" href="javascript:;">预览</a>
 							<a id="download" nodeId="${item.id }" href="javascript:;" >下载</a>
 							
-							<a href="admin/node/basicItemNode/copyNode?nodeId=${item.id }" confirm="确认复制【${item.name }】？">复制</a>
+							
 							<a href="admin/node/basicItemNode/do_delete?id=${item.id }&isDelChil=false" confirm="确认删除？">删除</a>
 							<a href="admin/module/configModule/do_add?moduleTitle=${item.name }&mappingId=${item.id }" confirm="确认生成？">生成模块</a>
 						

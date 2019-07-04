@@ -44,5 +44,21 @@ public class FieldStrategy  implements StructBaseStrategy {
 		commService.delete(strucFieldValue);
 	}
 
+	@Override
+	public void copyStruct(Integer sourceSbId, Integer cloneSbId, CommService commService,
+			StrucBaseService strucBaseService) throws CloneNotSupportedException {
+		//克隆StrucMiCode
+		StrucMiCode strucMiCode = commService.get(StrucMiCode.class, sourceSbId);
+		StrucMiCode cloneStrucMiCode = (StrucMiCode)strucMiCode.clone();
+		cloneStrucMiCode.setSbId(cloneSbId);
+		commService.insert(cloneStrucMiCode);
+		
+		//克隆StrucFieldValue
+		StrucFieldValue strucFieldValue = commService.get(StrucFieldValue.class, sourceSbId);
+		StrucFieldValue cloneStrucFieldValue = (StrucFieldValue)strucFieldValue.clone();
+		cloneStrucFieldValue.setSbId(cloneSbId);
+		commService.insert(cloneStrucFieldValue);
+	}
+
 	
 }

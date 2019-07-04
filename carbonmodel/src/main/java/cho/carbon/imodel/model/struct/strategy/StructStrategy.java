@@ -18,7 +18,7 @@ public class StructStrategy  implements StructBaseStrategy {
 		if ("add".contentEquals(flag)) {
 			StrucMiCode strucMiCode = strucBaseContainer.getStrucMiCode();
 			strucMiCode.setSbId(strucBaseContainer.getStrucBase().getId());
-			//只能生产， 不能更新锁选择的ModeItemCode
+			//只能生产， 不能更新所选择的ModeItemCode
 			commService.insert(strucMiCode);
 		} 
 		
@@ -29,6 +29,19 @@ public class StructStrategy  implements StructBaseStrategy {
 		
 		StrucMiCode strucMiCode = new StrucMiCode(sbId, null);
 		commService.delete(strucMiCode);
+	}
+
+	@Override
+	public void copyStruct(Integer sourceSbId, Integer cloneSbId, CommService commService,
+			StrucBaseService strucBaseService) throws CloneNotSupportedException {
+		StrucMiCode strucMiCode = commService.get(StrucMiCode.class, sourceSbId);
+		
+		//克隆并固化
+		StrucMiCode cloneStrucMiCode = (StrucMiCode)strucMiCode.clone();
+		//改变父亲
+		cloneStrucMiCode.setSbId(cloneSbId);
+		
+		commService.insert(cloneStrucMiCode);
 	}
 	
 }

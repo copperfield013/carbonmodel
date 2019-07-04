@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "t_cc_struc_field_subenum")
-public class StrucFieldSubenum {
+public class StrucFieldSubenum implements Cloneable {
 	
 	@Id
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -44,6 +44,11 @@ public class StrucFieldSubenum {
 
 	public void setSubenumId(Integer subenumId) {
 		this.subenumId = subenumId;
+	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return (StrucFieldSubenum)super.clone();
 	}
 	
 }

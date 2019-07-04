@@ -74,4 +74,10 @@ public interface StrucBaseService {
 	 */
 	void deleteStruct(Integer sbId);
 
+	/**
+	 * 复制结构体
+	 * @param sbId
+	 */
+	void createCopyStruct(Integer sbId)  throws Exception ;
+
 }
