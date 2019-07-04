@@ -20,6 +20,8 @@ public class StructStrategyFactory {
 			return new RefFieldStrategy();
 		case RSTRUC:
 			return new RStructStrategy();
+		case RREFFIELD:
+			return new RrefFieldStrategy();
 			
 			
 		}

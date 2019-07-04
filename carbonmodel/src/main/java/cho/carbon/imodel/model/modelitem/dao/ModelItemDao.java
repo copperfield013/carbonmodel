@@ -51,7 +51,7 @@ public interface ModelItemDao {
 	 * @param belongMode  属于模型Code
 	 * @param pTypes  父亲的类型， 是单行组还是多行组， 或者两者都有，   ModelItem Type 里面为
 	 * @param needCorrelation   是否需要伴生属性  true : 需要
-	 * @param 获取指定类型的孩子
+	 * @param chilTypes 获取指定类型的孩子
 	 * @return   根据所传类型， 返回普通分组下的孩子 ， 多值分组下的孩子， 或者前两者
 	 */
 	List<ModelItem> getModelItemByBelongMode(String belongMode, ModelItemType[] pTypes, ModelItemType[] chilTypes, boolean needCorrelation);

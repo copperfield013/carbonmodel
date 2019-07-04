@@ -5,6 +5,7 @@ import cho.carbon.imodel.model.struct.pojo.StrucFieldSubenum;
 import cho.carbon.imodel.model.struct.pojo.StrucFieldValue;
 import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
 import cho.carbon.imodel.model.struct.pojo.StrucPointer;
+import cho.carbon.imodel.model.struct.pojo.StrucRRef;
 import cho.carbon.imodel.model.struct.pojo.StrucRelation;
 
 public class StrucBaseContainer {
@@ -14,6 +15,8 @@ public class StrucBaseContainer {
 	private StrucFieldValue strucFieldValue;
 	private StrucRelation strucRelation;
 	private StrucPointer strucPointer;
+	private StrucRRef strucRRef;
+	
 	
 	public StrucBase getStrucBase() {
 		return strucBase;
@@ -50,6 +53,12 @@ public class StrucBaseContainer {
 	}
 	public void setStrucPointer(StrucPointer strucPointer) {
 		this.strucPointer = strucPointer;
+	}
+	public StrucRRef getStrucRRef() {
+		return strucRRef;
+	}
+	public void setStrucRRef(StrucRRef strucRRef) {
+		this.strucRRef = strucRRef;
 	}
 	
 }

@@ -710,6 +710,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         html += "<li class='card-list add_RFIELD' structType='203' structShowName='添加REFFIELD'>" +
 	        "<i class='icon icon-card-attr'></i>" +
 	        "<span class='text'>添加引用字段</span>" +
+	        "</li>"
+	        +"<li class='card-list add_RFIELD' structType='204' structShowName='添加RREFFIELD'>" +
+	        "<i class='icon icon-card-attr'></i>" +
+	        "<span class='text'>添加引用关联</span>" +
 	        "</li>";
            
         html +="</ul>";

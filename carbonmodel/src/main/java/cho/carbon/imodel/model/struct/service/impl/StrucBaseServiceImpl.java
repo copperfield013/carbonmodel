@@ -30,6 +30,7 @@ import cho.carbon.imodel.model.struct.pojo.StrucFieldSubenum;
 import cho.carbon.imodel.model.struct.pojo.StrucFieldValue;
 import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
 import cho.carbon.imodel.model.struct.pojo.StrucPointer;
+import cho.carbon.imodel.model.struct.pojo.StrucRRef;
 import cho.carbon.imodel.model.struct.pojo.StrucRelation;
 import cho.carbon.imodel.model.struct.service.StrucBaseService;
 import cho.carbon.imodel.model.struct.strategy.StructStrategyContext;
@@ -110,17 +111,21 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 			StrucFieldSubenum strucFieldSubenum = null;
 			StrucFieldValue strucFieldValue = null;
 			StrucPointer strucPointer = null;
+			StrucRRef strucRRef = null;
+			
 			if (strucBase == null) {
 				strucBase = new StrucBase(null, strucElementType.getCode(), "", StrucOptType.WRITE.getIndex(), 1, sbPid);
 				strucMiCode = new StrucMiCode(null, "");
 				strucFieldSubenum = new StrucFieldSubenum(null, null);
 				strucFieldValue = new StrucFieldValue(null, null);
 				strucPointer = new StrucPointer();
+				strucRRef = new StrucRRef();
 			} else {
 				strucMiCode = commService.get(StrucMiCode.class, strucBase.getId());
 				strucFieldSubenum = commService.get(StrucFieldSubenum.class, strucBase.getId());
 				strucFieldValue = commService.get(StrucFieldValue.class, strucBase.getId());
 				strucPointer = commService.get(StrucPointer.class, strucBase.getId());
+				strucRRef = commService.get(StrucRRef.class, strucBase.getId());
 			}
 			
 			List<ViewLabel> viewLabelList = new ArrayList();
@@ -194,7 +199,6 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 						ModelItemType[] types2 = {ModelItemType.ENUM_ITEM, ModelItemType.PREENUM_STRING_ITEM, ModelItemType.MULTI_ENUM_ITEM, ModelItemType.CASCADE_ENUM_ITEM};
 						modelItemList2 = modelItemService.getModelItemByType(p2.getItemCode(), types2, null, Constants.USING_STATE_USING);
 					}
-					
 					String enumCode = "";
 					
 					if (!modelItemList2.isEmpty()) {
@@ -248,28 +252,38 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					break;
 				case RREFFIELD:
 					
+					List<ModelItem> modelItemList5 = getMiListByP(sbPid, pStrucBase, pType);
+					
+					// 这里获取引用属性， 引用的另一个实体下面的普通属性
+					String modelCode = "";//我就是引用属性
+					if (!modelItemList5.isEmpty()) {
+						ModelItem modelItem = modelItemList5.get(0);
+						modelCode = modelItem.getCode();
+					}
+					
+					if (strucMiCode != null && strucMiCode.getItemCode()!="") {
+						modelCode = strucMiCode.getItemCode();
+					}
+						
+				// 根据引用属性， 获取它引用的实体， 进而获取此实体下的普通属性
+					MiReference miReference = commService.get(MiReference.class, modelCode);
+					ModelItemType[] pTypes1 = {ModelItemType.ONE_LINE_GROUP};
+					//属性列表
+					List<ModelItem> modelItemByBelongMode = modelItemService.getModelItemByBelongMode(miReference.getModelCode(), pTypes1 , null, false);
+					
+					// 
+					ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucRRef.refItemCode",strucRRef.getRefItemCode(), "引用关联", 15);
+					// 获取值域
+					Map<String, String> valueDomain4 = new HashMap<String, String>();
+					  for (ModelItem modelItem : modelItemByBelongMode) {
+						  valueDomain4.put(modelItem.getCode() + "", modelItem.getName()); 
+					  }
+					  itemCodeVb.setValueDomain(valueDomain4);
+					  itemCodeVb.setViewClazz("strucRRef");
+					  viewLabelList.add(itemCodeVb);
 				case REFFIELD:
 					
-					
-					List<ModelItem> modelItemList4 = null;
-				
-						//配置文件对应的实体模型
-						if (StrucElementType.GROUP1D.equals(pType)) {
-							// 父亲是字段组， 则获取所有的普通属性
-							// 输入实体code， 获取本实体下所有的普通属性
-							StrucMiCode p1 = commService.get(StrucMiCode.class, pStrucBase.getParentId());
-							ModelItem modelItem1 = commService.get(ModelItem.class, p1.getItemCode());
-							//获取实体下， 所有普通分组下的孩子
-							ModelItemType[] pTypes1 = {ModelItemType.ONE_LINE_GROUP};
-							ModelItemType[] chilTypes = {ModelItemType.REFERENCE_ITEM, ModelItemType.CASCADE_REFERENCE_ITEM};
-							modelItemList4 = modelItemService.getModelItemByBelongMode(modelItem1.getBelongModel(), pTypes1,chilTypes, false);
-							
-						} else if (StrucElementType.GROUP2D.equals(pType)) {
-							//父亲是二维表， 则获取二维表对应的孩子
-							StrucMiCode p2 = commService.get(StrucMiCode.class, sbPid);
-							ModelItemType[] types2 = {ModelItemType.REFERENCE_ITEM, ModelItemType.CASCADE_REFERENCE_ITEM};
-							modelItemList4 = modelItemService.getModelItemByType(p2.getItemCode(), types2, null, Constants.USING_STATE_USING);
-						}
+					List<ModelItem> modelItemList4 = getMiListByP(sbPid, pStrucBase, pType);
 				
 					getViewLabelToStrucPointer(viewLabelList, strucPointer, allStruc);
 						
@@ -312,6 +326,38 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 			
 			Collections.sort(viewLabelList);
 			return viewLabelList;
+	}
+
+	/**
+	 * 获取父亲下面的孩子
+	 * @param sbPid
+	 * @param pStrucBase
+	 * @param pType
+	 * @return
+	 * @throws Exception
+	 */
+	private List<ModelItem> getMiListByP(Integer sbPid, StrucBase pStrucBase, StrucElementType pType) throws Exception {
+		
+		List<ModelItem> modelItemList4 = null;
+		
+		//配置文件对应的实体模型
+		if (StrucElementType.GROUP1D.equals(pType)) {
+			// 父亲是字段组， 则获取所有的普通属性
+			// 输入实体code， 获取本实体下所有的普通属性
+			StrucMiCode p1 = commService.get(StrucMiCode.class, pStrucBase.getParentId());
+			ModelItem modelItem1 = commService.get(ModelItem.class, p1.getItemCode());
+			//获取实体下， 所有普通分组下的孩子
+			ModelItemType[] pTypes1 = {ModelItemType.ONE_LINE_GROUP};
+			ModelItemType[] chilTypes = {ModelItemType.REFERENCE_ITEM, ModelItemType.CASCADE_REFERENCE_ITEM};
+			modelItemList4 = modelItemService.getModelItemByBelongMode(modelItem1.getBelongModel(), pTypes1,chilTypes, false);
+			
+		} else if (StrucElementType.GROUP2D.equals(pType)) {
+			//父亲是二维表， 则获取二维表对应的孩子
+			StrucMiCode p2 = commService.get(StrucMiCode.class, sbPid);
+			ModelItemType[] types2 = {ModelItemType.REFERENCE_ITEM, ModelItemType.CASCADE_REFERENCE_ITEM};
+			modelItemList4 = modelItemService.getModelItemByType(p2.getItemCode(), types2, null, Constants.USING_STATE_USING);
+		}
+		return modelItemList4;
 	}
 
 	//构建引用属性指向节点

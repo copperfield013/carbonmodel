@@ -23,6 +23,7 @@ import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
+import cho.carbon.imodel.model.modelitem.pojo.MiReference;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
@@ -632,5 +633,25 @@ public class ModelItemController {
 					return jobj.toString();
 				}
 			}
-		 	
+		    
+		    @ResponseBody
+			@RequestMapping("/getMiReference")
+			public String getMiReference(String miCode){
+				Map<String, Object> map = new HashMap<String, Object>();
+				JSONObject jobj = new JSONObject(map);
+				try {
+					MiReference miReference = commService.get(MiReference.class, miCode);
+					map.put("miReference", miReference);
+					map.put("code", 200);
+					map.put("msg", "成功！");
+					return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+				} catch (Exception e) {
+					logger.error("添加失败", e);
+					e.printStackTrace();
+					map.put("code", 400);
+					map.put("msg", "操作失败！");
+					return jobj.toString();
+				}
+			}
+		    
 }

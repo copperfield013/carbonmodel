@@ -272,6 +272,29 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			    	 })
 	    	 }
 	    	 
+	    	 //更改引用关联
+	    	 var $strucRRef = $(".strucRRef");
+	    	 if ($strucRRef.length>=1) {
+	    	 
+	    		 Ajax.ajax('admin/modelItem/getMiReference', {
+    				 miCode:miCode
+    	    	 }, function(data) {
+	    		 var miReference = data.miReference;
+	    		 debugger;
+	    		 Ajax.ajax('admin/modelItem/getShowCode', {
+    				 miCode:miReference.modelCode
+    	    	 }, function(data) {
+    	    		 var modelItemList = data.modelItemList;
+    	    		 var str = "";  
+    	    		 debugger;
+    	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
+    	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 
+    	            }
+    	            	
+    	        		$strucRRef.empty().append(str);
+    	            }); 
+    	    	 });  
+	    	 }
 	    	 
 	    });
 	
