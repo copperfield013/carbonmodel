@@ -96,7 +96,7 @@ public class ExpressionAndFilterController {
 			modelAndView.addObject("miCode", miCode);
 			modelAndView.addObject("codeTxt", codeTxt);
 			
-			modelAndView.setViewName(AdminConstants.JSP_BASE + "/modelitem/expresAndFilter/expression.jsp");
+			modelAndView.setViewName(AdminConstants.JSP_BASE + "/expresAndFilter/expression.jsp");
 			return modelAndView;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,10 +117,10 @@ public class ExpressionAndFilterController {
 			//先获取数据吧
 			miService.saveExpress(codeTxt, modelItemCode);
 			
-			return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("添加成功", "modelitem_list");
+			return AjaxPageResponse.REFRESH_LOCAL("操作成功");
 		} catch (Exception e) {
-			logger.error("添加失败", e);
-			return AjaxPageResponse.FAILD("添加失败");
+			logger.error("操作失败", e);
+			return AjaxPageResponse.FAILD("操作失败");
 		}
 	}
     
@@ -135,7 +135,7 @@ public class ExpressionAndFilterController {
 			
 			ModelAndView modelAndView = new ModelAndView();
 			
-			//modelAndView.setViewName(AdminConstants.JSP_BASE + "/modelitem/expresAndFilter/expression.jsp");
+			modelAndView.setViewName(AdminConstants.JSP_BASE + "/expresAndFilter/expression.jsp");
 			return modelAndView;
 		} catch (Exception e) {
 			e.printStackTrace();

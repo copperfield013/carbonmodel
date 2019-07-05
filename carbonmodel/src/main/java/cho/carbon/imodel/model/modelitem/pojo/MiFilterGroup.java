@@ -23,7 +23,7 @@ public class MiFilterGroup {
 	@Column(name = "name")
 	private String name;
 	
-	//值域为  or and
+	//值域为  OR AND
 	@Column(name = "logical_operator")
 	private Integer logicalOperator;
 
