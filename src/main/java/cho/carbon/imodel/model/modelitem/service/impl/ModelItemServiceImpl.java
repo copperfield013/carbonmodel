@@ -32,6 +32,7 @@ import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.strategy.MiStrategyContext;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.modelitem.vo.ViewLabel;
+import cho.carbon.imodel.model.struct.pojo.StrucFilter;
 import cho.carbon.meta.enun.ItemValueType;
 import cho.carbon.meta.enun.ModelItemType;
 import cn.sowell.copframe.dto.page.PageInfo;
@@ -446,17 +447,39 @@ public class ModelItemServiceImpl implements ModelItemService {
 
 		switch (type) {
 		case 0:
-			// 事实属性， 过滤条件保存
+			// 统计实体， 过滤条件保存
 			saveStatModelFilter(miCode, filterId);
 			break;
 		case 1:
 			// 事实属性， 过滤条件保存
 			saveFactFilter(miCode, filterId);
 			break;
-
+		case 3:
+		case 5:
+			// 结构体， 过滤条件保存
+			saveStrucFilter(Integer.parseInt(miCode), filterId);
+			break;
 		}
 		
 	}
+
+	/**
+	 * 保存结构体， 的过滤条件
+	 * @param miCode
+	 * @param filterId
+	 */
+		private void saveStrucFilter(Integer sbId, Integer filterId) {
+			StrucFilter strucFilter = commService.get(StrucFilter.class, sbId);
+			
+			if (strucFilter == null) {
+				strucFilter = new StrucFilter(sbId, filterId);
+				commService.insert(strucFilter);
+			} else {
+				strucFilter.setFilterGroupId(filterId);
+				commService.update(strucFilter);
+			}
+		
+		}
 
 		/**
 		 * 统计实体过滤条件保存

@@ -51,6 +51,31 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		});
 	}
     
+    //结构体和关系结构， 跳转到过滤条件定义页面
+    $("#structBaseEdit").on("click", ".strucFilterView", function() {    
+       // 结构体 ， 属性过滤
+        var sbId = $(this).closest(".collapse-header").attr("data-sbid");
+        Dialog.openDialog("admin/expressionAndFilter/skipFilter?type=3&miCode=" + sbId, "过滤条件页面", "", {
+            width :1000,
+            height : 500
+        });
+        
+    });
+    
+    /**
+     * 二维组添加过滤条件
+     */
+    $("#structBaseEdit").on("click", ".strucGroup2DFilterView", function() {    
+        // 结构体 ， 属性过滤
+         var sbId = $(this).closest(".collapse-header").attr("data-sbid");
+         Dialog.openDialog("admin/expressionAndFilter/skipFilter?type=5&miCode=" + sbId, "过滤条件页面", "", {
+             width :1000,
+             height : 500
+         });
+         
+     });
+    
+    
     
     //	字段组初始化方法
     function initGroup(strucBase, $parent) {
@@ -134,7 +159,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanCode' class='span-title'>"+strucBase.id+"</span>"+
             "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
-	        
+	         "<i class='icon glyphicon glyphicon-filter strucGroup2DFilterView'></i>"+
 	         "<i class='fa fa-edit icon-edit'></i>"+
             "<i class='icon icon-add-sm group'></i>" +
             
@@ -184,6 +209,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
+	         "<i class='icon glyphicon glyphicon-filter strucFilterView'></i>"+
 	         "<i class='fa fa-edit icon-edit'></i>"+
             "<i class='icon icon-add'></i>" +
             

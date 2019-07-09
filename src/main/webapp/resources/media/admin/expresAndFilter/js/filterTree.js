@@ -48,8 +48,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		 
 	 });
 	 
-	 
-	    
 	       //初始化  本模型的group 即 本模型的孩子
     function initFilterGroup(fid, belongModel) {
 		 

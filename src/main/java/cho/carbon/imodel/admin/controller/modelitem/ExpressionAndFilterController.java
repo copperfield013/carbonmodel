@@ -37,6 +37,9 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.service.ModelRelationTypeService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.imodel.model.struct.pojo.StrucBase;
+import cho.carbon.imodel.model.struct.pojo.StrucFilter;
+import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
 import cho.carbon.meta.enun.ModelItemType;
 import cho.carbon.meta.enun.RelationType;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
@@ -134,7 +137,7 @@ public class ExpressionAndFilterController {
    /**
     * 跳转到过滤条件页面
     * @param miCode  
-    * @param type 0.统计实体   1.事实属性 2. 计算属性 3. 配置文件
+    * @param type 0.统计实体   1.事实属性 2. 计算属性 3. 配置文件 结构体和 关系结构 5. 二维组结构
     * @return
     */
     @RequestMapping(value = "/skipFilter")
@@ -160,6 +163,19 @@ public class ExpressionAndFilterController {
 				MiModelStat miModelStat = commService.get(MiModelStat.class, miCode);
 				filterId = miModelStat.getFilterId();
 				belongModel = miModelStat.getSourceCode();
+			} else if (type == 3) {
+				StrucFilter strucFilter = commService.get(StrucFilter.class, Integer.parseInt(miCode));
+				filterId = strucFilter ==null? null :strucFilter.getFilterGroupId();
+				
+				StrucMiCode strucMiCode = commService.get(StrucMiCode.class, Integer.parseInt(miCode));
+				belongModel = strucMiCode.getItemCode();
+			} else if (type == 5) {
+				StrucFilter strucFilter = commService.get(StrucFilter.class, Integer.parseInt(miCode));
+				filterId = strucFilter ==null? null :strucFilter.getFilterGroupId();
+				
+				StrucBase strucBase = commService.get(StrucBase.class, Integer.parseInt(miCode));
+				StrucMiCode strucMiCode = commService.get(StrucMiCode.class, strucBase.getParentId());
+				belongModel = strucMiCode.getItemCode();
 			}
 			
 			modelAndView.addObject("miCode", miCode);
