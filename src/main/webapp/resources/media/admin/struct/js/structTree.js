@@ -111,10 +111,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='fa fa-edit icon-edit'></i>"+
+	         "<i class='icon fa fa-edit icon-edit'></i>"+
             "<i class='icon icon-add-sm group'></i>" +
             
-            	"<i class='glyphicon glyphicon-trash delStruct'></i>" +
+            	"<i class='icon glyphicon glyphicon-trash delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -160,10 +160,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	         "<i class='icon glyphicon glyphicon-filter strucGroup2DFilterView'></i>"+
-	         "<i class='fa fa-edit icon-edit'></i>"+
+	         "<i class=' icon fa fa-edit icon-edit'></i>"+
             "<i class='icon icon-add-sm group'></i>" +
             
-            	"<i class='glyphicon glyphicon-trash delStruct'></i>" +
+            	"<i class='icon glyphicon glyphicon-trash delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -210,10 +210,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
 	         "<i class='icon glyphicon glyphicon-filter strucFilterView'></i>"+
-	         "<i class='fa fa-edit icon-edit'></i>"+
+	         "<i class='icon fa fa-edit icon-edit'></i>"+
             "<i class='icon icon-add'></i>" +
             
-            	"<i class='glyphicon glyphicon-trash delStruct'></i>" +
+            	"<i class='icon glyphicon glyphicon-trash delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -259,8 +259,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='fa fa-edit icon-edit'></i>"+
-	         "<i class='glyphicon glyphicon-trash delStruct'></i>" +
+	         "<i class='icon fa fa-edit icon-edit'></i>"+
+	         "<i class='icon glyphicon glyphicon-trash delStruct'></i>" +
            /* "<i class='icon icon-add-sm group'></i>" +*/
            /* "<i class='icon delStruct'></i>" +*/
             /*"<i class='icon icon-arrow-sm active'></i>" +*/
