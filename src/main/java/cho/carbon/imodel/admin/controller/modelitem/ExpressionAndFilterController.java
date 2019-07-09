@@ -155,6 +155,11 @@ public class ExpressionAndFilterController {
 				MiModelStat miModelStat = commService.get(MiModelStat.class, modelItem.getBelongModel());
 				
 				belongModel = miModelStat.getSourceCode();
+			} else if(type == 0) {
+				//统计实体过滤条件
+				MiModelStat miModelStat = commService.get(MiModelStat.class, miCode);
+				filterId = miModelStat.getFilterId();
+				belongModel = miModelStat.getSourceCode();
 			}
 			
 			modelAndView.addObject("miCode", miCode);

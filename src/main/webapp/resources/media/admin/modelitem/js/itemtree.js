@@ -298,7 +298,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         
 	         
 	        /* fa-filter*/
-	         "<i class='icon glyphicon glyphicon-filter filterView'></i>"+
+	         "<i class='icon glyphicon glyphicon-filter factFilterView'></i>"+
 	         "<i class='icon fa fa-keyboard-o expressionView'></i>"+
 	        
 	         "<i class='icon fa fa-edit icon-edit'></i>"+
@@ -388,13 +388,26 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         
     });
     
-    //跳转到过滤条件定义页面
-    $("#modelItemEdit").on("click", ".filterView", function() {        
+    //事实属性， 跳转到过滤条件定义页面
+    $("#modelItemEdit").on("click", ".factFilterView", function() {        
        // 事实属性过滤
     	var $labelBar = $(this).closest(".label-bar");
         var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
         
         Dialog.openDialog("admin/expressionAndFilter/skipFilter?type=1&miCode=" + modelItemCode, "过滤条件页面", "", {
+            width :1000,
+            height : 500
+        });
+        
+    });
+    
+    
+  //统计实体， 跳转到过滤条件定义页面
+    $("#modelItemEdit").on("click", ".statModelFilterView", function() {    
+    	
+       // 事实属性过滤
+        var modelItemCode = $(this).closest(".collapse-header").attr("data-code");
+        Dialog.openDialog("admin/expressionAndFilter/skipFilter?type=0&miCode=" + modelItemCode, "过滤条件页面", "", {
             width :1000,
             height : 500
         });

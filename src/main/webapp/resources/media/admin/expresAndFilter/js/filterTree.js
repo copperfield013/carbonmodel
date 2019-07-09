@@ -11,7 +11,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	
 	 $(function(){
 		  //  $CPF.showLoading();
-		    drag($(".dragEdit-wrap", $page).length);       
+		    drag($(".dragEdit-wrap", $page).length);   
+		    
 		    //初始化， 过滤条件组
 		    initFilterGroup(filterId, belongModel);
 		    
@@ -45,8 +46,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			 }
 		 });
 		 
-		 
-		 
 	 });
 	 
 	 
@@ -54,6 +53,11 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	       //初始化  本模型的group 即 本模型的孩子
     function initFilterGroup(fid, belongModel) {
 		 
+    	
+    	if (fid == "") {
+    		return;
+    	}
+    	
 		//获取本模型有哪些组
 			 Ajax.ajax('admin/expressionAndFilter/getMiFilterGroup', {
 				 filterId: fid
@@ -74,8 +78,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 								//初始化关系组
 								
 							}
-							
-							
 						}
 						
 					}

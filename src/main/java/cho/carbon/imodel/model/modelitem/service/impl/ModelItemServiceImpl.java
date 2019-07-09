@@ -20,6 +20,7 @@ import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
+import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiReference;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatDimension;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatFact;
@@ -444,16 +445,29 @@ public class ModelItemServiceImpl implements ModelItemService {
 	public void saveFilter(String miCode, Integer type, Integer filterId) {
 
 		switch (type) {
+		case 0:
+			// 事实属性， 过滤条件保存
+			saveStatModelFilter(miCode, filterId);
+			break;
 		case 1:
 			// 事实属性， 过滤条件保存
 			saveFactFilter(miCode, filterId);
-			
 			break;
 
-		default:
-			break;
 		}
 		
+	}
+
+		/**
+		 * 统计实体过滤条件保存
+		 * @param miCode
+		 * @param filterId
+		 */
+	private void saveStatModelFilter(String miCode, Integer filterId) {
+		MiModelStat miModelStat = commService.get(MiModelStat.class, miCode);
+		miModelStat.setFilterId(filterId);
+		
+		commService.update(miModelStat);
 	}
 
 	/**

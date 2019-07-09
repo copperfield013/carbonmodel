@@ -676,7 +676,6 @@ body {
     width: 100%;
     height: 64px;
     line-height: 64px;
-    font-size: 0;
     border-bottom: 1px solid #f0f1f1;
 }
 #modelItemEdit .icon-label-master {
