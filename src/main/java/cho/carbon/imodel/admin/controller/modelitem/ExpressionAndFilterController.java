@@ -134,7 +134,7 @@ public class ExpressionAndFilterController {
    /**
     * 跳转到过滤条件页面
     * @param miCode  
-    * @param type 1.事实属性 2. 计算属性 3. 配置文件
+    * @param type 0.统计实体   1.事实属性 2. 计算属性 3. 配置文件
     * @return
     */
     @RequestMapping(value = "/skipFilter")
@@ -160,6 +160,7 @@ public class ExpressionAndFilterController {
 			modelAndView.addObject("miCode", miCode);
 			modelAndView.addObject("belongModel", belongModel);
 			modelAndView.addObject("filterId", filterId);
+			modelAndView.addObject("type", type);
 			modelAndView.setViewName(AdminConstants.JSP_BASE + "/expresAndFilter/filters/filterTree.jsp");
 			return modelAndView;
 		} catch (Exception e) {
@@ -167,6 +168,34 @@ public class ExpressionAndFilterController {
 		}
 		return null;
 	}
+    
+    /**
+     * 保存过滤条件
+     * @param miFilterGroup
+     * @return
+     */
+    @ResponseBody
+   	@RequestMapping("/saveFilter")
+   	public String saveFilter(String miCode, Integer type, Integer filterId){
+   		Map<String, Object> map = new HashMap<String, Object>();
+   		JSONObject jobj = new JSONObject(map);
+   		try {
+   			miService.saveFilter(miCode, type, filterId);
+   			
+   			
+   			
+   			map.put("code", 200);
+   			map.put("msg", "成功！");
+   			return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+   		} catch (Exception e) {
+   			logger.error("添加失败", e);
+   			e.printStackTrace();
+   			map.put("code", 400);
+   			map.put("msg", "操作失败！");
+   			return jobj.toString();
+   		}
+   	}
+    
     
     
     /**
@@ -274,6 +303,72 @@ public class ExpressionAndFilterController {
 			List<MiFilterCriterion> miFilterCriterionList = miService.getMiFiltergroupChild(groupId);
 			
 			map.put("miFilterCriterionList", miFilterCriterionList);
+			map.put("code", 200);
+			map.put("msg", "成功！");
+			return jobj.toJSONString();
+		} catch (Exception e) {
+			logger.error("添加失败", e);
+			e.printStackTrace();
+			map.put("code", 400);
+			map.put("msg", "操作失败！");
+			return jobj.toString();
+		}
+	}
+    
+    
+    /**
+     * 删除普通组
+     * @param id
+     * @return
+     */
+    @ResponseBody
+	@RequestMapping("/delMiFiltergroup")
+	public String delMiFiltergroup(Integer groupId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		JSONObject jobj = new JSONObject(map);
+		try {
+		
+			List<MiFilterCriterion> miFilterCriterionList = miService.getMiFiltergroupChild(groupId);
+			
+			if (!miFilterCriterionList.isEmpty()) {
+				map.put("code", 400);
+				map.put("msg", "请先删除孩子！");
+				return jobj.toJSONString();
+			}
+			
+			MiFilterGroup group = new MiFilterGroup();
+			group.setId(groupId);
+			commService.delete(group);
+			
+			map.put("code", 200);
+			map.put("msg", "成功！");
+			return jobj.toJSONString();
+		} catch (Exception e) {
+			logger.error("添加失败", e);
+			e.printStackTrace();
+			map.put("code", 400);
+			map.put("msg", "操作失败！");
+			return jobj.toString();
+		}
+	}
+    
+    
+    /**
+     * 删除表达式
+     * @param id
+     * @return
+     */
+    @ResponseBody
+	@RequestMapping("/delMiFilterCriterion")
+	public String delMiFilterCriterion(Integer id){
+		Map<String, Object> map = new HashMap<String, Object>();
+		JSONObject jobj = new JSONObject(map);
+		try {
+		
+			MiFilterCriterion criterion = new MiFilterCriterion();
+			criterion.setId(id);
+			commService.delete(criterion);
+			
 			map.put("code", 200);
 			map.put("msg", "成功！");
 			return jobj.toJSONString();

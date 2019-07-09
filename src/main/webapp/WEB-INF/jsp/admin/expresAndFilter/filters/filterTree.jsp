@@ -5,14 +5,22 @@
 <script src="media/admin/modelitem/js/Sortable.js"></script>
 <script src="media/admin/expresAndFilter/js/filterTree.js"></script>
 
-<div id="filterEdit" data-miCode="${miCode }" data-belongModel="${belongModel}" data-filterId="${filterId }" >
+<div id="filterEdit" data-miCode="${miCode }" data-belongModel="${belongModel}" data-filterId="${filterId }" data-type="${type }">
 		
-	<div class="entity_list clear-fix">					
-				<div 
-					 data-cnName=""  
-					 data-code="" class="entity_attr active">				
-						${belongModel}		
-				</div>			
+		<div class="page-header">
+			<div class="header-title">
+				<h1>
+					<c:if test="${type eq 0}">统计实体过滤条件</c:if>
+					<c:if test="${type eq 1}">事实属性过滤条件</c:if>
+					<c:if test="${type eq 2}">计算属性 过滤条件</c:if>
+					<c:if test="${type eq 3}">配置文件过滤条件</c:if>
+				</h1>
+			</div>
+			<div class="header-buttons">
+				<a class="export btn-toggle" title="保存" id="btn-save" href="javascript:;">
+					<i class="glyphicon glyphicon-check"></i>
+				</a>
+			</div>
 		</div>
 		
         <div class="entity-edit-wrap active">
@@ -28,7 +36,7 @@
                 <div class="btn-wrap">
                 	<!-- <i class="icon icon-save"></i> -->
                     <i class="icon icon-add"></i>
-                    <i class="icon icon-trash"></i>
+                    <!-- <i class="icon icon-trash"></i> -->
                     <%-- <a title="预览" style="font-size: 14px;position:absolute;right:98px;" nodeId="${item.id }" id="preview" href="javascript:;">预览</a> --%>
                     <i class="icon icon-arrow"></i>
                 </div>

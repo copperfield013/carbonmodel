@@ -18,6 +18,38 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		    $(".label-bar", $page).addClass("al-save");
 		  //  $CPF.closeLoading();
 	  });
+	 
+	 
+	 /**
+	  * 保存树形结构
+	  */
+	 $($page).on("click", "#btn-save", function (e) {
+		 
+		var belongModel = $page.attr("data-belongModel");
+		var miCode = $page.attr("data-miCode");
+		var type = $page.attr("data-type");
+		
+		var filterId = $(".rootFilterNode").children("li").find(".collapse-header").attr("data-id");
+		if (filterId == undefined) {
+			 Dialog.notice("请添加过滤组！", "warning");
+			return;
+		}
+		 
+		 Ajax.ajax('admin/expressionAndFilter/saveFilter',{
+			 miCode:miCode,
+			 type:type,
+			 filterId:filterId
+		 }, function(data) {	
+			 if (data.code == 200) {
+				 Dialog.notice("操作成功！", "success"); 
+			 }
+		 });
+		 
+		 
+		 
+	 });
+	 
+	 
 	    
 	       //初始化  本模型的group 即 本模型的孩子
     function initFilterGroup(fid, belongModel) {
@@ -632,77 +664,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     }
 
     
-    
-    
-    //引用-> 引用属性删除方法
-    function rRefattributeAttrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
-    
-    //引用属性保存修改方法
-    
-    //引用属性删除方法
-    function refattributeAttrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
-    
-    //级联属性保存修改方法
-    
-    //级联属性删除方法
-    function cascadeAttrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
-    
-    //rabc属性删除方法
-    function rabcDelete(el) {  
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent().remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
-    
     /**
      * 添加二级属性方法
       */
@@ -756,7 +717,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		Ajax.ajax('admin/modelItem/getMiEnumChild', {
 			enumCode: enumItemCode
 		}, function(data) {		
-			debugger;
 			var casEnumChild = data.casEnumChild;
 			var attrHtml = "<li class='add-attr clear-fix'>" +
             "<div class='icon-label attr twoLevelattr'>" +
@@ -793,11 +753,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
       */
     function addCriterion(el, belongmodel, modelItemList, operatorMap, groupId) {
         var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-              debugger;       
         var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         $CPF.showLoading();
         
-            var moreAttrHtml = "<li class='more-attr clear-fix'>" +
+            var moreAttrHtml = "<li class='add-attr clear-fix'>" +
             "<div class='attr-group-title collapse-header' data-id='' data-groupId='"+groupId+"'>" +
             "<div class='icon-label attr'>" +
             "<i class='icon icon-attr'></i>" +
@@ -852,7 +811,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     function getCriterion(belongmodel, modelItemList, operatorMap, miFilterCriterion) {
         var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         
-            var moreAttrHtml = "<li class='more-attr clear-fix'>" +
+            var moreAttrHtml = "<li class='add-attr clear-fix'>" +
             "<div class='attr-group-title collapse-header' data-id='"+miFilterCriterion.id+"' data-groupId='"+miFilterCriterion.groupId+"'>" +
             "<div class='icon-label attr'>" +
             "<i class='icon icon-attr'></i>" +
@@ -909,7 +868,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         $CPF.showLoading();
         
-            var moreAttrHtml = "<li class='more-attr clear-fix'>" +
+            var moreAttrHtml = "<li class='add-attr clear-fix'>" +
             "<div class='more-attr-title collapse-header' data-belongmodel='"+belongmodel+"' data-type='1' data-order='' data-id='' data-pid=''>" +
             "<div class='icon-label more-attr'>" +
             "<i class='icon icon-more-attr'></i>" +
@@ -956,7 +915,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	
         var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         $CPF.showLoading();
-            var moreAttrHtml = "<li class='more-attr clear-fix'>" +
+            var moreAttrHtml = "<li class='add-attr clear-fix'>" +
             "<div class='more-attr-title collapse-header' data-belongmodel='"+belongmodel+"' data-type='"+miFilterGroup.type+"' data-order='' data-id='"+miFilterGroup.id+"' data-pid='"+miFilterGroup.pid+"'>" +
             "<div class='icon-label more-attr'>" +
             "<i class='icon icon-more-attr'></i>" +
@@ -1000,97 +959,46 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         }
     }
     
-    //标签保存修改方法
-    function tagSave(el) {
-    	 var entityCode = $(el).closest(".collapse-content").siblings(".collapse-header").attr("data-abcattrcode");
-         if(entityCode == undefined) {
-      	   entityCode =  $(el).closest(".collapse-content").siblings(".collapse-header").closest(".collapse-content").siblings(".collapse-header").attr("data-abcattrcode");
-         }
-         var abcattrCode = "";
-        
-		 Ajax.ajax(' admin/dictionary/basicItem/getLableObj', {
-       	 code:entityCode
-		 }, function(data) {
-			var lableObj = data.lableObj; 
-			
-    	var $tagBar = $(el).closest(".label-bar");
-    	if($(el).next(".icon-add-tag-relative").length > 0) { //关系下的标签 
-    		if($tagBar.children(".tag-content").children("ul").children("li").length == 0) {
-    			 Dialog.notice("请至少选择一个关系", "warning");
-    			$tagBar.addClass("edit");
-    			return;
-    		}
-    	}else {
-    		abcattrCode =lableObj.code;
-    		if($tagBar.children(".tag-content").children("ul").children("li").length == 0) {
-    			Dialog.notice("请至少选择一个标签", "warning");
-    			$tagBar.addClass("edit");
-    			return;
-    		}
+ // 过滤普通组保存方法
+    function filterSave(el) {
+    	var $attrBar = $(el).closest(".label-bar");
+    	var  $header = $attrBar.closest(".collapse-header");
+    	
+    	var type = 1;
+    	var id = $header.attr("data-id");
+    	var name = $attrBar.children(".edit-input").val();  
+    	var logicalOperator = $attrBar.children(".logicalOperator").find("option:selected").val();
+    	var pid = $header.attr("data-pid");
+    	
+    	if (pid == "undefined") {
+    		pid="";
     	}
-    	var type = 3;
-    	var dataType = "STRING";
-    	var opt = $tagBar.children(".node-ops-type").find("option:selected").val();
-    	switch (opt) {
-        	case "读":
-        		opt = 1;
-        		break;
-        	case "写":
-        		opt = 2;
-        		break;
-        	case "补":
-        		opt = 3;
-        		break;
-        	case "增":
-        		opt = 4;
-        		break;
-        	case "并":
-        		opt = 5;
-        		break;
-        	default:
-        		break;
-    	}
-    	var name = $tagBar.children(".edit-input").val();    	
-    	var order = $tagBar.attr("data-order");
-    	var id = $tagBar.attr("data-id");
-    	var parentId = $tagBar.closest(".collapse-content").prev(".collapse-header")
-    						.attr("data-id"); 
-    	var subdomain = []; 
-    	var $tags = $tagBar.find(".tag-content").children("ul").children("li");
-    	for(var i=0; i<$tags.length; i++) {
-    		subdomain.push($($tags[i]).attr("data-text"));
-    	}
-    	subdomain = subdomain.join(",");
+    	
+    	return;
+    	
     	$CPF.showLoading();
-    	Ajax.ajax(' admin/node/basicItemNode/saveOrUpdate', {
-			 type: type,
-			 name: name,
-			 subdomain: subdomain,
-			 abcattr: "",
-			 dataType: dataType,
-			 opt: opt,
-			 order: order,
-			 parentId: parentId,
-			 id: id,
-			 abcattrCode:abcattrCode
+    	Ajax.ajax('admin/expressionAndFilter/createFilterCommGroup', {
+    		'id':id,
+    		'name':name,
+    		'type':type,
+    		'logicalOperator':logicalOperator,
+    		'pid':pid
 		 }, function(data) {
 			 if(data.state == "400") {
 				 Dialog.notice(data.msg, "warning");
 				 $CPF.closeLoading();
 				 return;
 			 }
-			 var data = data.node;
+			 var miFilterGroup = data.miFilterGroup;
 			 //设置当前节点order和id
-			 var order = data.order;
-			 var id = data.id;
-			 $tagBar.attr("data-order",order)
-			 	.attr("data-id", id);
+			 $header.attr("data-id",miFilterGroup.id);
+			 $header.attr("data-pid",miFilterGroup.pid);
 			 saveSuccess(el)
 			 $CPF.closeLoading();
 		});
-    	
-		 });
     };
+    
+    
     
     // 过滤普通组保存方法
     function commGroupSave(el) {
@@ -1167,67 +1075,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		});
     };
     
-    //abc属性保存修改方法
-    function abcSave(el) {
-    	var $abcBar = $(el).closest(".label-bar");
-    	var type = 1;
-    	var dataType = "STRING";
-    	var opt = $abcBar.children(".node-ops-type").find("option:selected").val();
-    	switch (opt) {
-        	case "读":
-        		opt = 1;
-        		break;
-        	case "写":
-        		opt = 2;
-        		break;
-        	case "补":
-        		opt = 3;
-        		break;
-        	case "增":
-        		opt = 4;
-        		break;
-        	case "并":
-        		opt = 5;
-        		break;
-        	default:
-        		break;
-    	}
-    	var name = $abcBar.children(".edit-input").val();    	
-    	var order = $abcBar.closest(".collapse-header").attr("data-order");
-    	var id = $abcBar.closest(".collapse-header").attr("data-id");
-    	var parentId = $abcBar.closest(".collapse-content").prev(".collapse-header")
-    						.attr("data-id"); 
-    	var abcattr = $abcBar.children(".entity-only-title").attr("data-abcattr");    	
-    	var abcattrCode = $abcBar.children(".entity-only-title").attr("data-abcattrcode");    	  
-    	
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/basicItemNode/saveOrUpdate', {
-			 type: type,
-			 name: name,
-			 abcattr: abcattr,
-			 abcattrCode: abcattrCode,
-			 dataType: dataType,
-			 opt: opt,
-			 order: order,
-			 parentId: parentId,
-			 id: id
-		 }, function(data) {
-			 if(data.state == "400") {
-				 Dialog.notice(data.msg, "warning");
-				 $CPF.closeLoading();
-				 return;
-			 }
-			 var data = data.node;
-			 //设置当前节点order和id
-			 var order = data.order;
-			 var id = data.id;
-			 $abcBar.closest(".collapse-header")
-			 	.attr("data-order",order)
-			 	.attr("data-id", id);
-			 saveSuccess(el)
-			 $CPF.closeLoading();
-		});
-    };
     
     
     //abc属性保存修改方法
@@ -1270,46 +1117,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		});
     };
     
-  //filters  保存修改方法
-    function filtersSave(el) {
-    	var $abcBar = $(el).closest(".label-bar");
-    	var name = $abcBar.children(".edit-input").val();    	
-    	var id = $abcBar.closest(".collapse-header").attr("data-id");
-    	var parentId = $abcBar.closest(".collapse-content").prev(".collapse-header")
-    						.attr("data-id"); 
-    	var opt = $abcBar.children(".node-ops-type").find("option:selected").val();
-    	
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/binFilterBody/saveOrUpdate', {
-			 name: name,
-			 parentId: parentId,
-			 id: id,
-			 isFilters: true,
-			 dataType: 10,
-			 opt:opt,
-			 signFilter: "nodeFilter"
-		 }, function(data) {
-			if(data.code == "400") {
-				 Dialog.notice(data.msg, "warning");
-				 $CPF.closeLoading();
-				 return;
-			 }
-			
-			if (data.binFilter!= undefined) {
-				var data = data.binFilterBody;
-				 //设置当前节点order和id
-				 var order = data.order;
-				 var id = data.id;
-				 $abcBar.closest(".collapse-header")
-				 	.attr("data-order",order)
-				 	.attr("data-id", id);
-			}
-			 
-			 saveSuccess(el)
-			 $CPF.closeLoading();
-		});
-    };
-    
   //filterGroup  保存修改方法
     function filterGroupSave(el) {
     	var $abcBar = $(el).closest(".label-bar");
@@ -1347,83 +1154,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		});
     };
     
-  //filterSave  保存修改方法
-    function filterSave(el) {
-    	var $abcBar = $(el).closest(".label-bar");
-    	var name = $abcBar.children(".filterName").val();    	
-    	var id = $abcBar.closest(".collapse-header").attr("data-id");
-    	var parentId = $abcBar.closest(".collapse-content").prev(".collapse-header")
-    						.attr("data-id"); 
-    	var opt = $abcBar.children(".node-ops-type").find("option:selected").val();
-    	var filterType = $abcBar.children(".node-Symbol-type").find("option:selected").val();
-    	var valueStr = $abcBar.children(".valueStr").val();  
-    	
-    	var abcattrCode = $abcBar.children(".abcattrCodeData").find("option:selected").val();
-    	
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/binFilterBody/saveOrUpdate', {
-			 name: name,
-			 parentId: parentId,
-			 id: id,
-			 isFilters: false,
-			 dataType: 12,
-			 opt:opt,
-			 filterType: filterType,
-			 value:valueStr,
-			 abcattrCode:abcattrCode,
-			 signFilter: "nodeFilter"
-		 }, function(data) {
-			if(data.code == "400") {
-				 Dialog.notice(data.msg, "warning");
-				 $CPF.closeLoading();
-				 return;
-			 }
-			
-				var data = data.binFilterBody;
-				 //设置当前节点order和id
-				 var order = data.order;
-				 var id = data.id;
-				 $abcBar.closest(".collapse-header")
-				 	.attr("data-order",order)
-				 	.attr("data-id", id);
-			 
-			 saveSuccess(el)
-			 $CPF.closeLoading();
-		});
-    };
-    
-    //删除的请求方法
-    function deleteAjax(id, boolean, callback) {
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/basicItemNode/do_delete', {			
-			 id: id,
-			 isDelChil: boolean
-		 }, function(data) {				 
-			 callback();
-			 removePop();
-			 $CPF.closeLoading();
-		});
-    };
-    
-    //删除Filters的请求方法
-    function deleteAjaxFilters(id, callback) {
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/binFilterBody/doDelete', {			
-			 id: id
-		 }, function(data) {
-			 
-			 if(data.code == "400") {
-				 Dialog.notice(data.msg, "error");
-				 $CPF.closeLoading();
-				 return;
-			 }
-			 
-			 callback();
-			 removePop();
-			 $CPF.closeLoading();
-		});
-    };
-       
     
     //跟实体删除方法
     function entityDelete(el) {
@@ -1444,28 +1174,85 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	}
     }
     
-    //属性删除方法
-    function attrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
+    
+    /**
+     * 普通分组删除
+     */
+    function commGroupDelete(el) {    	
+    	var $attrBar = $(el).closest(".label-bar");  
+    	var $header = $attrBar.closest(".collapse-header");
+    	var id = $header.attr("data-id");
+    	
     	var isDelChil = false;
     	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
+    		$attrBar.closest(".add-attr").remove();    		
     	};    	
     	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
+    		commGroupDeleteAjax(id, callback);
     	}else {
     		callback();
     		removePop();
     	}    
     }
     
+  //删除普通分组的请求方法
+    function commGroupDeleteAjax(id, callback) {
+    	$CPF.showLoading();
+    	Ajax.ajax('admin/expressionAndFilter/delMiFiltergroup', {			
+    		groupId: id
+		 }, function(data) {
+			 if(data.code == "400") {
+				 Dialog.notice(data.msg, "error");
+				 $CPF.closeLoading();
+				 return;
+			 }
+			 
+			 callback();
+			 removePop();
+			 $CPF.closeLoading();
+		});
+    };
+    
+    //表达式删除方法
+    function filterCriterionDelete(el) {    	
+    	var $attrBar = $(el).closest(".label-bar");  
+    	var $header = $attrBar.closest(".collapse-header");
+    	var id = $header.attr("data-id");
+    	
+    	var isDelChil = false;
+    	var callback = function() {
+    		$attrBar.closest(".add-attr").remove();    		
+    	};    	
+    	if($attrBar.hasClass("al-save")) {
+    		filterCriterionDeleteAjax(id, callback);
+    	}else {
+    		callback();
+    		removePop();
+    	}    
+    }
+    
+  //删除表达式的请求方法
+    function filterCriterionDeleteAjax(id, callback) {
+    	$CPF.showLoading();
+    	Ajax.ajax('admin/expressionAndFilter/delMiFilterCriterion', {			
+			 id: id
+		 }, function(data) {
+			 if(data.code == "400") {
+				 Dialog.notice(data.msg, "error");
+				 $CPF.closeLoading();
+				 return;
+			 }
+			 
+			 callback();
+			 removePop();
+			 $CPF.closeLoading();
+		});
+    };
 
     $page.on("click", function () {    	
         removePop();
     });
       
-
     //收缩事件绑定
     $("#filterEdit").on("click", ".icon-arrow, .icon-arrow-sm", function (e) {
     	var $labelBar = $(this).closest(".label-bar");
@@ -1653,8 +1440,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         var $header = $(el).closest(".collapse-header");
         var belongmodel = $header.attr("data-belongmodel");
       if ($(this).hasClass("add-comm-group")) {
-    	 
-    	  if ($head.hasClass("entity-title")) {
+    	 debugger;
+    	  if ($header.hasClass("entity-title")) {
     		  var $content = $header.siblings(".collapse-content");
         	  var len = $content.children("li").length;
         	  if (len<1) {
@@ -1807,8 +1594,16 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
     //保存
     $("#filterEdit").on("click", ".icon-save", function() {        
-        var labelBar = $(this).closest(".label-bar");
         
+    	var  $header = $(this).closest(".collapse-header");
+    	if ($header.hasClass("entity-title")) {
+    		//filterSave(this);
+    		return;
+    	}
+    	
+    	
+    	
+    	var labelBar = $(this).closest(".label-bar");
         
        if(labelBar.hasClass("commGroup")) {
         	commGroupSave(this);
@@ -1827,49 +1622,17 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         	entityDelete(el);
         	return;
         }
+        
+        
         var el = $(".icon-trash-sm.active")[0];        
-        if(labelBar.hasClass("attr")) {         	
-        	attrDelete(el);        	
-        }else if(labelBar.hasClass("more-attr")) {
-        	moreAttrDelete(el, true);
-        }else if(labelBar.hasClass("attr-group")) {
-        	console.log(1);
-        	attrGroupDelete(el, true);
-        }else if(labelBar.hasClass("attr-relative")) {
-        	relativeDelete(el);
-        }else if(labelBar.hasClass("tag")) {
-        	tagDelete(el);
-        } else if (labelBar.hasClass("cascade-attr")) {
-        	cascadeAttrDelete(el);
-        } else if (labelBar.hasClass("rabc")) {
-        	rabcDelete(el);
-        }else if (labelBar.hasClass("rattr")) {
-        	rAttrDelete(el);
-        }else if (labelBar.hasClass("filters")) {
-        	filtersDelete(el);
-        } else if (labelBar.hasClass("filterGroup")) {
-        	filtersDelete(el);
-        } else if (labelBar.hasClass("rFilter")) {
-        	filtersDelete(el);
-        } else if (labelBar.hasClass("filter")) {
-        	filtersDelete(el);
-        } else if (labelBar.hasClass("refattribute-attr")) {
-        	refattributeAttrDelete(el);
-        } else if (labelBar.hasClass("rRefattribute-attr")) {
-        	rRefattributeAttrDelete(el);
+        if(labelBar.hasClass("filterCriterion")) { 
+        	//删除表达式
+        	filterCriterionDelete(el);        	
+        }else if(labelBar.hasClass("commGroup")) {
+        	commGroupDelete(el);
         }
-    })
-    
-    //删除-仅组
-    $("#filterEdit").on("click", ".opera.only-group", function(e) { 
-    	e.stopPropagation();
-    	var el = $(".icon-trash-sm.active")[0];       
-        var labelBar = $(".icon-trash-sm.active").closest(".label-bar");        
-        if(labelBar.hasClass("more-attr")) {
-        	moreAttrDelete(el, false);
-        }else if(labelBar.hasClass("attr-group")) {
-        	attrGroupDelete(el, false);
-        }
+        
+        
     })
     
     //实体选择点击事件绑定

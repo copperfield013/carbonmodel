@@ -440,5 +440,32 @@ public class ModelItemServiceImpl implements ModelItemService {
 		return modelItemDao.getMiFiltergroupChild(groupId);
 	}
 
+	@Override
+	public void saveFilter(String miCode, Integer type, Integer filterId) {
+
+		switch (type) {
+		case 1:
+			// 事实属性， 过滤条件保存
+			saveFactFilter(miCode, filterId);
+			
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+
+	/**
+	 * 事实属性， 过滤条件保存
+	 * @param miCode
+	 * @param filterId
+	 */
+	private void saveFactFilter(String miCode, Integer filterId) {
+		MiStatFact miStatFact = commService.get(MiStatFact.class, miCode);
+		miStatFact.setFilterId(filterId);
+		commService.update(miStatFact);
+	}
+
 	
 }

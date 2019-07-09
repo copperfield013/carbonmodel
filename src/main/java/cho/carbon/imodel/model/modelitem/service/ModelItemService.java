@@ -130,4 +130,12 @@ public interface ModelItemService {
 	 * @return
 	 */
 	List<MiFilterCriterion> getMiFiltergroupChild(Integer groupId);
+
+	/**
+	 * 保存过滤条件
+	 * @param miCode
+	 * @param  type 0.统计实体   1.事实属性 2. 计算属性 3. 配置文件
+	 * @param filterId
+	 */
+	void saveFilter(String miCode, Integer type, Integer filterId);
 }

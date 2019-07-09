@@ -184,6 +184,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     cursor: pointer;
+    margin: 6px;
 }
 #modelItemEdit .icon-simulate-trashsm {
     display: inline-block;
