@@ -632,7 +632,7 @@ public class ModelItemController {
 					
 					MiTwolevelMapping mapp = new MiTwolevelMapping();
 					mapp.setId(mappingId);
-					commService.delete(mappingId);
+					commService.delete(mapp);
 					
 					map.put("code", 200);
 					map.put("msg", "成功！");

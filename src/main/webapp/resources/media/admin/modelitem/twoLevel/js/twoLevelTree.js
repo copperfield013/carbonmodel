@@ -2186,48 +2186,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		});
     };
     
-  //rFilterSave  保存修改方法
-    function rFilterSave(el) {
-    	var $abcBar = $(el).closest(".label-bar");
-    	var name = $abcBar.children(".edit-input").val();    	
-    	var id = $abcBar.closest(".collapse-header").attr("data-id");
-    	var parentId = $abcBar.closest(".collapse-content").prev(".collapse-header")
-    						.attr("data-id"); 
-    	var opt = $abcBar.children(".node-ops-type").find("option:selected").val();
-    	var filterType = $abcBar.children(".node-Symbol-type").find("option:selected").val();
-    	
-    	var relationData = $abcBar.children(".relationData").find("option:selected").val();
-    	var rightRecordType = $abcBar.children(".relationData").find("option:selected").attr("rightRecordType");
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/binFilterBody/saveOrUpdate', {
-			 name: name,
-			 parentId: parentId,
-			 id: id,
-			 isFilters: false,
-			 dataType: 13,
-			 opt:opt,
-			 filterType: filterType,
-			 subdomain:relationData,
-			 signFilter: "nodeFilter"
-		 }, function(data) {
-			if(data.code == "400") {
-				 Dialog.notice(data.msg, "warning");
-				 $CPF.closeLoading();
-				 return;
-			 }
-				var data = data.binFilterBody;
-				 //设置当前节点order和id
-				 var order = data.order;
-				 var id = data.id;
-				 $abcBar.closest(".collapse-header")
-				 	.attr("data-order",order)
-				 	.attr("data-id", id)
-				 	.attr("entityid", rightRecordType);
-			 
-			 saveSuccess(el)
-			 $CPF.closeLoading();
-		});
-    };
     
     //二级属性，删除的请求方法
     function twoLevelattrDeleteAjax(miCode, callback) {
@@ -2249,6 +2207,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
     //二级属性组，删除的请求方法
     function twoLevelGroupDeleteAjax(mappingId, callback) {
+    	debugger;
     	$CPF.showLoading();
     	Ajax.ajax('admin/modelItem/delTwoAttrMapping', {			
     		mappingId: mappingId
@@ -2257,26 +2216,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				 Dialog.notice(data.msg, "error");
 				 return;
 			 }
-			 
-			 callback();
-			 removePop();
-			 $CPF.closeLoading();
-		});
-    };
-    
-    
-    
-    //删除Filters的请求方法
-    function deleteAjaxFilters(id, callback) {
-    	$CPF.showLoading();
-    	Ajax.ajax('admin/node/binFilterBody/doDelete', {			
-			 id: id
-		 }, function(data) {
-			 
-			 if(data.code == "400") {
-				 Dialog.notice(data.msg, "error");
-				 $CPF.closeLoading();
-				 return;
+			 if (data.code == 200) {
+				 Dialog.notice(data.msg, "success");
 			 }
 			 
 			 callback();
@@ -2284,7 +2225,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			 $CPF.closeLoading();
 		});
     };
-       
     
     //跟实体删除方法
     function entityDelete(el) {
@@ -2308,10 +2248,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     //二级属性组删除方法
     function twoLevelGroupDelete(el) {    	
     	var $attrBar = $(el).closest(".label-bar");  
-    	debugger;
     	var mappingId = $attrBar.closest(".collapse-header").attr("data-id");
     	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
+    		$attrBar.closest(".more-attr").remove();    		
     	};    	
     	if($attrBar.hasClass("al-save")) {
     		twoLevelGroupDeleteAjax(mappingId, callback);
@@ -2693,8 +2632,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         var labelBar = $(".icon-trash-sm.active").closest(".label-bar");
        
         var el = $(".icon-trash-sm.active")[0];        
-        if(labelBar.hasClass("twoLevelGroup")) {         	
-        	//attrDelete(el);
+        if(labelBar.hasClass("twoLevelGroup")) {  
+        	debugger;
         	twoLevelGroupDelete(el);
         }else if(labelBar.hasClass("twoLevelattr")) {
         	twoLevelattrDelete(el);
