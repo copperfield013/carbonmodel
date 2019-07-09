@@ -1,0 +1,46 @@
+package cho.carbon.imodel.model.dataservice.service.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import cho.carbon.imodel.model.dataservice.criteria.ServiceBizzDataCriteria;
+import cho.carbon.imodel.model.dataservice.dao.ServiceBizzDataDao;
+import cho.carbon.imodel.model.dataservice.pojo.ServiceBizzData;
+import cho.carbon.imodel.model.dataservice.service.ServiceBizzDataService;
+import cn.sowell.copframe.dto.page.PageInfo;
+
+@Service
+public class ServiceBizzDataServiceImpl implements ServiceBizzDataService {
+
+	@Resource
+	ServiceBizzDataDao serviceBizzDataDao;
+
+	@Override
+	public List<ServiceBizzData> queryList(ServiceBizzDataCriteria criteria, PageInfo pageInfo) {
+		return serviceBizzDataDao.queryList(criteria, pageInfo);
+	}
+
+	@Override
+	public ServiceBizzData getOne(Integer id) {
+		return serviceBizzDataDao.get(ServiceBizzData.class, id);
+	}
+
+	@Override
+	public void update(ServiceBizzData sd) {
+		serviceBizzDataDao.update(sd);
+		
+	}
+
+	@Override
+	public void delete(Integer id) {
+		serviceBizzDataDao.delete(id);
+	}
+
+	@Override
+	public void insert(ServiceBizzData sd) {
+		serviceBizzDataDao.insert(sd);
+	}
+}
