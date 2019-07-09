@@ -104,7 +104,7 @@ public interface ModelItemService {
 	 * @param mappingId
 	 * @return
 	 */
-	List getTwoAttrByMappingId(String mappingId);
+	List getTwoAttrByMappingId(Integer mappingId);
 	
 	/**
 	 * 保存表达式

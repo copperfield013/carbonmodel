@@ -316,7 +316,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 	}
 
 	@Override
-	public List getTwoAttrByMappingId(String mappingId) {
+	public List getTwoAttrByMappingId(Integer mappingId) {
 		return modelItemDao.getTwoAttrByMappingId(mappingId);
 	}
 

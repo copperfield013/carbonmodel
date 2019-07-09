@@ -6,13 +6,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	//获取本页面belongModel code
 	var moreLineCode = $page.attr("data-code");
 	
-//	var $select = $("#twoLevelEdit .entity-title").find(".node-ops-type");	
-//	$select.css({"width":"12%","font-size":"18px","marginLeft":"20px","margin-top": "-12px"}).select2();
-	
 	 $(function(){
 		    $CPF.showLoading();
 		    drag($(".dragEdit-wrap", $page).length);       
-
 		    //初始化， 二级属性组
 		    initTwoLevelGroup(moreLineCode);
 		    
@@ -85,226 +81,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		});
   	 });  
 	
-    //获取孩子的方法   entityId: 此为实体id
-	function getChild(nodeId, isRelative, bar, entityId, source) {
-		 //这里加载filters
-		Ajax.ajax('admin/node/binFilterBody/getFilters', {
-			nodeId: nodeId
-		}, function(data) {			
-			if (data.code == "400") {
-				 Dialog.notice("filters加载失败", "error");
-				 $CPF.closeLoading();
-			} else{
-				
-				if (data.binFilter != undefined) {
-					initFilters(nodeId,entityId, data.binFilter, data.binFilterBody, source);
-					$CPF.closeLoading();
-				}
-			}
-			
-			$CPF.closeLoading();
-		});
-		
-		$CPF.showLoading();
-		//获取当前实体下， 所有的多值属性本省
-		var repeatList;
-		Ajax.ajax('admin/dictionary/basicItem/getRepeat', {
-			entityId: entityId
-		}, function(data) {			
-			repeatList = data.repeat;	
-		
-		//获取当前实体下，所有的普通属性和二级属性
-		Ajax.ajax('admin/dictionary/basicItem/getComm?entityId', {
-			entityId: entityId
-		}, function(data) {	
-			var commList = data.commList;
-			
-			//获取所点击的多值属性对应的孩子
-			Ajax.ajax('admin/dictionary/basicItem/getRepeatChild', {
-	    		repeatId: entityId
-			}, function(data) {	
-				var repeatChildList = data.repeatChild;	
-			//获取当前实体下， 所有分组的级联属性
-			Ajax.ajax('admin/dictionary/basicItem/getAppointTypeAttr', {
-				parentCode: entityId,
-				dataType:17
-			}, function(data) {	
-				var cascaseAttrList = data.appointTypeAttr;
-					//获取当前实体下， 所有分组的引用类型
-					Ajax.ajax('admin/dictionary/basicItem/getAppointTypeAttr', {
-						parentCode: entityId,
-						dataType:11
-					}, function(data) {	
-						var refattributeList = data.appointTypeAttr;
-					Ajax.ajax('admin/node/basicItemNode/getAllAbcNode', '', function(data1) {
-			             var allAbc = data1.allAbc;
-					
-					//获取对一的关系
-					Ajax.ajax('admin/dictionary/recordRelationType/getRelation', {
-						leftRecordType: entityId,
-						relationType:6
-					}, function(data) {			
-						var relationList = data.relationList;
-				
-		//获取关系、多值、分组 的孩子
-		Ajax.ajax('admin/node/basicItemNode/getChildNode', {
-			nodeId: nodeId
-		 }, function(data) {
-			 var data = data.childNode;	
-			 var parentId = nodeId;
-			 var isAttrM = $(".collapse-header[data-id='"+nodeId+"']", $page).hasClass("more-attr-title");
-			 var parent = $(".collapse-header[data-id='"+nodeId+"']", $page).next(".collapse-content")[0];	
-			 $(parent).removeClass("need-ajax");	
-			 for(var i=0; i<data.length; i++) {
-				 var subdomain = data[i].subdomain;
-				 var dataType = data[i].dataType;
-				 var id = data[i].id;
-				 var name = data[i].name;
-				 var opt = data[i].opt;
-				 var order = data[i].order;		
-				
-				 if(data[i].type == 1) {
-					 
-					 var abcattr;
-					 var abcattrCode = data[i].abcattrCode;
-                     var basicItemCode = data[i].basicItemCode;
-						if (basicItemCode == undefined) {
-							abcattr = "";
-							abcattrCode = "";
-						} else {
-							abcattr = data[i].basicItemCnName;
-							 abcattrCode = data[i].basicItemCode;
-						}
-					 initAbc(abcattr, abcattrCode, id, name,opt, order, parent);//此abc只能是关系下的abc
-				 }else if(data[i].type == 2) {	
-					 var abcattr;
-					 var abcattrCode = data[i].abcattrCode;
-                     var basicItemCode = data[i].basicItemCode;
-						if (basicItemCode == undefined) {
-							abcattr = "";
-							abcattrCode = "";
-						} else {
-							abcattr = data[i].basicItemCnName;
-							 abcattrCode = data[i].basicItemCode;
-						}
-					 if(isAttrM) {	
-						 initAttrM(abcattr,abcattrCode,dataType, id, name, opt, order, parent,repeatChildList);
-					 }else {
-						 initAttr(abcattr,abcattrCode,dataType, id, name, opt, order, parent, commList);
-					 }					 
-				 }else if(data[i].type == 3) {	
-					 initTag(subdomain,abcattrCode,id,name,opt,order,parent, isRelative);
-				 }else if(data[i].type == 4) {
-					 var abcattr;
-					 var abcattrCode = data[i].abcattrCode;
-                     var basicItemCode = data[i].basicItemCode;
-						if (basicItemCode == undefined) {
-							abcattr = "";
-							abcattrCode = "";
-						} else {
-							abcattr = data[i].basicItemCnName;
-							abcattrCode = data[i].basicItemCode;
-						}
-					 initMoreAttr(abcattrCode,abcattr, dataType, id, name, opt, order, parent,repeatList);
-				 }else if(data[i].type == 5) {
-					 var abcattr;
-					 var abcattrCode = data[i].abcattrCode;
-                     var basicItemCode = data[i].basicItemCode;
-						if (basicItemCode == undefined) {
-							abcattr = "";
-							abcattrCode = "";
-						} else {
-							abcattr = data[i].basicItemCnName;
-							 abcattrCode = data[i].basicItemCode;
-						}
-					 initRelative(abcattr, abcattrCode, id, name,opt, order, parent);
-				 }else if(data[i].type == 6) {
-					 initGroup(id,abcattrCode, name,opt,order, parent);
-				 }else if(data[i].type == 7) {	
-					 var abcattr;
-					 var abcattrCode;
-					 var abcattrCode = data[i].abcattrCode;
-                     var basicItemCode = data[i].basicItemCode;
-						if (basicItemCode == undefined) {
-							abcattr = "";
-							abcattrCode = "";
-						} else {
-							abcattr = data[i].basicItemCnName;
-							abcattrCode = data[i].basicItemCode;
-						}
-						
-						initCascadeAttr(abcattr,abcattrCode,dataType, id, name, opt, order, parent, cascaseAttrList);
-						
-						/*if(isAttrM) {	
-							initCascadeAttrM(abcattr,abcattrCode,dataType, id, name, opt, order, parent,cascaseAttrList);
-						 }else {
-							 initCascadeAttr(abcattr,abcattrCode,dataType, id, name, opt, order, parent, cascaseAttrList);
-						 }*/
-				 }	else if(data[i].type == 8) {	
-					 var abcattrCode = data[i].abcattrCode;
-                     var basicItemCode = data[i].basicItemCode;
-						if (basicItemCode == undefined) {
-							abcattrCode = "";
-						} else {
-						  abcattrCode = data[i].basicItemCode;
-						}
-						
-					 initRattr(abcattrCode,dataType, id, name, opt, order, parent, commList, subdomain, relationList);
-				 }else if(data[i].type == 9) {	
-					 var relAbcnodeId = data[i].relAbcnodeId;
-					 initRabc(id, name, order, parent, relAbcnodeId, allAbc);
-				 } else if(data[i].type == 14) {	
-					 var relAbcnodeId = data[i].relAbcnodeId;
-					 
-					 var abcattr;
-					 var abcattrCode;
-					 var abcattrCode = data[i].abcattrCode;
-                     var basicItemCode = data[i].basicItemCode;
-					if (basicItemCode == undefined) {
-						abcattr = "";
-						abcattrCode = "";
-					} else {
-						abcattr = data[i].basicItemCnName;
-						abcattrCode = data[i].basicItemCode;
-					}
-					
-					initRefattribute(abcattr,abcattrCode,dataType, id, name, opt, order, parent, refattributeList, relAbcnodeId, allAbc);
-				 } else if(data[i].type == 15) {	
-					 var relAbcnodeId = data[i].relAbcnodeId;
-					 
-					 var abcattr;
-					 var abcattrCode;
-					 var abcattrCode = data[i].abcattrCode;
-                     var basicItemCode = data[i].basicItemCode;
-					if (basicItemCode == undefined) {
-						abcattr = "";
-						abcattrCode = "";
-					} else {
-						abcattr = data[i].basicItemCnName;
-						abcattrCode = data[i].basicItemCode;
-					}
-					
-					 initrRefattribute(abcattr,abcattrCode,dataType, id, name, opt, order, parent, commList, relAbcnodeId, allAbc, subdomain, refattributeList);
-				 } 
-				 
-			 }				 
-			 if(data.length !=3 && isRelative === true) {	
-				 addRelativeChildren(bar);					
-			 }
-			 
-			 $CPF.closeLoading();
-	    }, {async: false});	 
-		})
-		})
-		})
-		})
-		})
-		})
-		
-	})
-}
-	
-	
 	 //二级属性组初始化方法
     function initGroup($parent, miTwoMapping, miNoEnumList, miEnumList) {
     	var attrGroupHtml = initTwoAttrGroup(miTwoMapping, miNoEnumList, miEnumList);
@@ -359,367 +135,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     };
     
 	
-	
-	function getFiltersChild(nodeId, enID, bar) {
-		$CPF.showLoading();
-		Ajax.ajax('admin/node/binFilterBody/getFiltersChild', {
-			parentId: nodeId
-		}, function(data) {			
-			 if(data.code == "400") {
-		            Dialog.notice(data.msg, "error");
-		            return true;
-		       }
-			 
-			 var parent = $(".collapse-header[data-id='" + nodeId + "']", $page).next(".collapse-content")[0];
-			 var source = $(bar).closest(".collapse-header").attr("source");
-			 $(parent).removeClass("need-ajax");
-			 var filterBodyList = data.filterBodyChild;
-			 if (data.code==200 && filterBodyList.length>0) {
-				 for(var i=0; i<filterBodyList.length; i++) {
-					 var dataType = filterBodyList[i].dataType;
-					 
-					 if (dataType == 11) {
-						 initFilterGroup(filterBodyList[i],nodeId, enID,parent, source);
-					 } else if (dataType == 12) {
-						 initFilter(filterBodyList[i],nodeId, enID,parent,  source);
-					 }else if (dataType == 13) {
-						 initRFilter(filterBodyList[i],nodeId, enID,parent, source);
-					 }
-				 }
-				} else if (data.code==200 && filterBodyList.length==0) {
-					Dialog.notice("当前没有孩子！", "warning");
-				} else {
-					Dialog.notice("孩子数据加载错误！", "error");
-				}
-			 
-			 $CPF.closeLoading();
-		});
-		
-	}
-	
-	
-	function initFilterGroup(filterBodyList,nodeId, enID, parent, source) {
-		
-	        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-	        $CPF.showLoading();
-	            var relativeHtml = "<li class='attr-relative'>" +
-	            "<div class='attr-relative-title collapse-header' source='"+source+"'  entityId='"+enID+"' data-order='' data-id='"+filterBodyList.id+"'>" +
-	            "<div class='icon-label attr-relative'>" +
-	            "<i class='icon icon-attr-relative'></i><span class='text'>Group</span>" +
-	            "</div>" +
-	            "<div class='label-bar filterGroup al-save'>" +
-	            "<input type='text' class='edit-input text' value='"+filterBodyList.name+"'>";
-	            relativeHtml += "<select disabled  class='node-ops-type'>";	
-	            var nodePosType = optFILTERS;
-	            for(var key in nodePosType) {
-			    	if(filterBodyList.opt == key) {
-			    		relativeHtml += "<option value='"+key+"' selected>"+nodePosType[key]+"</option>";  	
-			    	}else {
-			    		relativeHtml += "<option value='"+key+"'>"+nodePosType[key]+"</option>"; 
-			    	}
-		         }
-		        relativeHtml += "</select>";
-		        relativeHtml += "<div class='btn-wrap'>" +
-	            "<i class='icon icon-save'></i>" +  
-	            "<i class='icon icon-add-filter group'></i>" +
-	            "<i class='icon icon-trash-sm'></i>" +
-	            "<i class='icon icon-arrow-sm active'></i>" +
-	            "</div>" +
-	            "</div>" +
-	            "</div>" +            
-	            "<ul class='attr-relative-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-	            "</ul>" +
-	            "</li>";         		    
-			    var $html = $(relativeHtml).prependTo($(parent));
-	           $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-	}
-	function initFilter(filterBodyList,nodeId, enID, parent, source) {
-        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        $CPF.showLoading();
-            var relativeHtml = "<li class='attr-relative'>" +
-            "<div class='attr-relative-title collapse-header' source='"+source+"' entityId='"+enID+"' data-order='' data-id='"+filterBodyList.id+"'>" +
-            "<div class='icon-label attr-relative'>" +
-            "<i class='icon icon-attr-relative'></i><span class='text'>filter</span>" +
-            "</div>" +
-            "<div class='label-bar filter al-save'>" +
-            "<input type='text' class='edit-input filterName text' value='"+filterBodyList.name+"'>";
-            
-            relativeHtml += "<select disabled class='abcattrCodeData'>";	
-         
-            Ajax.ajax('admin/dictionary/basicItem/getComm', {
-    	    	entityId:enID
-    	    }, function(data){		
-    	    	var entityData = data.commList;
-    	    	 Ajax.ajax('admin/dictionary/basicItem/getRepeatChild', {
-    	    		 repeatId:enID
-    	    	    }, function(data){		
-    	    	    	var repeatData = data.repeatChild;
-    	    	if (source == "moreAttr") {
-    	    		 for(var key in repeatData) {
-    	    			 if (filterBodyList.abcattrCode == repeatData[key].code) {
-    	    				 relativeHtml += "<option selected value='"+repeatData[key].code+"'>"+repeatData[key].cnName+"</option>";
-    	    			 } else {
-    	    				 relativeHtml += "<option value='"+repeatData[key].code+"'>"+repeatData[key].cnName+"</option>";
-    	    			 }
-    	 	         }
-    	    	} else {
-    	    		 for(var key in entityData) {
-    	    			 if (filterBodyList.abcattrCode == entityData[key].code) {
-    	    				 relativeHtml += "<option selected value='"+entityData[key][0]+"'>"+entityData[key][1]+"</option>"; 
-    	    			 } else {
-    	    				 relativeHtml += "<option value='"+entityData[key][0]+"'>"+entityData[key][1]+"</option>"; 
-    	    			 }
-    	    		 }
-    	    	}
-	        relativeHtml += "</select>";
-            
-            relativeHtml += "<select disabled class='node-Symbol-type'>";	
-            //getCriteriaSymbol
-    	    Ajax.ajax('admin/node/binFilterBody/getCriteriaSymbol', {
-    	    	dataType:12
-    	    }, function(data){		
-    	    	var nodeSymbolType = data.symbolMap;
-		    for(var key in nodeSymbolType) {
-		    	if (key == filterBodyList.filterType) {
-		    		relativeHtml += "<option value='"+key+"' selected>"+nodeSymbolType[key]+"</option>"; 
-		    	} else {
-		    		relativeHtml += "<option value='"+key+"'>"+nodeSymbolType[key]+"</option>"; 
-		    	}
-	         }
-	        relativeHtml += "</select>"+
-	        "<input type='text' class='edit-input valueStr text' value='"+filterBodyList.value+"'>";
-            
-            relativeHtml += "<select disabled class='node-ops-type'>";	
-            var nodePosType = optFILTERS;
-		    for(var key in nodePosType) {
-		    	if(filterBodyList.opt == key) {
-		    		relativeHtml += "<option value='"+key+"' selected>"+nodePosType[key]+"</option>";  	
-		    	}else {
-		    		relativeHtml += "<option value='"+key+"'>"+nodePosType[key]+"</option>"; 
-		    	}
-	         }
-	        relativeHtml += "</select>";
-	        relativeHtml += "<div class='btn-wrap'>" +
-            "<i class='icon icon-save'></i>" +  
-            /*"<i class='icon icon-add-filter group'></i>" +*/
-            "<i class='icon icon-trash-sm'></i>" +
-           /* "<i class='icon icon-arrow-sm active'></i>" +*/
-            "</div>" +
-            "</div>" +
-            "</div>" +            
-            "<ul class='attr-relative-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>";         		    
-		    var $html = $(relativeHtml).prependTo($(parent));
-            $html.find("select").css({"width":"13%","marginLeft":"16px"}).select2();
-            $html.find("select.node-ops-type").css({"width":"8%","marginLeft":"16px"}).select2();
-            
-    	    })
-    	     })
-    	    })
-	}
-	function initRFilter(filterBodyList,nodeId, enID, parent, source) {
-        var entityId = enID;
-        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        $CPF.showLoading();
-        
-        Ajax.ajax('admin/dictionary/recordRelationType/getRelation', {
-			leftRecordType: entityId,
-			relationType:''
-		}, function(data) {			
-			var relationList = data.relationList;
-        Ajax.ajax('admin/node/binFilterBody/getCriteriaSymbol', {
-	    	dataType:13
-	    }, function(data){	
-	    	
-            var relativeHtml = "<li class='attr-relative'>" +
-            "<div class='attr-relative-title collapse-header' source='"+source+"' entityId='' data-order='' data-id='"+filterBodyList.id+"'>" +
-            "<div class='icon-label attr-relative'>" +
-            "<i class='icon icon-attr-relative'></i><span class='text'>rFilter</span>" +
-            "</div>" +
-            "<div class='label-bar rFilter al-save'>" +
-            "<input type='text' class='edit-input text' value='"+filterBodyList.name+"'>";
-            
-            relativeHtml += "<select disabled class='relationData'>";	
-		    for(var key in relationList) {
-		    	if (relationList[key].typeCode == filterBodyList.subdomain) {
-		    		relativeHtml += "<option selected rightRecordType='"+relationList[key].rightRecordType+"' value='"+relationList[key].typeCode+"'>"+relationList[key].name+"</option>";
-		    	} else {
-		    		relativeHtml += "<option rightRecordType='"+relationList[key].rightRecordType+"' value='"+relationList[key].typeCode+"'>"+relationList[key].name+"</option>";
-		    	}
-	         }
-	         relativeHtml += "</select>";
-            
-            relativeHtml += "<select disabled class='node-Symbol-type'>";	
-    	    	var nodeSymbolType = data.symbolMap;
-		    for(var key in nodeSymbolType) {
-		    	if (key == filterBodyList.filterType) {
-		    		relativeHtml += "<option value='"+key+"' selected>"+nodeSymbolType[key]+"</option>"; 
-		    	} else {
-		    		relativeHtml += "<option value='"+key+"'>"+nodeSymbolType[key]+"</option>"; 
-		    	}
-	         };
-	         relativeHtml += "</select>";
-
-	         relativeHtml += "<select disabled class='node-ops-type'>";	
-            var nodePosType = optFILTERS;
-            for(var key in nodePosType) {
-		    	if(filterBodyList.opt == key) {
-		    		relativeHtml += "<option value='"+key+"' selected>"+nodePosType[key]+"</option>";  	
-		    	}else {
-		    		relativeHtml += "<option value='"+key+"'>"+nodePosType[key]+"</option>"; 
-		    	}
-	         }
-	         relativeHtml += "</select>";
-	         relativeHtml += "<div class='btn-wrap'>" +
-            "<i class='icon icon-save'></i>" +  
-            "<i class='icon icon-add-filterGroup group'></i>" +
-            "<i class='icon icon-trash-sm'></i>" +
-            "<i class='icon icon-arrow-sm active'></i>" +
-            "</div>" +
-            "</div>" +
-            "</div>" +            
-            "<ul class='attr-relative-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>";         		    
-		    var $html = $(relativeHtml).prependTo($(parent));
-            $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-    	    })
-		 })
-	}
-	
-	//关系孩子
-	function addRelativeChildren(bar) {	
-		 var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-		 var abcattr = $(bar).find("select.abc-attr").children("option:selected").attr("value");
-		 var abcattrCode = $(bar).find("select.abc-attr").children("option:selected").attr("data-id");
-		 var chLength = $(".entity-ch-wrap", $page).length;
-		 var nest = "no-repeat";
-		 var entityId;
-	        if($(bar).closest(".collapse-header").hasClass("entity-title")){
-	        	entityId = $(".entity_attr", $page).attr("data-code");
-	        }else {
-	        	entityId = $(bar).closest(".collapse-header").find(".label-bar")
-	        					.find(".entity-only-title").attr("data-abcattrcode");
-	        }
-		 if(chLength >= 2) {
-			 nest = "repeat"
-		 }
-		 
-		 Ajax.ajax('admin/node/basicItemNode/getAllAbcNode', '', function(data1) {
-	            var allAbc = data1.allAbc;
-		 //展现出关系下的标签和abc HTML			 
-		 var tagHtml = "<li class='add-tag clear-fix'>" +
-           "<div class='icon-label tag'>" +
-           "<i class='icon icon-tag'></i>" +
-           "<span class='text'>标签</span>" +
-           "</div>" +
-           "<div class='label-bar tag edit' data-order='' data-id=''>" +
-           "<input type='text' class='edit-input text' value='标签名称'>" +
-           "<span class='icon icon-toleft'></span>" +
-           "<div class='tag-content'>" +
-           "<ul class='clear-fix'>" +
-           "</ul>" +
-           "</div>" +
-           "<span class='icon icon-toright ban'></span>"
-           tagHtml += "<select disabled class='node-ops-type'>";	
-		 	var nodePosType=nodePosTypeLABEL;
-		    for(var i=0; i<nodePosType.length; i++) {
-		    	if(nodePosType[i] === "写") {
-		    		tagHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-		    	}else {
-		    		tagHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-		    	}
-	            	         
-	         };
-	         tagHtml += "</select>";
-	         tagHtml += "<div class='btn-wrap'>" +
-           "<i class='icon tag icon-save'></i>" +
-           "<i class='icon tag icon-add-tag-relative'></i>" +
-           "<i class='icon-simulate-trashsm'></i>" +
-           "</div>" +
-           "</div>" +
-           "</li>";
-	         
-	         var rabcHtml ="<li class='entity-ch-wrap rabc'>" +
-	            "<div class='attr-abc-title collapse-header' data-abcattrcode='"+abcattrCode+"'  data-order='' data-id=''>" +
-	            "<div class='icon-label rabc'>" +
-	            "<i class='icon icon-abc'></i><span class='text'>RABC</span>" +
-	            "</div>" +
-	            "<div class='label-bar rabc edit' data-id=''>";
-	            
-		            rabcHtml += "<input class='edit-input text' value='"+allAbc[0].name+"'>"+
-		            "<select class='relAbcnodeId'>";
-		            
-				    for(var i=0; i<allAbc.length; i++) {
-				    	rabcHtml += "<option value='"+allAbc[i].id+"'>"+allAbc[i].name+"</option>"; 
-			         };
-			         rabcHtml += "</select>";
-	            /*});*/
-		         rabcHtml += "<div class='btn-wrap'>" +
-	            "<i class='icon icon-save'></i>" +
-	            "<i class='icon icon-trash-sm'></i>" +
-	            /*"<i class='icon icon-add-abc group'></i>" +	          
-	            "<i class='icon icon-arrow-sm'></i>" + */ 
-	            "</div>" +
-	            "</div>" +
-	            "</div>" +
-	            "<ul class='drag-wrap-repeat dragEdit-wrap collapse-content collapse-content-active' id='dragEdit-"+dragWrapLen+"'>" +
-	            "</ul>" +
-	            "</li>";
-	         
-           var abcHtml = "<li class='entity-ch-wrap "+nest+" abc'>" +
-           "<div class='attr-abc-title collapse-header' data-order='' data-id=''>" +
-           "<div class='icon-label abc'>" +
-           "<i class='icon icon-abc'></i><span class='text'>ABC</span>" +
-           "</div>" +
-           "<div class='label-bar abc edit'>" +
-           "<input class='edit-input text' value='"+abcattr+"'>"+
-           "<span class='entity-only-title' data-abcattrcode='"+abcattrCode+"' data-abcattr='"+abcattr+"'>"+abcattr+"</span>";
-           abcHtml += "<select diabled class='node-ops-type'>";
-           var nodePosType= nodePosTypeABC;
-		    for(var i=0; i<nodePosType.length; i++) {
-		    	if(nodePosType[i] === "写") {
-		    		abcHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-		    	}else {
-		    		abcHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-		    	}
-	            	         
-	         };
-	         abcHtml += "</select>";
-	         abcHtml += "<div class='btn-wrap'>" +
-           "<i class='icon icon-save'></i>" +
-           "<i class='icon icon-add-abc group'></i>" +	            
-           "<i class='icon icon-arrow-sm active'></i>" +
-           "</div>" +
-           "</div>" +
-           "</div>" +
-           "<ul class='drag-wrap-repeat need-ajax dragEdit-wrap collapse-content collapse-content-inactive' id='dragEdit-"+dragWrapLen+"'>" +
-           "</ul>" +
-           "</li>";
-	         
-           var $content = $(bar).closest(".collapse-header").next(".collapse-content");
-           
-           if(!$content.children("li").hasClass("add-tag")) {
-      		 var $thtml = $(tagHtml).appendTo($content);
-      		 $($thtml.find("select")).css({"width":"7%","marginLeft":"2px"}).select2();
-      	 	}
-      	 
-           if(!$content.children("li").hasClass("rabc")) {
-				 var $rhtml = $(rabcHtml).appendTo($content);
-				 $($rhtml.find("select")).css({"width":"13%","marginLeft":"60px"}).select2();
-			}
-			
-			if(!$content.children("li").hasClass("abc")) {
-				var $ahtml = $(abcHtml).appendTo($content);   
-				 $($ahtml.find("select")).css({"width":"13%","marginLeft":"60px"}).select2();
-			 }
-			
-			 saveSuccess(bar);
-			 $CPF.closeLoading();
-		   drag($(".dragEdit-wrap").length);
-		 });
-	};
 	
     
 	function addEntityOPT() {
@@ -799,846 +214,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    });     
     };
     
-    //abc初始化方法
-    function initAbc(abcattr, abcattrCode, id, name, opt, order, parent) {
-    	var dragWrapLen = $(".dragEdit-wrap", $page).length + 1 ;
-    	var chLength = $(".entity-ch-wrap", $page).length;
-		 var nest = "no-repeat";
-		 if(chLength >= 2) {
-			 nest = "repeat"
-		 }
-    	var abcHtml = "<li class='entity-ch-wrap "+nest+" abc'>" +
-			        "<div class='attr-abc-title collapse-header'data-abcattrCode='"+abcattrCode+"'  data-order='"+order+"' data-id='"+id+"'>"
-    				+"<div class='icon-label abc'>";
-					if(abcattrCode=="") {
-						abcHtml = abcHtml +  "<i class='icon icon-error-cross'></i>";
-					} 
-    	 			abcHtml = abcHtml +  "<i class='icon icon-abc'></i><span class='text'>ABC</span>" +
-			        "</div>" +
-			        "<div class='label-bar abc'>" +
-			        "<input class='edit-input text' value='"+name+"'>"+
-			        "<span class='entity-only-title' data-abcattrcode='"+abcattrCode+"' data-abcattr='"+abcattr+"'>"+abcattr+"</span>"
-			        abcHtml += "<select disabled class='node-ops-type'>";	
-    	 			var nodePosType = nodePosTypeABC;
-				    for(var i=0; i<nodePosType.length; i++) {
-				    	if(nodePosType[i] === opt) {
-				    		abcHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-				    	}else {
-				    		abcHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-				    	}
-			            	         
-			         };
-			         abcHtml += "</select>";
-			         abcHtml += "<div class='btn-wrap'>" +
-			        "<i class='icon icon-save'></i>" +
-			        "<i class='icon icon-add-abc group'></i>" +
-			        "<i class='icon icon-arrow-sm active'></i>" +
-			        "</div>" +
-			        "</div>" +
-			        "</div>" +
-			        "<ul class='drag-wrap-repeat need-ajax dragEdit-wrap collapse-content collapse-content-inactive' id='dragEdit-"+dragWrapLen+"'>" +
-			        "</ul>" +
-			        "</li>"		    
-	    var $html = $(abcHtml).appendTo($(parent));	    
-	    $html.find("select").css({"width":"15%","marginLeft":"60px"}).select2();
-    }
     
     
-    //rabc初始化方法
-    function  initRabc(id, name, order, parent,relAbcnodeId, allAbc) {
-    	var dragWrapLen = $(".dragEdit-wrap", $page).length + 1 ;
-    	var abcHtml = "<li class='entity-ch-wrap rabc'>" +
-        "<div class='attr-abc-title collapse-header' data-order='"+order+"' data-id='"+id+"'>" +
-        "<div class='icon-label rabc'>" +
-        "<i class='icon icon-abc'></i><span class='text'>RABC</span>" +
-        "</div>" +
-        "<div class='label-bar rabc al-save' data-id='"+id+"'>";
-         
-        abcHtml += "<input class='edit-input text' value='"+name+"'>"+
-        "<select disabled class='relAbcnodeId'>";
-        
-	    for(var i=0; i<allAbc.length; i++) {
-	    	if (allAbc[i].id == relAbcnodeId) {
-	    		abcHtml += "<option value='"+allAbc[i].id+"' selected>"+allAbc[i].name+"</option>"; 
-	    	} else {
-	    		abcHtml += "<option value='"+allAbc[i].id+"'>"+allAbc[i].name+"</option>"; 
-	    	}
-         };
-         abcHtml += "</select>";
-         
-         abcHtml += "<div class='btn-wrap'>" +
-        "<i class='icon icon-save'></i>" +
-        "<i class='icon icon-trash-sm'></i>" +
-       /* "<i class='icon icon-add-abc group'></i>" +	            
-        "<i class='icon icon-arrow-sm'></i>" +*/
-        "</div>" +
-        "</div>" +
-        "</div>" +
-        "<ul class='drag-wrap-repeat dragEdit-wrap collapse-content collapse-content-active' id='dragEdit-"+dragWrapLen+"'>" +
-        "</ul>" +
-        "</li>"	    
-	    var $html = $(abcHtml).appendTo($(parent));	    
-	    $html.find("select").css({"width":"15%","marginLeft":"60px"}).select2();
-    }
-    
-  //普通 引用属性初始化方法
-    function initRefattribute(abcattr,abcattrCode,dataType,id,name,opt,order,parent,commList, relAbcnodeId, allAbc) {  
-    	var dataTypeList = dataTypeCASCADETYPEList;
-			var attrHtml = "<li class='add-attr clear-fix'>"
-				+"<div class='icon-label attr' data-type='14'>";
-            if(abcattrCode=="") {
-            	attrHtml=attrHtml+"<i class='icon icon-error-cross'></i>";
-            }
-            attrHtml=attrHtml+"<i class='icon icon-attr'></i>" +
-            "<span class='text'>引用属性</span>" +
-            "</div>" +
-            "<div class='label-bar refattribute-attr al-save' data-type='14'  data-order='"+order+"' data-id='"+id+"'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr'>"            
-            for(var i=0; i<commList.length; i++) {  
-            	
-            	if(commList[i][0] == abcattrCode) {
-            		attrHtml += "<option item-data-type='"+commList[i][2]+"' data-id='"+commList[i][0]+"' value='"+commList[i][1]+"' selected>"+commList[i][1]+"</option>";
-            		
-            		if ("5" == commList[i][2]) {
-    					dataTypeList=dataTypeSTRINGList;
-    				} else if ("6"== commList[i][2]) {
-    					dataTypeList=dataTypeDATEList;
-    				}else if ("7"== commList[i][2]) {
-    					dataTypeList=dataTypeTIMEList;
-    				}else if ("1"== commList[i][2]) {
-    					dataTypeList=dataTypeINTList;
-    				}else if ("15"== commList[i][2]) {
-    					dataTypeList=dataTypeDOUBLEList;
-    				}else if ("11"== commList[i][2]) {
-    					dataTypeList=dataTypeREFERENCEList;
-    				}else if ("8"== commList[i][2]) {
-    					dataTypeList=dataTypeFILEList;
-    				}else if ("14"== commList[i][2]) {
-    					dataTypeList=dataTypeENUMList;
-    				}else if ("17"== commList[i][2]) {
-    					dataTypeList=dataTypeCASCADETYPEList;
-    				}
-            	}else {
-            		attrHtml += "<option item-data-type='"+commList[i][2]+"' data-id='"+commList[i][0]+"' value='"+commList[i][1]+"'>"+commList[i][1]+"</option>";
-            	}
-            	
-            }
-			attrHtml += "</select>";
-			attrHtml += "<select disabled class='data-type attr-type'>";    
-			
-		    	for(var i=0; i<dataTypeList.length; i++) {
-		    		if(dataTypeList[i][0] == dataType) {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>";
-		    		}else {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>";
-		    		}
-	            	          
-	            };
-	            attrHtml += "</select>";
-				attrHtml += "<select disabled class='node-ops-type'>";	
-				var nodePosType=nodePosTypeREFATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] == opt) {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";
-			    	}
-		            	          
-		        };
-		        attrHtml += "</select>";
-		        attrHtml += "<select disabled class='relAbcnodeId'>";
-			    for(var i=0; i<allAbc.length; i++) {
-			    	if (relAbcnodeId == allAbc[i].id) {
-			    		attrHtml += "<option selected='selected' value='"+allAbc[i].id+"'>"+allAbc[i].name+"</option>"; 
-			    	} else {
-			    		attrHtml += "<option value='"+allAbc[i].id+"'>"+allAbc[i].name+"</option>"; 
-			    	}
-		         };
-			         
-		        attrHtml += "</select>";
-		        attrHtml += "<div class='btn-wrap'>" +
-		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon icon-trash-sm'></i>" +
-		        "<i class='icon-simulate-trashsm'></i>" +
-		        "</div>" +
-		        "</div>" +
-		        "</li>";		           		        
-		        var $html = $(attrHtml).prependTo($(parent));
-		        $html.find("select").css({"width":"11%","marginLeft":"16px"}).select2();
-    }
     
     
-  //普通 引用->引用属性初始化方法
-    function initrRefattribute(abcattr,abcattrCode,dataType,id,name,opt,order,parent,commList, relAbcnodeId, allAbc, subdomain, rRefattributeList) {  
-    	var dataTypeList = dataTypeCASCADETYPEList;
-			var attrHtml = "<li class='add-attr clear-fix'>"
-				+"<div class='icon-label attr' data-type='15'>";
-            if(abcattrCode=="") {
-            	attrHtml=attrHtml+"<i class='icon icon-error-cross'></i>";
-            }
-            attrHtml=attrHtml+"<i class='icon icon-attr'></i>" +
-            "<span class='text'>R引用属性</span>" +
-            "</div>" +
-            "<div class='label-bar refattribute-attr al-save' data-type='15'  data-order='"+order+"' data-id='"+id+"'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr'>"            
-            for(var i=0; i<commList.length; i++) {  
-            	if(commList[i][0] == abcattrCode) {
-            		attrHtml += "<option item-data-type='"+commList[i][2]+"' data-id='"+commList[i][0]+"' value='"+commList[i][1]+"' selected>"+commList[i][1]+"</option>";
-            		
-            		if ("5" == commList[i][2]) {
-    					dataTypeList=dataTypeSTRINGList;
-    				} else if ("6"== commList[i][2]) {
-    					dataTypeList=dataTypeDATEList;
-    				}else if ("7"== commList[i][2]) {
-    					dataTypeList=dataTypeTIMEList;
-    				}else if ("1"== commList[i][2]) {
-    					dataTypeList=dataTypeINTList;
-    				}else if ("15"== commList[i][2]) {
-    					dataTypeList=dataTypeDOUBLEList;
-    				}else if ("11"== commList[i][2]) {
-    					dataTypeList=dataTypeREFERENCEList;
-    				}else if ("8"== commList[i][2]) {
-    					dataTypeList=dataTypeFILEList;
-    				}else if ("14"== commList[i][2]) {
-    					dataTypeList=dataTypeENUMList;
-    				}else if ("17"== commList[i][2]) {
-    					dataTypeList=dataTypeCASCADETYPEList;
-    				}
-            	}else {
-            		attrHtml += "<option item-data-type='"+commList[i][2]+"' data-id='"+commList[i][0]+"' value='"+commList[i][1]+"'>"+commList[i][1]+"</option>";
-            	}
-            	
-            }
-			attrHtml += "</select>";
-			attrHtml += "<select disabled class='data-type attr-type'>";    
-			
-		    	for(var i=0; i<dataTypeList.length; i++) {
-		    		if(dataTypeList[i][0] == dataType) {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>";
-		    		}else {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>";
-		    		}
-	            	          
-	            };
-	            attrHtml += "</select>";
-				attrHtml += "<select disabled class='node-ops-type'>";	
-				var nodePosType=nodePosTypeREFATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] == opt) {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";
-			    	}
-		            	          
-		        };
-		        attrHtml += "</select>";
-		        
-		        attrHtml +="<select disabled class='subdomain'>"
-		        	for(var i=0; i<rRefattributeList.length; i++) {            	
-		             	attrHtml += "<option data-id='"+rRefattributeList[i][0]+"' value='"+rRefattributeList[i][1]+"' item-data-type='"+rRefattributeList[i][2]+"'>"+rRefattributeList[i][1]+"</option>";                
-		             }
-		 			attrHtml += "</select>";
-		        
-		        attrHtml += "<select disabled class='relAbcnodeId'>";
-			    for(var i=0; i<allAbc.length; i++) {
-			    	if (relAbcnodeId == allAbc[i].id) {
-			    		attrHtml += "<option selected='selected' value='"+allAbc[i].id+"'>"+allAbc[i].name+"</option>"; 
-			    	} else {
-			    		attrHtml += "<option value='"+allAbc[i].id+"'>"+allAbc[i].name+"</option>"; 
-			    	}
-		         };
-			         
-		        attrHtml += "</select>";
-		        attrHtml += "<div class='btn-wrap'>" +
-		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon icon-trash-sm'></i>" +
-		        "<i class='icon-simulate-trashsm'></i>" +
-		        "</div>" +
-		        "</div>" +
-		        "</li>";		           		        
-		        var $html = $(attrHtml).prependTo($(parent));
-		        $html.find("select").css({"width":"11%","marginLeft":"16px"}).select2();
-    }
-    
-    //普通级联属性初始化方法
-    function initCascadeAttr(abcattr,abcattrCode,dataType,id,name,opt,order,parent,commList) {  
-    	var dataTypeList = dataTypeCASCADETYPEList;
-			var attrHtml = "<li class='add-attr clear-fix'>"
-				+"<div class='icon-label attr' data-type='7'>";
-            if(abcattrCode=="") {
-            	attrHtml=attrHtml+"<i class='icon icon-error-cross'></i>";
-            }
-            attrHtml=attrHtml+"<i class='icon icon-attr'></i>" +
-            "<span class='text'>级联属性</span>" +
-            "</div>" +
-            "<div class='label-bar cascade-attr  al-save' data-type='7'  data-order='"+order+"' data-id='"+id+"'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr'>"            
-            for(var i=0; i<commList.length; i++) {  
-            	
-            	if(commList[i][0] == abcattrCode) {
-            		attrHtml += "<option item-data-type='"+commList[i][2]+"' data-id='"+commList[i][0]+"' value='"+commList[i][1]+"' selected>"+commList[i][1]+"</option>";
-            		
-            		if ("5" == commList[i][2]) {
-    					dataTypeList=dataTypeSTRINGList;
-    				} else if ("6"== commList[i][2]) {
-    					dataTypeList=dataTypeDATEList;
-    				}else if ("7"== commList[i][2]) {
-    					dataTypeList=dataTypeTIMEList;
-    				}else if ("1"== commList[i][2]) {
-    					dataTypeList=dataTypeINTList;
-    				}else if ("15"== commList[i][2]) {
-    					dataTypeList=dataTypeDOUBLEList;
-    				}else if ("11"== commList[i][2]) {
-    					dataTypeList=dataTypeREFERENCEList;
-    				}else if ("8"== commList[i][2]) {
-    					dataTypeList=dataTypeFILEList;
-    				}else if ("14"== commList[i][2]) {
-    					dataTypeList=dataTypeENUMList;
-    				}else if ("17"== commList[i][2]) {
-    					dataTypeList=dataTypeCASCADETYPEList;
-    				}
-            	}else {
-            		attrHtml += "<option item-data-type='"+commList[i][2]+"' data-id='"+commList[i][0]+"' value='"+commList[i][1]+"'>"+commList[i][1]+"</option>";
-            	}
-            	
-            }
-			attrHtml += "</select>";
-			attrHtml += "<select disabled class='data-type attr-type'>";    
-			
-		    	for(var i=0; i<dataTypeList.length; i++) {
-		    		if(dataTypeList[i][0] == dataType) {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>";
-		    		}else {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>";
-		    		}
-	            	          
-	            };
-	            attrHtml += "</select>";
-				attrHtml += "<select disabled class='node-ops-type'>";	
-				var nodePosType=nodePosTypeCASATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] == opt) {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";
-			    	}
-		            	          
-		        };
-		        attrHtml += "</select>";
-		        attrHtml += "<div class='btn-wrap'>" +
-		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon icon-trash-sm'></i>" +
-		        "<i class='icon-simulate-trashsm'></i>" +
-		        "</div>" +
-		        "</div>" +
-		        "</li>";		           		        
-		        var $html = $(attrHtml).prependTo($(parent));
-		        $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-    }
-    
-  //多值属性下的级联属性初始化方法
-    /*function initCascadeAttrM(abcattr,abcattrCode,dataType,id,name,opt,order,parent,moreCascaseAttrList) {  
-    	
-    	var dataTypeList = dataTypeCASCADETYPEList;
-			var attrHtml = "<li class='add-attr clear-fix'>"
-				+ "<div class='icon-label attr'>";
-			 if(abcattrCode=="") {
-				 attrHtml = attrHtml+"<i class='icon icon-error-cross'></i>";
-		    }
-			 attrHtml = attrHtml+"<i class='icon icon-attr'></i>" +
-            "<span class='text'>级联属性</span>" +
-            "</div>" +
-            "<div class='label-bar cascade-attr   al-save'  data-type='7'  data-order='"+order+"' data-id='"+id+"'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr'>"  
-            for(var i=0; i<moreCascaseAttrList.length; i++) {  
-            	
-            	if(moreCascaseAttrList[i][0] == abcattrCode) {
-            		attrHtml += "<option item-data-type='"+moreCascaseAttrList[i][2]+"' data-id='"+moreCascaseAttrList[i][0]+"' value='"+moreCascaseAttrList[i][1]+"' selected>"+moreCascaseAttrList[i][1]+"</option>";
-            		
-            		if ("5" == moreCascaseAttrList[i][2]) {
-    					dataTypeList=dataTypeSTRINGList;
-    				} else if ("6"== moreCascaseAttrList[i][2]) {
-    					dataTypeList=dataTypeDATEList;
-    				}else if ("7"== moreCascaseAttrList[i][2]) {
-    					dataTypeList=dataTypeTIMEList;
-    				}else if ("1"== moreCascaseAttrList[i][2]) {
-    					dataTypeList=dataTypeINTList;
-    				}else if ("15"== moreCascaseAttrList[i][2]) {
-    					dataTypeList=dataTypeDOUBLEList;
-    				}else if ("11"== moreCascaseAttrList[i][2]) {
-    					dataTypeList=dataTypeREFERENCEList;
-    				}else if ("8"== moreCascaseAttrList[i][2]) {
-    					dataTypeList=dataTypeFILEList;
-    				}else if ("14"== moreCascaseAttrList[i][2]) {
-    					dataTypeList=dataTypeENUMList;
-    				}else if ("17"== moreCascaseAttrList[i][2]) {
-    					dataTypeList=dataTypeCASCADETYPEList;
-    				}
-            	}else {
-            		attrHtml += "<option item-data-type='"+moreCascaseAttrList[i][2]+"' data-id='"+moreCascaseAttrList[i][0]+"' value='"+moreCascaseAttrList[i][1]+"'>"+moreCascaseAttrList[i][1]+"</option>";
-            	}
-            	
-            	
-            	                
-            }
-			attrHtml += "</select>";
-			attrHtml += "<select disabled class='data-type attr-type'>";  
-				
-		    	for(var i=0; i<dataTypeList.length; i++) {
-		    		if(dataTypeList[i][0] == dataType) {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>";
-		    		}else {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>";
-		    		}
-	            	          
-	            };
-	            attrHtml += "</select>";
-				attrHtml += "<select disabled class='node-ops-type'>";		
-				var nodePosType = nodePosTypeCASATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] == opt) {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";
-			    	}
-		            	          
-		        };
-		        attrHtml += "</select>";
-		        attrHtml += "<div class='btn-wrap'>" +
-		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon icon-trash-sm'></i>" +
-		        "<i class='icon-simulate-trashsm'></i>" +
-		        "</div>" +
-		        "</div>" +
-		        "</li>";		           		        
-		        var $html = $(attrHtml).prependTo($(parent));
-		        $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-    }*/
     
     
-    //关系属性初始化方法
-    function initRattr(abcattrCode,dataType, id, name, opt, order, parent, commList, subdomain, relationList) {  
-    	var dataTypeList = dataTypeSTRINGList;
-    	var rightRecordType;
-			var attrHtml = "<li class='add-attr clear-fix'>"
-				+"<div class='icon-label attr'>";
-            if(abcattrCode=="") {
-            	attrHtml=attrHtml+"<i class='icon icon-error-cross'></i>";
-            }
-            attrHtml=attrHtml+"<i class='icon icon-attr'></i>" +
-            "<span class='text'>关系属性</span>" +
-            "</div>" +
-            "<div class='label-bar rattr  al-save'  data-type='8' data-order='"+order+"' data-id='"+id+"'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr relationCode' title='<对一>关系'>";    
-            for(var i=0; i<relationList.length; i++) {   
-            	if (relationList[i].name==subdomain) {
-            		rightRecordType=relationList[i].rightRecordType;
-            		attrHtml += "<option data-id='"+relationList[i].typeCode+"' data-rightId='"+relationList[i].rightRecordType+"' value='"+relationList[i].name+"' selected>"+relationList[i].name+"</option>";
-            	} else {
-            		attrHtml += "<option data-id='"+relationList[i].typeCode+"' data-rightId='"+relationList[i].rightRecordType+"' value='"+relationList[i].name+"'>"+relationList[i].name+"</option>";
-            	}
-            }
-            attrHtml += "</select>";
-            attrHtml += "<select disabled class='abc-attr rattrType'>"; 
-			 Ajax.ajax('admin/dictionary/basicItem/getComm', {
-				   entityId:rightRecordType
-			   }, function(data){		    	
-		            var data = data.commList;
-					if (data.length == 0) {
-		                Dialog.notice("请在模型中添加属性", "warning");
-		                $CPF.closeLoading();    
-		                return;
-			          } 
-		            for(var i=0; i<data.length; i++) {
-		            	if(data[i][0] == abcattrCode) {
-		            		attrHtml += "<option item-data-type='"+data[i][2]+"' data-id='"+data[i][0]+"' value='"+data[i][1]+"' selected>"+data[i][1]+"</option>";
-		            	
-		            		if ("5" == data[i][2]) {
-		    					dataTypeList=dataTypeSTRINGList;
-		    				} else if ("6"== data[i][2]) {
-		    					dataTypeList=dataTypeDATEList;
-		    				}else if ("7"== data[i][2]) {
-		    					dataTypeList=dataTypeTIMEList;
-		    				}else if ("1"== data[i][2]) {
-		    					dataTypeList=dataTypeINTList;
-		    				}else if ("15"== data[i][2]) {
-		    					dataTypeList=dataTypeDOUBLEList;
-		    				}else if ("11"== data[i][2]) {
-		    					dataTypeList=dataTypeREFERENCEList;
-		    				}else if ("8"== data[i][2]) {
-		    					dataTypeList=dataTypeFILEList;
-		    				}else if ("14"== data[i][2]) {
-		    					dataTypeList=dataTypeENUMList;
-		    				}else if ("17"== data[i][2]) {
-		    					dataTypeList=dataTypeCASCADETYPEList;
-		    				}
-		            	
-		            	}else {
-		            		attrHtml += "<option item-data-type='"+data[i][2]+"' data-id='"+data[i][0]+"' value='"+data[i][1]+"'>"+data[i][1]+"</option>";
-		            	}
-		            }
-					attrHtml += "</select>";
-			
-			attrHtml += "<select disabled class='data-type attr-type'>";      
-			//Ajax.ajax('admin/node/basicItemNode/getDataType', {
-			//	dataType:commList[0][2]
-			//}, function(data){		
-			//	var dataTypeList = data.dataType;  
-		    	for(var i=0; i<dataTypeList.length; i++) {
-		    		if(dataTypeList[i][0] == dataType) {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>";
-		    		}else {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>";
-		    		}
-	            	          
-	            };
-	            attrHtml += "</select>";
-				attrHtml += "<select disabled class='node-ops-type'>";		
-				var nodePosType=nodePosTypeATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] == opt) {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";
-			    	}
-		            	          
-		        };
-		        attrHtml += "</select>";
-		        attrHtml += "<div class='btn-wrap'>" +
-		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon icon-trash-sm'></i>" +
-		        "<i class='icon-simulate-trashsm'></i>" +
-		        "</div>" +
-		        "</div>" +
-		        "</li>";		           		        
-		        var $html = $(attrHtml).prependTo($(parent));
-		        $html.find("select").css({"width":"13%","marginLeft":"16px"}).select2();
-		        
-		       // drag($(".dragEdit-wrap").length);
-		 // }, {async: false})
-		})
-    }
-	
-    //多值属性下的属性初始化方法
-    function initAttrM(abcattr,abcattrCode,dataType,id,name,opt,order,parent,repeatChildList) {  
-    	/*var repeatId = $(parent).prev(".collapse-header")
-			.find(".abc-attr")
-			.find("option:selected")
-			.attr("data-id");*/
-    	
-    	var dataTypeList = dataTypeSTRINGList;
-			var attrHtml = "<li class='add-attr clear-fix'>"
-				+ "<div class='icon-label attr'>";
-			 if(abcattrCode=="") {
-				 attrHtml = attrHtml+"<i class='icon icon-error-cross'></i>";
-		    }
-			 attrHtml = attrHtml+"<i class='icon icon-attr'></i>" +
-            "<span class='text'>属性</span>" +
-            "</div>" +
-            "<div class='label-bar attr  al-save' data-order='"+order+"' data-id='"+id+"'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr'>"  
-            for(var i=0; i<repeatChildList.length; i++) {    
-            	
-            	if(repeatChildList[i].cnName == abcattr) {
-            		attrHtml += "<option item-data-type='"+repeatChildList[i].oneLevelItem.dataType+"' data-id='"+repeatChildList[i].code+"' value='"+repeatChildList[i].cnName+"' selected>"+repeatChildList[i].cnName+"</option>";
-            		
-            		if ("5" == repeatChildList[i].oneLevelItem.dataType) {
-    					dataTypeList=dataTypeSTRINGList;
-    				} else if ("6"== repeatChildList[i].oneLevelItem.dataType) {
-    					dataTypeList=dataTypeDATEList;
-    				}else if ("7"== repeatChildList[i].oneLevelItem.dataType) {
-    					dataTypeList=dataTypeTIMEList;
-    				}else if ("1"== repeatChildList[i].oneLevelItem.dataType) {
-    					dataTypeList=dataTypeINTList;
-    				}else if ("15"== repeatChildList[i].oneLevelItem.dataType) {
-    					dataTypeList=dataTypeDOUBLEList;
-    				}else if ("11"== repeatChildList[i].oneLevelItem.dataType) {
-    					dataTypeList=dataTypeREFERENCEList;
-    				}else if ("8"== repeatChildList[i].oneLevelItem.dataType) {
-    					dataTypeList=dataTypeFILEList;
-    				}else if ("14"== repeatChildList[i].oneLevelItem.dataType) {
-    					dataTypeList=dataTypeENUMList;
-    				}else if ("17"== repeatChildList[i].oneLevelItem.dataType) {
-    					dataTypeList=dataTypeCASCADETYPEList;
-    				}
-            	}else {
-            		attrHtml += "<option item-data-type='"+repeatChildList[i].oneLevelItem.dataType+"' data-id='"+repeatChildList[i].code+"' value='"+repeatChildList[i].cnName+"'>"+repeatChildList[i].cnName+"</option>";
-            	}
-            	
-            	
-            	                
-            }
-			attrHtml += "</select>";
-			attrHtml += "<select disabled class='data-type attr-type'>";  
-		   // Ajax.ajax('admin/node/basicItemNode/getDataType', {
-		    	//dataType:repeatChildList[0].oneLevelItem.dataType
-		   // }, function(data){		    	
-		    //	var dataTypeList = data.dataType; 
-			
-				
-		    	for(var i=0; i<dataTypeList.length; i++) {
-		    		if(dataTypeList[i][0] == dataType) {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"' selected>"+dataTypeList[i][1]+"</option>";
-		    		}else {
-		    			attrHtml += "<option value='"+dataTypeList[i][0]+"'>"+dataTypeList[i][1]+"</option>";
-		    		}
-	            	          
-	            };
-	            attrHtml += "</select>";
-				attrHtml += "<select disabled class='node-ops-type'>";		
-				var nodePosType=nodePosTypeATTRIBUTE;
-			    for(var i=0; i<nodePosType.length; i++) {
-			    	if(nodePosType[i] == opt) {
-			    		attrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    	}else {
-			    		attrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";
-			    	}
-		            	          
-		        };
-		        attrHtml += "</select>";
-		        attrHtml += "<div class='btn-wrap'>" +
-		        "<i class='icon icon-save'></i>" +
-		        "<i class='icon icon-trash-sm'></i>" +
-		        "<i class='icon-simulate-trashsm'></i>" +
-		        "</div>" +
-		        "</div>" +
-		        "</li>";		           		        
-		        var $html = $(attrHtml).prependTo($(parent));
-		        $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-		  //  }, {async: false})
-	   // }, {async: false});	
-    }
-    
-    
-    //标签初始化方法
-    function initTag(subdomain,abcattrCode, id,name,opt,order,parent,isRelative) {  
-    	subdomain = subdomain.split(",");    	
-    	var tagHtml = "<li class='add-tag clear-fix'>" +
-	        "<div class='icon-label tag'>" +
-	        "<i class='icon icon-tag'></i>" +
-	        "<span class='text'>标签</span>" +
-	        "</div>" +
-	        "<div class='label-bar al-save tag' data-order='"+order+"' data-id='"+id+"'>" +
-	        "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-	        "<span class='icon icon-toleft'></span>" +
-	        "<div class='tag-content'>" +
-	        "<ul class='clear-fix'>" ;
-	        for(var i=0; i<subdomain.length; i++) {
-	        	if(subdomain[i] == "") {
-	        		break;
-	        	}
-	        	tagHtml += "<li data-id='' data-text='" + subdomain[i] + "'>" +
-	            "<span>" + subdomain[i] + "</span>" +
-	            "<i class='icon icon-delete'></i>" +
-	            "</li>"
-	        }	        
-	        tagHtml += "</ul>" +
-	        "</div>" +
-	        "<span class='icon icon-toright ban'></span>";
-	        tagHtml += "<select disabled class='node-ops-type'>";		
-	        
-	        var nodePosType = nodePosTypeLABEL;
-		    for(var i=0; i<nodePosType.length; i++) {
-		    	if(nodePosType[i] === opt) {
-		    		tagHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-		    	}else {
-		    		tagHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-		    	}
-	            	         
-	         };
-	         tagHtml += "</select>";
-	         tagHtml += "<div class='btn-wrap'>" +
-	        "<i class='icon tag icon-save'></i>" 
-	        if(isRelative) {
-	        	tagHtml += "<i class='icon tag icon-add-tag-relative'></i>"
-	        }else {
-	        	tagHtml += "<i class='icon tag icon-add-tag'></i>"
-	        }
-	        
-	        tagHtml += "<i class='icon icon-trash-sm'></i>" +
-	        "</div>" +
-	        "</div>" +
-	        "</li>"
-	    var Tag = $(tagHtml).prependTo($(parent));	        
-	    menuWidth(Tag.find(".tag-content").children("ul")[0]);
-	    Tag.find("select").css({"width":"7%","marginLeft":"2px"}).select2();
-    }
-    
-    //属性组初始化方法
-    /*function initGroup(id,abcattrCode, name,opt, order, parent) {
-    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        var attrGroupHtml = "<li class='attr-group'>" +
-            "<div class='attr-group-title collapse-header'  data-order='"+order+"' data-id='"+id+"'>" +
-            "<div class='icon-label attr-group'>" +
-            "<i class='icon icon-attr-group'></i>" +
-            "<span class='text'>属性组</span>" +
-            "</div>" +
-            "<div class='label-bar al-save attr-group'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>";
-            attrGroupHtml += "<select disabled class='node-ops-type'>";	
-            var nodePosType = nodePosTypeATTRGROUP;
-		    for(var i=0; i<nodePosType.length; i++) {
-		    	if(nodePosType[i] === opt) {
-		    		attrGroupHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-		    	}else {
-		    		attrGroupHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-		    	}
-	            	         
-	         };
-	         attrGroupHtml += "</select>";
-	         attrGroupHtml += "<div class='btn-wrap'>" +
-            "<i class='icon icon-save'></i>" +
-            "<i class='icon icon-add-sm group'></i>" +
-            "<i class='icon icon-trash-sm'></i>" +
-            "<i class='icon icon-arrow-sm active'></i>" +
-            "</div>" +
-            "</div>" +
-            "</div>" +
-            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>"        
-	    var $html = $(attrGroupHtml).prependTo($(parent));
-	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
-        drag($(".dragEdit-wrap").length);
-    }*/
-    
-    //多值属性初始化方法
-    function initMoreAttr(abcattrCode,abcattr,dataType,id,name,opt,order,parent,repeatList) {    
-    	var entityId = $(".entity_attr.active", $page).attr("data-code");     	
-        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;        
-            var moreAttrHtml = "<li class='more-attr clear-fix'>" +
-            "<div class='more-attr-title more-attr collapse-header' data-abcattrCode='"+abcattrCode+"' data-order='"+order+"' data-id='"+id+"'>"
-            + "<div class='icon-label more-attr'>";
-            if(abcattrCode=="") {
-            	moreAttrHtml=moreAttrHtml+  "<i class='icon icon-error-cross'></i>";
-		    } 
-            moreAttrHtml= moreAttrHtml +  "<i class='icon icon-more-attr'></i>" +
-            "<span class='text'>多值属性</span>" +
-            "</div>" +
-            "<div class='label-bar al-save more-attr'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr'>"            
-            for(var i=0; i<repeatList.length; i++) {
-            	
-            	if(repeatList[i].code == abcattrCode) {            		
-            		moreAttrHtml += "<option data-id='"+repeatList[i].code+"' value='"+repeatList[i].cnName+"' selected>"+repeatList[i].cnName+"</option>"; 
-            	}else {            		
-            		moreAttrHtml += "<option data-id='"+repeatList[i].code+"' value='"+repeatList[i].cnName+"'>"+repeatList[i].cnName+"</option>"; 
-            	}            	               
-            }           
-            moreAttrHtml += "</select>";           
-	        moreAttrHtml += "<select disabled class='node-ops-type'>";	
-	        var nodePosType=nodePosTypeMULTIATTR;
-			for(var i=0; i<nodePosType.length; i++) {
-			   if(nodePosType[i] == opt) {            		
-				    moreAttrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";			    			
-		          }else {            				            		
-		            moreAttrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";
-		          }			    		         
-		       };
-		   moreAttrHtml += "</select>";
-		   moreAttrHtml += "<div class='btn-wrap'>" +
-		   "<i class='icon icon-save'></i>" +
-		   "<i class='icon icon-add-sm group'></i>" +
-		   "<i class='icon icon-trash-sm'></i>" +
-		   "<i class='icon icon-arrow-sm active'></i>" +
-		   "</div>" +
-		   "</div>" +
-		   "</div>" +
-		   "<ul class='more-attr-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-		   "</ul>" +
-		   "</li>"		   
-		   var $html = $(moreAttrHtml).prependTo($(parent));		   
-		   $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-		   drag($(".dragEdit-wrap").length);			    		   
-	   // }, {async: false});                                
-    }
-
-    //关系初始化方法
-    function initRelative(abcattr, abcattrCode, id, name, opt,order, parent) {
-    	var entityId = $(".entity_attr.active", $page).attr("data-code");
-        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;        				
-            var relativeHtml = "<li class='attr-relative'>" +
-            "<div class='attr-relative-title attr-relative collapse-header' data-order='"+order+"' data-id='"+id+"'>"
-           + "<div class='icon-label attr-relative'>";
-            if(abcattrCode=="") {
-            	relativeHtml=relativeHtml+ "<i class='icon icon-error-cross'></i>";
-		    } 
-            relativeHtml=relativeHtml+ "<i class='icon icon-attr-relative'></i><span class='text'>关系</span>" +
-            "</div>" +
-            "<div class='label-bar attr-relative al-save'>" +
-            "<input type='text' disabled class='edit-input text' value='"+name+"'>" +
-            "<select disabled class='abc-attr'>" +         		            		
-            "<option data-id='"+abcattrCode+"' value='"+abcattr+"' selected>"+abcattr+"</option>" +
-            "</select>" ; 
-            relativeHtml += "<select disabled class='node-ops-type'>";	
-            var nodePosType=nodePosTypeRELATION;
-		    for(var i=0; i<nodePosType.length; i++) {
-		    	if(nodePosType[i] === opt) {
-		    		relativeHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";  	
-		    	}else {
-		    		relativeHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>"; 
-		    	}
-	            	         
-	         };
-	        relativeHtml += "</select>";
-	        relativeHtml += "<div class='btn-wrap'>" +
-            "<i class='icon icon-save'></i>" + 
-            "<i class='icon icon-trash-sm'></i>" +
-            "<i class='icon icon-arrow-sm active'></i>" +
-            "</div>" +
-            "</div>" +
-            "</div>" +            
-            "<ul class='need-ajax attr-relative-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive ' id='dragEdit-"+dragWrapLen+"'>" +
-            "</ul>" +
-            "</li>";         		    
-		    var $html = $(relativeHtml).prependTo($(parent));
-            $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-		    drag($(".dragEdit-wrap").length);		    			                                    
-    }
-    
-    function initFilters(nodeId,entityId, binFilter, binFilterBody, source) {
-    	 var parent = $(".collapse-header[data-id='" + nodeId + "']", $page).next(".collapse-content")[0];
-         var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-         $CPF.showLoading();
-             var relativeHtml = "<li class='attr-relative'>" +
-             "<div class='attr-relative-title collapse-header' source='"+source+"' entityId='"+entityId+"' data-order='' data-id='"+binFilterBody.id+"'>" +
-             "<div class='icon-label attr-relative'>" +
-             "<i class='icon icon-attr-relative'></i><span class='text'>filters</span>" +
-             "</div>" +
-             "<div class='label-bar filters al-save'>" +
-             "<input type='text' class='edit-input text' value='"+binFilterBody.name+"'>";
-             relativeHtml += "<select disabled class='node-ops-type'>";	
-             var nodePosType = optFILTERS;
-             for(var key in nodePosType) {
- 		    	if(binFilterBody.opt == key) {
- 		    		relativeHtml += "<option value='"+key+"' selected>"+nodePosType[key]+"</option>";  	
- 		    	}else {
- 		    		relativeHtml += "<option value='"+key+"'>"+nodePosType[key]+"</option>"; 
- 		    	}
- 	         }
- 	        relativeHtml += "</select>";
- 	        relativeHtml += "<div class='btn-wrap'>" +
-             "<i class='icon icon-save'></i>" +  
-             "<i class='icon icon-add-filterGroup group'></i>" +
-             "<i class='icon icon-trash-sm'></i>" +
-             "<i class='icon icon-arrow-sm active'></i>" +
-             "</div>" +
-             "</div>" +
-             "</div>" +            
-             "<ul class='attr-relative-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
-             "</ul>" +
-             "</li>";         		    
- 		    var $html = $(relativeHtml).prependTo($(parent));
- 		    $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
- 		    $CPF.closeLoading();
-    }
 	/**
      * 获取实体信息方法 示例     
      */
@@ -2324,76 +905,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     };
     
     
-  //引用->引用属性保存修改方法
     
-    //引用-> 引用属性删除方法
-    function rRefattributeAttrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
-    
-    //引用属性保存修改方法
-    
-    //引用属性删除方法
-    function refattributeAttrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
-    
-    //级联属性保存修改方法
-    
-    //级联属性删除方法
-    function cascadeAttrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent(".add-attr").remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
-    
-    //rabc属性删除方法
-    function rabcDelete(el) {  
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	
-    	var isDelChil = false;
-    	var callback = function() {
-    		$attrBar.parent().remove();    		
-    	}; 
-    	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
-    	}else {
-    		callback();
-    		removePop();
-    	}    	
-    }
     
     /**
      * 添加二级属性方法
@@ -2412,7 +924,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         var $content = $twoGroupBar.closest(".collapse-header").siblings(".collapse-content");
         $CPF.showLoading();
 		Ajax.ajax('admin/modelItem/getMiEnumChild', {
-			enumCode: enumItemCode
+			miCode: enumItemCode
 		}, function(data) {			
 			var casEnumChild = data.casEnumChild;
 			var attrHtml = "<li class='add-attr clear-fix'>" +
@@ -2442,14 +954,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    });		                      
     };
     
-    function initTwoAttrChild(twoAttr, enumItemCode, $content) {
+    function initTwoAttrChild(twoAttr, casEnumChild, $content) {
     	
         $CPF.showLoading();
-		Ajax.ajax('admin/modelItem/getMiEnumChild', {
-			enumCode: enumItemCode
-		}, function(data) {		
-			debugger;
-			var casEnumChild = data.casEnumChild;
+			
 			var attrHtml = "<li class='add-attr clear-fix'>" +
             "<div class='icon-label attr twoLevelattr'>" +
             "<i class='icon icon-attr'></i>" +
@@ -2477,7 +985,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	        var $html = $(attrHtml).prependTo($content);
 	        $html.find("select").css({"width":"13%","marginLeft":"16px"}).select2();
 	        $CPF.closeLoading();			    		   
-	    });	
     }
     
     
@@ -3722,18 +2229,42 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		});
     };
     
-    //删除的请求方法
-    function deleteAjax(id, boolean, callback) {
+    //二级属性，删除的请求方法
+    function twoLevelattrDeleteAjax(miCode, callback) {
     	$CPF.showLoading();
-    	Ajax.ajax('admin/node/basicItemNode/do_delete', {			
-			 id: id,
-			 isDelChil: boolean
-		 }, function(data) {				 
+    	Ajax.ajax('admin/modelItem/delModelItem', {			
+    		miCode: miCode
+		 }, function(data) {	
+			 
+			 if (data.code == 400) {
+				 Dialog.notice(data.msg, "error");
+				 return;
+			 }
+			 
 			 callback();
 			 removePop();
 			 $CPF.closeLoading();
 		});
     };
+    
+    //二级属性组，删除的请求方法
+    function twoLevelGroupDeleteAjax(mappingId, callback) {
+    	$CPF.showLoading();
+    	Ajax.ajax('admin/modelItem/delTwoAttrMapping', {			
+    		mappingId: mappingId
+		 }, function(data) {
+			 if (data.code == 400) {
+				 Dialog.notice(data.msg, "error");
+				 return;
+			 }
+			 
+			 callback();
+			 removePop();
+			 $CPF.closeLoading();
+		});
+    };
+    
+    
     
     //删除Filters的请求方法
     function deleteAjaxFilters(id, callback) {
@@ -3774,138 +2305,39 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	}
     }
     
-    //属性删除方法
-    function attrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
+    //二级属性组删除方法
+    function twoLevelGroupDelete(el) {    	
+    	var $attrBar = $(el).closest(".label-bar");  
+    	debugger;
+    	var mappingId = $attrBar.closest(".collapse-header").attr("data-id");
     	var callback = function() {
     		$attrBar.parent(".add-attr").remove();    		
     	};    	
     	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
+    		twoLevelGroupDeleteAjax(mappingId, callback);
     	}else {
     		callback();
     		removePop();
     	}    
     }
     
-    //关系属性删除方法
-    function rAttrDelete(el) {    	
-    	var $attrBar = $(el).closest(".label-bar");    	
-    	var id = $attrBar.attr("data-id");
-    	var isDelChil = false;
+    //二级属性删除方法
+    function twoLevelattrDelete(el) {    	
+    	var $attrBar = $(el).closest(".label-bar");  
+    	var code = $attrBar.attr("data-code");
     	var callback = function() {
     		$attrBar.parent(".add-attr").remove();    		
     	};    	
     	if($attrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);
+    		twoLevelattrDeleteAjax(code, callback);
     	}else {
     		callback();
     		removePop();
     	}    
     }
     
-    //属性组删除方法
-    function attrGroupDelete(el, isDelChil) {
-    	var $attrGroupBar = $(el).closest(".label-bar");
-    	var id = $attrGroupBar.closest(".collapse-header").attr("data-id");
-    	var isDelChil = isDelChil;    	
-    	if(isDelChil) {    		
-    		var callback = function() {
-        		$attrGroupBar.closest("li.attr-group").remove();    		
-        	};
-    	}else {    		
-    		var callback = function() {
-        		var html = $attrGroupBar.closest("li.attr-group")
-        					.children(".collapse-content").html();
-        		$attrGroupBar.closest("li.attr-group")
-        			.after(html);
-        		$attrGroupBar.closest("li.attr-group").remove();
-        	};
-    	}    	    	
-    	if($attrGroupBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);	
-    	}else {
-    		callback();
-    		removePop();
-    	}
-    };
     
-    //多值属性删除方法
-    function moreAttrDelete(el, isDelChil) {
-    	var $moreAttrBar = $(el).closest(".label-bar");
-    	var id = $moreAttrBar.closest(".collapse-header").attr("data-id");
-    	var isDelChil = isDelChil;
-    	if(isDelChil) {
-    		var callback = function() {
-        		$moreAttrBar.closest("li.more-attr").remove();    		
-        	};
-    	}else {
-    		var callback = function() {
-        		var html = $moreAttrBar.closest("li.more-attr")
-        					.children(".collapse-content").html();
-        		$moreAttrBar.closest("li.more-attr")
-        			.after(html);
-        		$moreAttrBar.closest("li.more-attr").remove();
-        	};
-    	}    
-    	if($moreAttrBar.hasClass("al-save")) {
-    		deleteAjax(id, isDelChil, callback);	
-    	}else {
-    		callback();
-    		removePop();
-    	}  
-    };   
     
-    //关系删除方法
-    function relativeDelete(el) {
-    	var $relativeBar = $(el).closest(".label-bar");
-    	var id = $relativeBar.closest(".collapse-header").attr("data-id");
-    	var isDelChil = true;
-    	var callback = function() {
-    		$relativeBar.closest("li.attr-relative").remove();    		
-    	};
-    	if($relativeBar.hasClass("al-save")){
-    		deleteAjax(id, isDelChil, callback);	
-    	}else {
-    		callback();
-    		removePop();
-    	}  
-    }; 
-    
-  //filters删除方法
-    function filtersDelete(el) {
-    	var $relativeBar = $(el).closest(".label-bar");
-    	var id = $relativeBar.closest(".collapse-header").attr("data-id");
-    	
-    	var callback = function() {
-    		$relativeBar.closest("li.attr-relative").remove();    		
-    	};
-    	if($relativeBar.hasClass("al-save")){
-    		deleteAjaxFilters(id, callback);	
-    	}else {
-    		callback();
-    		removePop();
-    	}  
-    };
-    
-    //tag删除
-    function tagDelete(el) {
-    	var $tagBar = $(el).closest(".label-bar");
-    	var id = $tagBar.attr("data-id");
-    	var isDelChil = true;
-    	var callback = function() {
-    		$tagBar.closest("li.add-tag").remove();    		
-    	};
-    	if($tagBar.hasClass("al-save")){
-    		deleteAjax(id, isDelChil, callback);	
-    	}else {
-    		callback();
-    		removePop();
-    	}  
-    }
-        
 
     $page.on("click", function () {    	
         removePop();
@@ -3954,7 +2386,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
        if(needAjax) {
     	   var $labbar = $(this).closest(".label-bar");
     	   var twoLevelGroup =  $(this).closest(".label-bar").hasClass("twoLevelGroup");
-     	
     	   if (twoLevelGroup) {//这里是加载二级属性组的孩子
      		var mappingId =$labbar.closest(".collapse-header").attr("data-id");
      		var enumItemCode = $labbar.children(".enumItemCode").find("option:selected").val();
@@ -3963,10 +2394,15 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
      			mappingId: mappingId
      		}, function(data) {		
      			var twoAttrList = data.twoAttrList;
-     			
-     			for ( var key in twoAttrList) {
-     				initTwoAttrChild(twoAttrList[key], enumItemCode, $parent);
-				}
+     			Ajax.ajax('admin/modelItem/getMiEnumChild', {
+     				miCode: enumItemCode
+     			}, function(data) {	
+     				var casEnumChild = data.casEnumChild;
+     				for ( var key in twoAttrList) {
+         				initTwoAttrChild(twoAttrList[key], casEnumChild, $parent);
+    				}
+     				
+     			});
      		 
      		});
      	  }
@@ -4047,13 +2483,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     $("#twoLevelEdit").on("click", ".icon-trash, .icon-trash-sm", function (e) {
         e.stopPropagation();
         removePop();
-        var $header = $(this).closest(".label-bar").hasClass("attr-group");
+        var $label = $(this).closest(".label-bar");
         
-        if ($header) { //delete-list-c
-            popGroupAttr(this);
-        } else { //delete-list
             popAttr(this);
-        }
         $(this).addClass("active")
     })
 
@@ -4259,41 +2691,13 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	e.stopPropagation();    
         var entityTitle = $(".icon-trash.active").closest(".entity-title");
         var labelBar = $(".icon-trash-sm.active").closest(".label-bar");
-        if(entityTitle.length > 0) {
-        	var el = $(".icon-trash.active")[0];
-        	entityDelete(el);
-        	return;
-        }
+       
         var el = $(".icon-trash-sm.active")[0];        
-        if(labelBar.hasClass("attr")) {         	
-        	attrDelete(el);        	
-        }else if(labelBar.hasClass("more-attr")) {
-        	moreAttrDelete(el, true);
-        }else if(labelBar.hasClass("attr-group")) {
-        	console.log(1);
-        	attrGroupDelete(el, true);
-        }else if(labelBar.hasClass("attr-relative")) {
-        	relativeDelete(el);
-        }else if(labelBar.hasClass("tag")) {
-        	tagDelete(el);
-        } else if (labelBar.hasClass("cascade-attr")) {
-        	cascadeAttrDelete(el);
-        } else if (labelBar.hasClass("rabc")) {
-        	rabcDelete(el);
-        }else if (labelBar.hasClass("rattr")) {
-        	rAttrDelete(el);
-        }else if (labelBar.hasClass("filters")) {
-        	filtersDelete(el);
-        } else if (labelBar.hasClass("filterGroup")) {
-        	filtersDelete(el);
-        } else if (labelBar.hasClass("rFilter")) {
-        	filtersDelete(el);
-        } else if (labelBar.hasClass("filter")) {
-        	filtersDelete(el);
-        } else if (labelBar.hasClass("refattribute-attr")) {
-        	refattributeAttrDelete(el);
-        } else if (labelBar.hasClass("rRefattribute-attr")) {
-        	rRefattributeAttrDelete(el);
+        if(labelBar.hasClass("twoLevelGroup")) {         	
+        	//attrDelete(el);
+        	twoLevelGroupDelete(el);
+        }else if(labelBar.hasClass("twoLevelattr")) {
+        	twoLevelattrDelete(el);
         }
     })
     
@@ -4323,7 +2727,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
     //修改名称
     $("#twoLevelEdit").on("change", "select.abc-attr", function(){
-    	var _value = $(this).find("option:selected").val();
+    	var _value = $(this).find("option:selected").text();
     	var $input = $(this).siblings(".edit-input");
     	var _options = $(this).find("option");
     	$input.val(_value);

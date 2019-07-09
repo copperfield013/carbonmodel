@@ -171,14 +171,14 @@ public class ModelItemDaoImpl implements ModelItemDao {
 	}
 
 	@Override
-	public List getTwoAttrByMappingId(String mappingId) {
+	public List getTwoAttrByMappingId(Integer mappingId) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" SELECT a.*, b.name, b.type, b.parent FROM `t_cc_mi_twolevel` a")
 		.append(" join t_cc_model_item b")
 		.append(" on a.code=b.code")
 		.append(" WHERE mapping_id =:mappingId");
 		return sFactory.getCurrentSession().createSQLQuery(sb.toString())
-				.setString("mappingId", mappingId).list();
+				.setInteger("mappingId", mappingId).list();
 	}
 
 	@Override

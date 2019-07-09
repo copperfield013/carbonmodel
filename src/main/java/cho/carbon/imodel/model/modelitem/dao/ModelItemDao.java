@@ -75,7 +75,7 @@ public interface ModelItemDao {
 	 * @param mappingId
 	 * @return
 	 */
-	List getTwoAttrByMappingId(String mappingId);
+	List getTwoAttrByMappingId(Integer mappingId);
 
 	/**
 	 * 获取ModelItemType.MODEL

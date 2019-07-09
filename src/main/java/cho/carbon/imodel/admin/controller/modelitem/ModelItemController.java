@@ -508,7 +508,7 @@ public class ModelItemController {
 		 
 		 	/**
 		 	 * 	根据MiEnum 的code， 获取pid下的孩子
-		 	 * @param enumCode
+		 	 * @param miCode
 		 	 * @return
 		 	 */
 		 	@ResponseBody
@@ -591,7 +591,7 @@ public class ModelItemController {
 		 	 */
 		 	@ResponseBody
 			@RequestMapping("/getTwoAttrByMappingId")
-			public String getTwoAttrByMappingId(String mappingId){
+			public String getTwoAttrByMappingId(Integer mappingId){
 				Map<String, Object> map = new HashMap<String, Object>();
 				JSONObject jobj = new JSONObject(map);
 				try {
@@ -609,6 +609,44 @@ public class ModelItemController {
 				}
 		 
 		 	} 	
+		 	
+		 	
+		 	/**
+		 	 * 删除二级属性组
+		 	 * @param mappingId
+		 	 * @return
+		 	 */
+		 	@ResponseBody
+			@RequestMapping("/delTwoAttrMapping")
+			public String delTwoAttrMapping(Integer mappingId){
+				Map<String, Object> map = new HashMap<String, Object>();
+				JSONObject jobj = new JSONObject(map);
+				try {
+					
+					List twoAttrList = miService.getTwoAttrByMappingId(mappingId);
+					if(!twoAttrList.isEmpty()) {
+						map.put("code", 400);
+						map.put("msg", "请先删除二级属性组的孩子！");
+						return jobj.toString();
+					}
+					
+					MiTwolevelMapping mapp = new MiTwolevelMapping();
+					mapp.setId(mappingId);
+					commService.delete(mappingId);
+					
+					map.put("code", 200);
+					map.put("msg", "成功！");
+					return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+				} catch (Exception e) {
+					logger.error("操作失败", e);
+					e.printStackTrace();
+					map.put("code", 400);
+					map.put("msg", "操作失败！");
+					return jobj.toString();
+				}
+		 
+		 	} 	
+		 	
 		 	
 		 	/**
 		 	 * 根据miCode , 获取 MiEnum
