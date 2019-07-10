@@ -61,7 +61,11 @@ public class CascadeEnumItemMiStrategy implements MiStrategy {
 		Integer min = getMin(casCaseDepth, casEnumChildCount);
 		//实际有的孩子数量
 		List<MiCascade> miCascadeList = modelItemService.getMiCascadeList(modelItem.getCode());
-		Integer childCount = miCascadeList == null?0:miCascadeList.size();
+		Integer childCount =0;
+		if(!miCascadeList.isEmpty()) {
+			childCount = miCascadeList.size();
+		}
+		
 		if(childCount!=min) {
 			//实际孩子大于需要的， 删除实际的
 			if (childCount > min) {
