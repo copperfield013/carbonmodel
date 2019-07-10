@@ -437,9 +437,9 @@ public class ModelItemServiceImpl implements ModelItemService {
 	}
 
 	@Override
-	public List<MiFilterCriterion> getMiFiltergroupChild(Integer groupId) {
+	public List<MiFilterCriterion> getMiFilterCriterionByPid(Integer groupId) {
 		
-		return modelItemDao.getMiFiltergroupChild(groupId);
+		return modelItemDao.getMiFilterCriterionByPid(groupId);
 	}
 
 	@Override
@@ -502,6 +502,11 @@ public class ModelItemServiceImpl implements ModelItemService {
 		MiStatFact miStatFact = commService.get(MiStatFact.class, miCode);
 		miStatFact.setFilterId(filterId);
 		commService.update(miStatFact);
+	}
+
+	@Override
+	public List<MiFilterGroup> getMiFilterGroupByPid(Integer groupId) {
+		return modelItemDao.getMiFilterGroupByPid(groupId);
 	}
 
 	

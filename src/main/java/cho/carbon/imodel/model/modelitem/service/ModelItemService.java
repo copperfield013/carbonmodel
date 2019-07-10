@@ -129,7 +129,7 @@ public interface ModelItemService {
 	 * 获取分组的孩子， 表达式
 	 * @return
 	 */
-	List<MiFilterCriterion> getMiFiltergroupChild(Integer groupId);
+	List<MiFilterCriterion> getMiFilterCriterionByPid(Integer groupId);
 
 	/**
 	 * 保存过滤条件
@@ -138,4 +138,10 @@ public interface ModelItemService {
 	 * @param filterId
 	 */
 	void saveFilter(String miCode, Integer type, Integer filterId);
+	/**
+	 *  获取分组的子分组
+	 * @param groupId
+	 * @return
+	 */
+	List<MiFilterGroup> getMiFilterGroupByPid(Integer groupId);
 }

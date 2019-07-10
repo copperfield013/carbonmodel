@@ -321,9 +321,15 @@ public class ExpressionAndFilterController {
 		JSONObject jobj = new JSONObject(map);
 		try {
 		
-			List<MiFilterCriterion> miFilterCriterionList = miService.getMiFiltergroupChild(groupId);
+			// 获取分组的子表达式
+			List<MiFilterCriterion> miFilterCriterionList = miService.getMiFilterCriterionByPid(groupId);
+			// 获取分组的子分组  子分组包括普通分组和关系分组
+			List<MiFilterGroup>  miFilterGroupList = miService.getMiFilterGroupByPid(groupId);
+			
+			
 			
 			map.put("miFilterCriterionList", miFilterCriterionList);
+			map.put("miFilterGroupList", miFilterGroupList);
 			map.put("code", 200);
 			map.put("msg", "成功！");
 			return jobj.toJSONString();
@@ -349,7 +355,7 @@ public class ExpressionAndFilterController {
 		JSONObject jobj = new JSONObject(map);
 		try {
 		
-			List<MiFilterCriterion> miFilterCriterionList = miService.getMiFiltergroupChild(groupId);
+			List<MiFilterCriterion> miFilterCriterionList = miService.getMiFilterCriterionByPid(groupId);
 			
 			if (!miFilterCriterionList.isEmpty()) {
 				map.put("code", 400);

@@ -14,6 +14,7 @@ import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
 import cho.carbon.imodel.model.modelitem.dao.ModelItemDao;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
+import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
@@ -188,9 +189,16 @@ public class ModelItemDaoImpl implements ModelItemDao {
 	}
 
 	@Override
-	public List<MiFilterCriterion> getMiFiltergroupChild(Integer groupId) {
+	public List<MiFilterCriterion> getMiFilterCriterionByPid(Integer groupId) {
 		
 		String hql = "from MiFilterCriterion b WHERE groupId=:groupId";
+		return sFactory.getCurrentSession().createQuery(hql).setParameter("groupId", groupId).list();
+	}
+
+	@Override
+	public List<MiFilterGroup> getMiFilterGroupByPid(Integer groupId) {
+		
+		String hql = "from MiFilterGroup b WHERE pid=:groupId";
 		return sFactory.getCurrentSession().createQuery(hql).setParameter("groupId", groupId).list();
 	}
 	
