@@ -326,8 +326,6 @@ public class ExpressionAndFilterController {
 			// 获取分组的子分组  子分组包括普通分组和关系分组
 			List<MiFilterGroup>  miFilterGroupList = miService.getMiFilterGroupByPid(groupId);
 			
-			
-			
 			map.put("miFilterCriterionList", miFilterCriterionList);
 			map.put("miFilterGroupList", miFilterGroupList);
 			map.put("code", 200);
