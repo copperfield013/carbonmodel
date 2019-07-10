@@ -34,6 +34,7 @@ import cho.carbon.imodel.model.modelitem.pojo.MiStatDimension;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatFact;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
+import cho.carbon.imodel.model.modelitem.service.MiExpreAndFilterService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.service.ModelRelationTypeService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
@@ -57,7 +58,7 @@ import springfox.documentation.schema.configuration.ModelsConfiguration;
 public class ExpressionAndFilterController {
 	
 	@Resource
-	ModelItemService miService;
+	MiExpreAndFilterService miExpreAndFilterService;
 	
 	@Resource
 	CommService commService;
@@ -125,7 +126,7 @@ public class ExpressionAndFilterController {
 	public AjaxPageResponse saveExpress(String codeTxt, String modelItemCode) {
 		try {
 			//先获取数据吧
-			miService.saveExpress(codeTxt, modelItemCode);
+			miExpreAndFilterService.saveExpress(codeTxt, modelItemCode);
 			
 			return AjaxPageResponse.REFRESH_LOCAL("操作成功");
 		} catch (Exception e) {
@@ -201,7 +202,7 @@ public class ExpressionAndFilterController {
    		Map<String, Object> map = new HashMap<String, Object>();
    		JSONObject jobj = new JSONObject(map);
    		try {
-   			miService.saveFilter(miCode, type, filterId);
+   			miExpreAndFilterService.saveFilter(miCode, type, filterId);
    			
    			
    			
@@ -231,7 +232,7 @@ public class ExpressionAndFilterController {
 		JSONObject jobj = new JSONObject(map);
 		try {
 			
-			miService.saveCommFilterGroup(miFilterGroup);
+			miExpreAndFilterService.saveCommFilterGroup(miFilterGroup);
 			
 			map.put("miFilterGroup", miFilterGroup);
 			map.put("code", 200);
@@ -253,7 +254,7 @@ public class ExpressionAndFilterController {
    		JSONObject jobj = new JSONObject(map);
    		try {
    			
-   			miService.saveMiFilterCriterion(miFilterCriterion);
+   			miExpreAndFilterService.saveMiFilterCriterion(miFilterCriterion);
    			
    			map.put("miFilterCriterion", miFilterCriterion);
    			map.put("code", 200);
@@ -322,9 +323,9 @@ public class ExpressionAndFilterController {
 		try {
 		
 			// 获取分组的子表达式
-			List<MiFilterCriterion> miFilterCriterionList = miService.getMiFilterCriterionByPid(groupId);
+			List<MiFilterCriterion> miFilterCriterionList = miExpreAndFilterService.getMiFilterCriterionByPid(groupId);
 			// 获取分组的子分组  子分组包括普通分组和关系分组
-			List<MiFilterGroup>  miFilterGroupList = miService.getMiFilterGroupByPid(groupId);
+			List<MiFilterGroup>  miFilterGroupList = miExpreAndFilterService.getMiFilterGroupByPid(groupId);
 			
 			map.put("miFilterCriterionList", miFilterCriterionList);
 			map.put("miFilterGroupList", miFilterGroupList);
@@ -353,7 +354,7 @@ public class ExpressionAndFilterController {
 		JSONObject jobj = new JSONObject(map);
 		try {
 		
-			List<MiFilterCriterion> miFilterCriterionList = miService.getMiFilterCriterionByPid(groupId);
+			List<MiFilterCriterion> miFilterCriterionList = miExpreAndFilterService.getMiFilterCriterionByPid(groupId);
 			
 			if (!miFilterCriterionList.isEmpty()) {
 				map.put("code", 400);

@@ -188,18 +188,4 @@ public class ModelItemDaoImpl implements ModelItemDao {
 		return sFactory.getCurrentSession().createQuery(hql).list();
 	}
 
-	@Override
-	public List<MiFilterCriterion> getMiFilterCriterionByPid(Integer groupId) {
-		
-		String hql = "from MiFilterCriterion b WHERE groupId=:groupId";
-		return sFactory.getCurrentSession().createQuery(hql).setParameter("groupId", groupId).list();
-	}
-
-	@Override
-	public List<MiFilterGroup> getMiFilterGroupByPid(Integer groupId) {
-		
-		String hql = "from MiFilterGroup b WHERE pid=:groupId";
-		return sFactory.getCurrentSession().createQuery(hql).setParameter("groupId", groupId).list();
-	}
-	
 }

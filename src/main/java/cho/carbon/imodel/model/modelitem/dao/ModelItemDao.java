@@ -84,19 +84,5 @@ public interface ModelItemDao {
 	 * @return
 	 */
 	public List<ModelItem> getModelList();
-
-
-	/**
-	 * 获取分组的孩子， 表达式
-	 * @return
-	 */
-	public List<MiFilterCriterion> getMiFilterCriterionByPid(Integer groupId);
-
-	/**
-	 * 
-	 * @param groupId
-	 * @return
-	 */
-	public List<MiFilterGroup> getMiFilterGroupByPid(Integer groupId);
 	
 }
