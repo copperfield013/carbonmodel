@@ -72,5 +72,6 @@ public interface ModelRelationTypeService {
 	 * @param leftModelCode
 	 * @return
 	 */
-	public List<ModelItem> getExRelaRightMi(String leftModelCode);
+	public List<ModelItem> getExistRelaRightMi(String leftModelCode);
+	
 }

@@ -11,11 +11,13 @@ import cho.carbon.imodel.model.modelitem.dao.MiExpreAndFilterDao;
 import cho.carbon.imodel.model.modelitem.pojo.MiCalExpress;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
+import cho.carbon.imodel.model.modelitem.pojo.MiFilterRgroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatDimension;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatFact;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.MiExpreAndFilterService;
+import cho.carbon.imodel.model.modelitem.vo.MiFilterContainer;
 import cho.carbon.imodel.model.struct.pojo.StrucFilter;
 import cho.carbon.meta.enun.ModelItemType;
 
@@ -203,6 +205,25 @@ public class MiExpreAndFilterServiceImpl implements MiExpreAndFilterService {
 	@Override
 	public List<MiFilterGroup> getMiFilterGroupByPid(Integer groupId) {
 		return miExpreAndFilterDao.getMiFilterGroupByPid(groupId);
+	}
+
+	@Override
+	public void saveFilterRGroup(MiFilterContainer miFilterContainer) {
+		MiFilterGroup miFilterGroup = miFilterContainer.getMiFilterGroup();
+		MiFilterRgroup miFilterRgroup = miFilterContainer.getMiFilterRgroup();
+		
+		if (miFilterGroup.getId() == null) {
+			// 首次添加
+			commService.insert(miFilterGroup);
+			miFilterRgroup.setGroupId(miFilterGroup.getId());
+			commService.insert(miFilterRgroup);
+		} else {
+			//更新
+			
+			commService.update(miFilterGroup);
+			miFilterRgroup.setGroupId(miFilterGroup.getId());
+			commService.update(miFilterRgroup);
+		}
 	}
 	
 }

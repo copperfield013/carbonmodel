@@ -101,7 +101,7 @@ public class ModelRelationTypeDaoImpl implements ModelRelationTypeDao {
 	}
 
 	@Override
-	public List<ModelItem> getExRelaRightMi(String leftModelCode) {
+	public List<ModelItem> getExistRelaRightMi(String leftModelCode) {
 		
 		StringBuffer sb = new StringBuffer();
 		sb.append(" SELECT 	t.* FROM	t_cc_model_item t ")

@@ -295,7 +295,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					// 存在关系的右实体
 					StrucMiCode  p3 = commService.get(StrucMiCode.class, sbPid);
 					String leftModelCode = p3.getItemCode();
-					List<ModelItem> exRelaRightMi = modelRelaService.getExRelaRightMi(leftModelCode);
+					List<ModelItem> exRelaRightMi = modelRelaService.getExistRelaRightMi(leftModelCode);
 						
 					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, exRelaRightMi);
 					// 多选 和右实体存在的关系

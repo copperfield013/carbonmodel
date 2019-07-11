@@ -26,6 +26,9 @@ public class MiFilterGroup {
 	@Column(name = "type")
 	private Integer type;
 	
+	@Column(name = "right_mi_code")
+	private String rightMiCode;
+	
 	//值域为 1. OR 2.AND， 目前只支持AND
 	@Column(name = "logical_operator")
 	private Integer logicalOperator;
@@ -94,6 +97,14 @@ public class MiFilterGroup {
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public String getRightMiCode() {
+		return rightMiCode;
+	}
+
+	public void setRightMiCode(String rightMiCode) {
+		this.rightMiCode = rightMiCode;
 	}
 	
 }

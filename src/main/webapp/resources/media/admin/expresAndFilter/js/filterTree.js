@@ -74,7 +74,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 								initCommGroup($parent, miFilterGroup, belongModel);
 							} else if (miFilterGroup.type==2) {
 								//初始化关系组
-								
+								initRelaGroup($parent, miFilterGroup, belongModel);
 							}
 						}
 						
@@ -206,20 +206,19 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
      */
     function pop(el) {
     	
-        var relativeLength = $(el).closest(".collapse-header")
-            .siblings(".collapse-content")
-            .children(".attr-relative").length;
-        var html = "<ul class='card'>";        
-            html +=  "<li class='card-list add-comm-group'>" +
-                "<i class='icon icon-card-attr-group'></i>" +
-                "<span class='text'>过滤普通组</span>" +
-                "</li>" +
-                "<li class='card-list add-rela-group'>" +
-                "<i class='icon icon-card-attr-group'></i>" +
-                "<span class='text'>过滤关系组</span>" +
-                "</li>" +
-                "</ul>";
+        var $header = $(el).closest(".collapse-header");
+        var html = "<ul class='card'>";   
         
+        html +=  "<li class='card-list add-comm-group'>" +
+        "<i class='icon icon-card-attr-group'></i>" +
+        "<span class='text'>过滤普通组</span>" +
+        "</li>" +
+        "<li class='card-list add-rela-group'>" +
+        "<i class='icon icon-card-attr-group'></i>" +
+        "<span class='text'>过滤关系组</span>" +
+        "</li>";
+       
+        html +=  "</ul>";
 
         var wrap = $("#filterEdit");
         var offsetx = $(el).offset().left;
@@ -252,6 +251,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
                 "<i class='icon icon-card-attr-group'></i>" +
                 "<span class='text'>过滤普通组</span>" +
                 "</li>" +
+                "<li class='card-list add-rela-group'>" +
+                "<i class='icon icon-card-attr-group'></i>" +
+                "<span class='text'>过滤关系组</span>" +
+                "</li>";
                 "</ul>";
 
         var wrap = $("#filterEdit");
@@ -792,7 +795,100 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		    return moreAttrHtml;
     };
     
-
+    
+    /**
+     * 关系组添加方法
+     * belongmodel 这个不对
+     */
+    function addRelaGroup(el, pId, miFilterContainer) {
+        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
+                
+        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
+        $CPF.showLoading();
+        
+            var moreAttrHtml = "<li class='add-attr clear-fix'>" +
+            "<div class='more-attr-title collapse-header' data-belongmodel='"+miFilterContainer.miFilterGroup.rightMiCode+"' data-type='"+miFilterContainer.miFilterGroup.type+"' data-order='' data-id='"+miFilterContainer.miFilterGroup.id+"' data-pid='"+miFilterContainer.miFilterGroup.pid+"'>" +
+            "<div class='icon-label more-attr'>" +
+            "<i class='icon icon-more-attr'></i>" +
+            "<span class='text'>关系组</span>" +
+            "</div>" +
+            "<div class='label-bar filterRGroup al-save'>" +
+            "<input type='text' class='edit-input text' value='"+miFilterContainer.miFilterGroup.name+"'>" +
+            "<select class='abc-attr logicalOperator'>"
+            
+            	if (miFilterContainer.miFilterGroup.logicalOperator == 2) {
+            		 moreAttrHtml += "<option selected value='2'>AND</option>";  
+            	} else {
+            		/* moreAttrHtml += "<option value='1'>OR</option>";   */
+            	}
+            
+            moreAttrHtml += "</select>";                    		    	    			    
+		    moreAttrHtml += "<div class='btn-wrap'>" +
+		    "<i class='icon fa fa-edit icon-edit'></i>" +
+		    "<i class='icon icon-add-sm group'></i>" +
+		    "<i class='icon icon-trash-sm'></i>" +
+		    "<i class='icon icon-arrow-sm active'></i>" +
+		    "</div>" +
+		    "</div>" +
+		    "</div>" +
+		    "<ul class='more-attr-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax ' id='dragEdit-"+dragWrapLen+"'>" +
+		    "</ul>" +
+		    "</li>"		            
+		    var $html = $(moreAttrHtml).prependTo($content);
+		    $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
+		    drag($(".dragEdit-wrap").length);
+		    addUnfold(el);
+		    $CPF.closeLoading();			 		    		  
+    };
+    
+    //单行组初始化方法
+    function initRelaGroup($parent, miFilterGroup, belongModel){
+    	var attrGroupHtml = getRelaGroup(miFilterGroup, belongModel);
+	    var $html = $(attrGroupHtml).prependTo($($parent));
+	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
+        drag($(".dragEdit-wrap").length);
+    }
+    
+    /**
+     * 初始化关系组
+     */
+    function getRelaGroup(miFilterGroup, belongModel) {
+                
+        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
+        $CPF.showLoading();
+        
+            var moreAttrHtml = "<li class='add-attr clear-fix'>" +
+            "<div class='more-attr-title collapse-header' data-belongmodel='"+miFilterGroup.rightMiCode+"' data-type='"+miFilterGroup.type+"' data-order='' data-id='"+miFilterGroup.id+"' data-pid='"+miFilterGroup.pid+"'>" +
+            "<div class='icon-label more-attr'>" +
+            "<i class='icon icon-more-attr'></i>" +
+            "<span class='text'>关系组</span>" +
+            "</div>" +
+            "<div class='label-bar filterRGroup al-save'>" +
+            "<input type='text' class='edit-input text' value='"+miFilterGroup.name+"'>" +
+            "<select class='abc-attr logicalOperator'>"
+            
+            	if (miFilterGroup.logicalOperator == 2) {
+            		 moreAttrHtml += "<option selected value='2'>AND</option>";  
+            	} else {
+            		/* moreAttrHtml += "<option value='1'>OR</option>";   */
+            	}
+            
+            moreAttrHtml += "</select>";                    		    	    			    
+		    moreAttrHtml += "<div class='btn-wrap'>" +
+		    "<i class='icon fa fa-edit icon-edit'></i>" +
+		    "<i class='icon icon-add-sm group'></i>" +
+		    "<i class='icon icon-trash-sm'></i>" +
+		    "<i class='icon icon-arrow-sm active'></i>" +
+		    "</div>" +
+		    "</div>" +
+		    "</div>" +
+		    "<ul class='more-attr-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax ' id='dragEdit-"+dragWrapLen+"'>" +
+		    "</ul>" +
+		    "</li>";
+		    
+		    return moreAttrHtml;
+    };
+    
     /**
      * 添加普通组的方法
       */
@@ -880,6 +976,42 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		    
 		    return moreAttrHtml;
     };
+    
+    
+    //保存
+    $("#filterEdit").on("click", ".icon-edit", function() {     
+    	var $labelBar = $(this).closest(".label-bar");
+    	var $header = $labelBar.closest(".collapse-header");
+    	
+    	var belongmodel = $header.closest(".collapse-content").siblings(".collapse-header").attr("data-belongmodel");
+    	
+    	var id = $header.attr("data-id");
+    	var pid = $header.attr("data-pid");
+    	var type = $header.attr("data-type");
+    	 if (pid == "undefined") {
+    		 pid="";
+    	 }
+    	 
+    	 // 弹框
+  		 Dialog.openDialog("admin/expressionAndFilter/addFilterRgroup?id="+id+"&pid="+pid+"&belongmodel=" +belongmodel, "关系组", undefined, {
+            width :730,
+            height : 450,
+            events		: {
+           	 afterSave	: function(miFilterContainer){
+					
+           		 if(miFilterContainer){
+           			 //更改节点  显示的值
+           			 updateNode(miFilterContainer, $labelBar);
+					}
+				}
+			}
+        });
+        
+    });
+    //更改节点  显示的值
+    function updateNode(miFilterContainer, $labelBar) {
+    	$labelBar.find(".edit-input").val(miFilterContainer.miFilterGroup.name);
+    }
     
     
     //提醒有未保存的节点
@@ -1146,7 +1278,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	   var $labbar = $(this).closest(".label-bar");
      	
     	   // 普通分组的孩子
-    	   if($labbar.hasClass("commGroup")) {
+    	   if($labbar.hasClass("commGroup") || $labbar.hasClass("filterRGroup")) {
     		   
     		  var $header = $labbar.closest(".collapse-header");
     		  var belongmodel=  $header.attr("data-belongmodel");
@@ -1170,6 +1302,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
           				if (miFilterGroup.type==1) {
 							// 初始化普通组
 							initCommGroup($parent, miFilterGroup, belongmodel);
+						} else if (miFilterGroup.type==2) {
+							//初始化关系组
+							initRelaGroup($parent, miFilterGroup, belongModel);
 						}
 					}
           			
@@ -1305,8 +1440,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         var $header = $(el).closest(".collapse-header");
         var belongmodel = $header.attr("data-belongmodel");
       if ($(this).hasClass("add-comm-group")) {
-    	
-    	 
+    	  // 添加普通组
     	  var pId = $header.attr("data-id");
     	  
     	  if ($header.hasClass("entity-title")) {
@@ -1321,13 +1455,58 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     		  addCommGroup(el, belongmodel, pId);
     	  }
     	  
-        } else if ($(this).hasClass("add-relative")) {
-            addRelative(el);
-        } else if ($(this).hasClass("add-filter-criterion")) {
+        } else if ($(this).hasClass("add-rela-group")) {
+        	//添加关系组
         	
+        	 var pId = $header.attr("data-id");
+        	 if (pId == undefined) {
+        		 pId="";
+        	 }
+       	  
+       	  if ($header.hasClass("entity-title")) {
+       		  var $content = $header.siblings(".collapse-content");
+           	  var len = $content.children("li").length;
+           	  if (len<1) {
+           		  
+           		  // 弹框
+           		 Dialog.openDialog("admin/expressionAndFilter/addFilterRgroup?pid="+pId+"&belongmodel=" +belongmodel, "关系组", undefined, {
+                     width :730,
+                     height : 450,
+                     events		: {
+                    	 afterSave	: function(miFilterContainer){
+         					
+                    		 if(miFilterContainer){
+         						addRelaGroup(el, pId, miFilterContainer);
+         					}
+         				}
+         			}
+                 });
+           		  
+           		  // 这里得设计成弹框
+           		 //addRelaGroup(el, belongmodel, pId);
+           	  } else {
+           		  Dialog.notice("只能添加一个组", "warning");
+           	  }
+       	  } else {
+       		Dialog.openDialog("admin/expressionAndFilter/addFilterRgroup?pid="+pId+"&belongmodel=" +belongmodel, "关系组", undefined, {
+                width :730,
+                height : 450,
+                events		: {
+               	 afterSave	: function(miFilterContainer){
+    					
+               		 	if(miFilterContainer){
+    						addRelaGroup(el, pId, miFilterContainer);
+    					}
+    				}
+    			}
+            });
+       	  }
+        	
+        } else if ($(this).hasClass("add-filter-criterion")) {
+        	//添加表达式
         	var groupId = $header.attr("data-id");
         	
-        	//  这里要获取   belongmodel 的普通属性
+        	//这里要获取   belongmodel 的普通属性
         	Ajax.ajax('admin/modelItem/getFilOperator',{
         		
         	}, function(data1){	
@@ -1494,7 +1673,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         if(labelBar.hasClass("filterCriterion")) { 
         	//删除表达式
         	filterCriterionDelete(el);        	
-        }else if(labelBar.hasClass("commGroup")) {
+        }else if(labelBar.hasClass("commGroup") || labelBar.hasClass("filterRGroup")) {
         	commGroupDelete(el);
         }
         

@@ -2615,66 +2615,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    });		                      
     };
 
-   /* *//**
-     * 添加多值属性方法
-      *//*
-    function addMoreGroup(el) {
-        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var entityId =$(el).closest(".collapse-header").attr("data-abcattrcode");               
-        var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
-        $CPF.showLoading();
-		Ajax.ajax('admin/dictionary/basicItem/getRepeat?entityId', {
-			entityId: entityId
-		}, function(data) {			
-			var data = data.repeat;		
-			
-			if (data.length == 0) {
-				Dialog.notice("请在模型中添加多值属性", "warning");
-				$CPF.closeLoading();	
-				return;
-			}
-            var moreAttrHtml = "<li class='more-attr clear-fix'>" +
-            "<div class='more-attr-title collapse-header' data-order='' data-id=''>" +
-            "<div class='icon-label more-attr'>" +
-            "<i class='icon icon-more-attr'></i>" +
-            "<span class='text'>多值属性</span>" +
-            "</div>" +
-            "<div class='label-bar more-attr edit'>" +
-            "<input type='text' class='edit-input text' value='多值属性名称'>" +
-            "<select class='abc-attr'>"
-            for(var i=0; i<data.length; i++) {
-            	moreAttrHtml += "<option data-id='"+data[i].code+"' value='"+data[i].cnName+"'>"+data[i].cnName+"</option>";                
-            }
-            moreAttrHtml += "</select>";                    		    	    			    
-	        moreAttrHtml += "<select class='node-ops-type'>";
-	        var nodePosType = nodePosTypeMULTIATTR;
-			for(var i=0; i<nodePosType.length; i++) {
-			    if(nodePosType[i] === "写"){
-			    	moreAttrHtml += "<option value='"+nodePosType[i]+"' selected>"+nodePosType[i]+"</option>";
-			    }else {
-			    	moreAttrHtml += "<option value='"+nodePosType[i]+"'>"+nodePosType[i]+"</option>";	
-			    }
-			    		          
-		    };
-		    moreAttrHtml += "</select>";
-		    moreAttrHtml += "<div class='btn-wrap'>" +
-		    "<i class='icon icon-save'></i>" +
-		    "<i class='icon icon-add-sm group'></i>" +
-		    "<i class='icon delModelItem'></i>" +
-		    "<i class='icon icon-arrow-sm'></i>" +
-		    "</div>" +
-		    "</div>" +
-		    "</div>" +
-		    "<ul class='more-attr-drag-wrap dragEdit-wrap collapse-content collapse-content-active' id='dragEdit-"+dragWrapLen+"'>" +
-		    "</ul>" +
-		    "</li>"		            
-		    var $html = $(moreAttrHtml).prependTo($content);
-		    $html.find("select").css({"width":"15%","marginLeft":"16px"}).select2();
-		    drag($(".dragEdit-wrap").length);
-		    addUnfold(el);
-		    $CPF.closeLoading();			 		    		  
-	    });                                       
-    };*/
     
     /**
      * 添加关系属性方法

@@ -43,5 +43,5 @@ public interface ModelRelationTypeDao {
 	 * @param leftModelCode  左模型code
 	 * @return
 	 */
-	public List<ModelItem> getExRelaRightMi(String leftModelCode);
+	public List<ModelItem> getExistRelaRightMi(String leftModelCode);
 }

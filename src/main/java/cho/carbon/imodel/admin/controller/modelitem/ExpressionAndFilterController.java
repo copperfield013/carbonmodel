@@ -37,6 +37,7 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.imodel.model.modelitem.service.MiExpreAndFilterService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.service.ModelRelationTypeService;
+import cho.carbon.imodel.model.modelitem.vo.MiFilterContainer;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
 import cho.carbon.imodel.model.struct.pojo.StrucFilter;
@@ -61,6 +62,9 @@ public class ExpressionAndFilterController {
 	MiExpreAndFilterService miExpreAndFilterService;
 	
 	@Resource
+	ModelRelationTypeService modelRelationTypeService;
+	
+	@Resource
 	CommService commService;
 	
 	Logger logger = Logger.getLogger(ExpressionAndFilterController.class);
@@ -71,6 +75,40 @@ public class ExpressionAndFilterController {
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
 	}
+	
+	/**
+	 * 跳转到添加关系组页面
+	 * @param model
+	 * @param belongmodel    这里看做左实体code
+	 * @return
+	 */
+	 @RequestMapping("/addFilterRgroup")
+		public String addAttr(Model model, String belongmodel, String id, String pid) {
+		 MiFilterGroup miFilterGroup = null;
+		 MiFilterRgroup miFilterRgroup = null;
+		 
+		 if (id != null && id != "") {
+			 miFilterGroup = commService.get(MiFilterGroup.class, Integer.parseInt(id));
+			 miFilterRgroup = commService.get(MiFilterRgroup.class, Integer.parseInt(id));
+		 }
+		 
+		 // 获取与左MODEL 存在关系的右MODEL
+		 List<ModelItem> rightModelList = modelRelationTypeService.getExistRelaRightMi(belongmodel);
+
+		 // 获取左MODEL 和右MODEL 共同的关系
+		 List<ModelRelationType> relationList = null;
+		 if (!rightModelList.isEmpty()) {
+			 relationList = modelRelationTypeService.getEntityRelaByBitemId(belongmodel, rightModelList.get(0).getCode());
+		 }
+		 
+		 model.addAttribute("miFilterRgroup", miFilterRgroup);
+		 model.addAttribute("miFilterGroup", miFilterGroup);
+		 model.addAttribute("rightModelList", rightModelList);
+		 model.addAttribute("relationList", relationList);
+		 model.addAttribute("id", id);
+		 model.addAttribute("pid", pid);
+			return AdminConstants.JSP_BASE + "/expresAndFilter/filters/addFilterRgroup.jsp";
+		}
 	
 	/**
      *	 跳转到表达式页面
@@ -204,8 +242,6 @@ public class ExpressionAndFilterController {
    		try {
    			miExpreAndFilterService.saveFilter(miCode, type, filterId);
    			
-   			
-   			
    			map.put("code", 200);
    			map.put("msg", "成功！");
    			return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
@@ -218,7 +254,32 @@ public class ExpressionAndFilterController {
    		}
    	}
     
-    
+    /**
+     * 关系组保存方法
+     * @param miFilterContainer
+     * @return
+     */
+    @ResponseBody
+   	@RequestMapping("/createFilterRGroup")
+   	public String createFilterRGroup(MiFilterContainer miFilterContainer){
+   		Map<String, Object> map = new HashMap<String, Object>();
+   		JSONObject jobj = new JSONObject(map);
+   		try {
+   			
+   			miExpreAndFilterService.saveFilterRGroup(miFilterContainer);
+   			
+   			map.put("miFilterContainer", miFilterContainer);
+   			map.put("code", 200);
+   			map.put("msg", "成功！");
+   			return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+   		} catch (Exception e) {
+   			logger.error("添加失败", e);
+   			e.printStackTrace();
+   			map.put("code", 400);
+   			map.put("msg", "操作失败！");
+   			return jobj.toString();
+   		}
+   	}
     
     /**
      * 	保存过滤条件普通组
@@ -362,10 +423,21 @@ public class ExpressionAndFilterController {
 				return jobj.toJSONString();
 			}
 			
+			List<MiFilterGroup> miFilterGroupByPid = miExpreAndFilterService.getMiFilterGroupByPid(groupId);
+
+			if (!miFilterGroupByPid.isEmpty()) {
+				map.put("code", 400);
+				map.put("msg", "请先删除孩子！");
+				return jobj.toJSONString();
+			}
+			
 			MiFilterGroup group = new MiFilterGroup();
 			group.setId(groupId);
 			commService.delete(group);
 			
+			MiFilterRgroup rGroup = new MiFilterRgroup();
+			rGroup.setGroupId(groupId);
+			commService.delete(rGroup);
 			map.put("code", 200);
 			map.put("msg", "成功！");
 			return jobj.toJSONString();

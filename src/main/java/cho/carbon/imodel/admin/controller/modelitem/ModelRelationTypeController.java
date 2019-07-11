@@ -307,5 +307,31 @@ public class ModelRelationTypeController {
 			return jobj.toString();
 		}
 	}
+    
+    
+    /**
+     * 获取与左MODEL 存在关系的右MODEL
+     * @param leftModelCode
+     * @return
+     */
+    @ResponseBody
+   	@RequestMapping("/getExistRelaRightMi")
+   	public String getExistRelaRightMi(String leftModelCode){
+   		Map<String, Object> map = new HashMap<String, Object>();
+   		JSONObject jobj = new JSONObject(map);
+   		try {
+   			
+   			List<ModelItem> existRelaRightMiList = modelRelationTypeService.getExistRelaRightMi(leftModelCode);
+   			map.put("existRelaRightMiList", existRelaRightMiList);
+   			map.put("code", 200);
+   			map.put("msg", "操作成功");
+   			return jobj.toString();
+   		} catch (Exception e) {
+   			logger.error("操作失败", e);
+   			map.put("code", 400);
+   			map.put("msg", "操作失败");
+   			return jobj.toString();
+   		}
+   	}
 	
 }

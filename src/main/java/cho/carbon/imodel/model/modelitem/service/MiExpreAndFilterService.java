@@ -4,6 +4,7 @@ import java.util.List;
 
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
+import cho.carbon.imodel.model.modelitem.vo.MiFilterContainer;
 
 /**
  * 表达式和过滤条件
@@ -49,4 +50,10 @@ public interface MiExpreAndFilterService {
 	 * @return
 	 */
 	List<MiFilterGroup> getMiFilterGroupByPid(Integer groupId);
+
+	/**
+	 * 保存关系组
+	 * @param miFilterContainer
+	 */
+	void saveFilterRGroup(MiFilterContainer miFilterContainer);
 }

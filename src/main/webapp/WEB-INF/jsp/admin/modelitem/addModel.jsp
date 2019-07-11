@@ -21,7 +21,7 @@
 					<div class="form-group modelType">
 						<label class="col-lg-2 control-label" for="modelItem.type">实体类型</label>
 						<div class="col-lg-5">
-							<select class="form-control modelItemType" name="modelItem.type">
+							<select class=" modelItemType" name="modelItem.type">
 								<option value="1">普通实体</option>
 								<option value="101">sql片段统计实体</option>
 							</select>
@@ -31,7 +31,7 @@
 					<div class="form-group sourceModelDiv"  style="display:none;">
 						<label class="col-lg-2 control-label" for="miModelStat.sourceCode">来源实体</label>
 						<div class="col-lg-5">
-							<select class="form-control sourceModelSel" name="miModelStat.sourceCode">
+							<select class=" sourceModelSel" name="miModelStat.sourceCode">
 								<option value="122">来源1</option>
 								<option value="222">来源2</option>
 							</select>
@@ -58,7 +58,7 @@
 <script>
 seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF){
 var $page = $('#modelItem-add');	
-
+$('select').css("width","100%").select2();
 $($page).on("change", ".modelItemType", function() { 
 
 	var miType = $(this).val();
@@ -80,7 +80,7 @@ $($page).on("change", ".modelItemType", function() {
 				}
 
 				$select.append(str);
-
+				$('select').css("width","100%").select2();
 				$('.sourceModelDiv').show();
 			}
 			

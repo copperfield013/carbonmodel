@@ -2,8 +2,6 @@ package cho.carbon.imodel.model.modelitem.pojo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -23,38 +21,45 @@ public class MiFilterRgroup {
 	@Column(name = "group_id")
 	private Integer groupId;
 	
-	//值域为  or and
-	@Column(name = "logical_operator")
-	private Integer logicalOperator;
-
-	@Column(name = "relation_type")
-	private String relationType;
+	//存在这个关系，  关系可以多选
+	@Column(name = "in_relation_type")
+	private String inRelationType;
+		
+	//不存在这个关系
+	@Column(name = "ex_relation_type")
+	private String exRelationType;
 	
+	//这个先不用
 	@Column(name = "in_left_code")
 	private String inLeftCode;
 	
+	//这个先不用
 	@Column(name = "ex_left_code")
 	private String exLeftCode;
 	
+	// 存在一个具体的数据
 	@Column(name = "in_right_code")
 	private String inRightCode;
 	
+	// 不存在一个具体的数据
 	@Column(name = "ex_right_code")
 	private String exRightCode;
 
 	public MiFilterRgroup() {}
-	
-	public MiFilterRgroup(Integer groupId, Integer logicalOperator, String relationType, String inLeftCode,
+
+	public MiFilterRgroup(Integer groupId, String inRelationType, String exRelationType, String inLeftCode,
 			String exLeftCode, String inRightCode, String exRightCode) {
-		
+		super();
 		this.groupId = groupId;
-		this.logicalOperator = logicalOperator;
-		this.relationType = relationType;
+		this.inRelationType = inRelationType;
+		this.exRelationType = exRelationType;
 		this.inLeftCode = inLeftCode;
 		this.exLeftCode = exLeftCode;
 		this.inRightCode = inRightCode;
 		this.exRightCode = exRightCode;
 	}
+
+
 
 	public Integer getGroupId() {
 		return groupId;
@@ -64,20 +69,20 @@ public class MiFilterRgroup {
 		this.groupId = groupId;
 	}
 
-	public Integer getLogicalOperator() {
-		return logicalOperator;
+	public String getInRelationType() {
+		return inRelationType;
 	}
 
-	public void setLogicalOperator(Integer logicalOperator) {
-		this.logicalOperator = logicalOperator;
+	public void setInRelationType(String inRelationType) {
+		this.inRelationType = inRelationType;
 	}
 
-	public String getRelationType() {
-		return relationType;
+	public String getExRelationType() {
+		return exRelationType;
 	}
 
-	public void setRelationType(String relationType) {
-		this.relationType = relationType;
+	public void setExRelationType(String exRelationType) {
+		this.exRelationType = exRelationType;
 	}
 
 	public String getInLeftCode() {
@@ -111,5 +116,6 @@ public class MiFilterRgroup {
 	public void setExRightCode(String exRightCode) {
 		this.exRightCode = exRightCode;
 	}
+
 	
 }

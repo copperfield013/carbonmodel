@@ -145,8 +145,8 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 	}
 
 	@Override
-	public List<ModelItem> getExRelaRightMi(String leftModelCode) {
-		return modelRelationTypeDao.getExRelaRightMi(leftModelCode);
+	public List<ModelItem> getExistRelaRightMi(String leftModelCode) {
+		return modelRelationTypeDao.getExistRelaRightMi(leftModelCode);
 	}
 
 }
