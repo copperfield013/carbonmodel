@@ -91,7 +91,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "</div>" +
             "<div class='label-bar al-save attr-group'>" +
             "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
+            "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
+        
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
 	         "<i class=' icon fa fa-edit icon-edit'></i>"+
@@ -140,7 +142,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "</div>" +
             "<div class='label-bar al-save attr-group'>" +
             "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
+            "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
 	         "<i class='icon fa fa-pagelines confTwoLeverAttr'></i>"+
@@ -190,7 +193,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "</div>" +
             "<div class='label-bar al-save attr'>" +
             "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
+            "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
 	         "<i class='icon fa fa-edit icon-edit'></i>"+
@@ -240,7 +244,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "</div>" +
             "<div class='label-bar al-save attr'>" +
             "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
+            "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
 	         "<i class='icon fa fa-keyboard-o expressionView'></i>"+
@@ -292,7 +297,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "</div>" +
             "<div class='label-bar al-save attr'>" +
             "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
+            "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
 	         
@@ -349,7 +355,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "</div>" +
             "<div class='label-bar al-save attr'>" +
             "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
+            "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	         "<i class=' icon fa fa-pagelines confCascadeEnumChild'></i>"+
             "<i class='icon fa fa-edit icon-edit'></i>"+
@@ -446,7 +453,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "</div>" +
             "<div class='label-bar al-save attr'>" +
             "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
-            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>";
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
+            "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
           /*  "<i class='icon icon-save icon-edit'></i>" +*/

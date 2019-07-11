@@ -38,7 +38,7 @@
 						<td><font color="${item.type eq '1'? '': '#00bcd4'}">${item.showType }</font></td>
 						<td>${item.code }</td>
 						<td>${item.name }</td>
-						<td>${item.usingState }</td>
+						<td>${item.showUsingState }</td>
 						<td>
 							<a id="update" itemCode="${item.code }" href="javascript:;"  title="修改">修改</a>
 							<a class="tab" href="admin/modelItem/itemtree?itemCode=${item.code }" title="管理子节点" target="modelItem_tree" >管理子节点</a>

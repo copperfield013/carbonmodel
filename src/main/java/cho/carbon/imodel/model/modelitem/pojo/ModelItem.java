@@ -41,6 +41,9 @@ public class ModelItem {
 	  @Transient
 	  private String showType;
 	  
+	  @Transient
+	  private String showUsingState;
+	  
 	  //级联枚举孩子的数量
 	  @Transient
 	  private Integer casEnumChildCount;
@@ -100,11 +103,24 @@ public class ModelItem {
 	}
 	
 	public Integer getUsingState() {
-		/*
-		 * switch (usingState) { case 0: return "新增"; break; case 1: return "正常使用";
-		 * break; case 2: return "已过期"; break; case -1: return "错误"; break; }
-		 */
 		return usingState;
+	}
+	
+	
+
+	public String getShowUsingState() {
+		
+		  switch (this.usingState) {
+			  case 0: 
+				  return "新增"; 
+			  case 1: return "正常使用";
+			  case 2: 
+				  return "已过期"; 
+			  case -1: 
+				return "错误"; 
+		  }
+		
+		return showUsingState;
 	}
 
 	public void setUsingState(Integer usingState) {
