@@ -220,13 +220,19 @@ public class ExpressionAndFilterController {
 				MiModelStat miModelStat = commService.get(MiModelStat.class, miCode);
 				filterId = miModelStat.getFilterId();
 				belongModel = miModelStat.getSourceCode();
-			} else if (type == 3) {
+			} else if (type == 2) {
+				MiCalculated miCalculated = commService.get(MiCalculated.class, miCode);
+				filterId = miCalculated.getFilterId();
+				belongModel = commService.get(ModelItem.class, miCode).getBelongModel();
+			}else if (type == 3) {
+				// 配置文件 结构体和 关系结构
 				StrucFilter strucFilter = commService.get(StrucFilter.class, Integer.parseInt(miCode));
 				filterId = strucFilter ==null? null :strucFilter.getFilterGroupId();
 				
 				StrucMiCode strucMiCode = commService.get(StrucMiCode.class, Integer.parseInt(miCode));
 				belongModel = strucMiCode.getItemCode();
 			} else if (type == 5) {
+				//配置文件 二维组结构
 				StrucFilter strucFilter = commService.get(StrucFilter.class, Integer.parseInt(miCode));
 				filterId = strucFilter ==null? null :strucFilter.getFilterGroupId();
 				

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.dao.MiExpreAndFilterDao;
 import cho.carbon.imodel.model.modelitem.pojo.MiCalExpress;
+import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterRgroup;
@@ -45,12 +46,43 @@ public class MiExpreAndFilterServiceImpl implements MiExpreAndFilterService {
 			break;
 		case CALCULATED_ITEM:
 			//计算属性
-			
+			saveCalculatedExpress(codeTxt, modelItemCode);
 			break;
 		}
 		
 	}
 	
+	/**
+	 * 保存事实表达式
+	 * @param codeTxt
+	 * @param modelItemCode
+	 */
+	private void saveCalculatedExpress(String codeTxt, String modelItemCode) {
+			MiCalculated miCalculated = commService.get(MiCalculated.class, modelItemCode);
+		
+		if (miCalculated == null) {
+			//构建表达式
+			MiCalExpress miCalExpress = new MiCalExpress();
+			miCalExpress.setCodeTxt(codeTxt);
+			commService.insert(miCalExpress);
+			
+			//构建事实
+			miCalculated = new MiCalculated();
+			miCalculated.setCode(modelItemCode);
+			miCalculated.setExpressId(miCalExpress.getId());
+			
+			commService.insert(miCalculated);
+		} else {
+			Integer expressId = miCalculated.getExpressId();
+			
+			//构建表达式， 
+			MiCalExpress miCalExpress = commService.get(MiCalExpress.class, expressId);
+			miCalExpress.setCodeTxt(codeTxt);
+			commService.update(miCalExpress);
+		}
+		
+	}
+
 	/**
 	 * 保存事实表达式
 	 * @param codeTxt
@@ -152,6 +184,9 @@ public class MiExpreAndFilterServiceImpl implements MiExpreAndFilterService {
 			// 事实属性， 过滤条件保存
 			saveFactFilter(miCode, filterId);
 			break;
+		case 2:
+			saveMiCalculatedFilter(miCode, filterId);
+			break;
 		case 3:
 		case 5:
 			// 结构体， 过滤条件保存
@@ -161,6 +196,24 @@ public class MiExpreAndFilterServiceImpl implements MiExpreAndFilterService {
 		
 	}
 	
+	/**
+	 * 保存计算属性的过滤条件
+	 * @param miCode
+	 * @param filterId
+	 */
+	private void saveMiCalculatedFilter(String miCode, Integer filterId) {
+		MiCalculated miCalculated = commService.get(MiCalculated.class, miCode);
+		
+		if (miCalculated == null) {
+			miCalculated = new MiCalculated(miCode, null, filterId, null);
+			commService.insert(miCalculated);
+		} else {
+			miCalculated.setFilterId(filterId);
+			commService.update(miCalculated);
+		}
+		
+	}
+
 	/**
 	 * 保存结构体， 的过滤条件
 	 * @param miCode

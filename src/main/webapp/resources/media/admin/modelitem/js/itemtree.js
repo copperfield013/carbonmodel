@@ -198,7 +198,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
-	         "<i class='icon glyphicon glyphicon-filter factFilterView'></i>"+
+	         "<i class='icon glyphicon glyphicon-filter calculatedFilterView'></i>"+
 	         "<i class='icon fa fa-keyboard-o expressionView'></i>"+
 	         "<i class='icon fa fa-edit icon-edit'></i>"+
 	         "<i class='icon glyphicon glyphicon-trash delModelItem'></i>" +
@@ -458,6 +458,19 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         
     });
     
+    
+  //计算属性， 跳转到过滤条件定义页面
+    $("#modelItemEdit").on("click", ".calculatedFilterView", function() {        
+       // 计算属性过滤
+    	var $labelBar = $(this).closest(".label-bar");
+        var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
+        
+        Dialog.openDialog("admin/expressionAndFilter/skipFilter?type=2&miCode=" + modelItemCode, "过滤条件页面", "", {
+            width :1000,
+            height : 500
+        });
+        
+    });
     
   //统计实体， 跳转到过滤条件定义页面
     $("#modelItemEdit").on("click", ".statModelFilterView", function() {    
