@@ -137,6 +137,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 		case FACT_ITEM:
 		case DIMENSION_ITEM:
 		case CASCADE_REFERENCE_ITEM:
+		case CALCULATED_ITEM:
 			getViewLabelToMiValue(miValue, viewLabelList);
 			return viewLabelList;
 		case ENUM_ITEM:
@@ -179,9 +180,6 @@ public class ModelItemServiceImpl implements ModelItemService {
 			
 			return viewLabelList;
 		case ENCRYPTION_ITEM:
-
-			break;
-		case CALCULATED_ITEM:
 
 			break;
 		case PASSWORD_ITEM:

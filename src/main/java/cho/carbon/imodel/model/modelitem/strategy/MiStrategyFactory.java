@@ -19,6 +19,7 @@ public class MiStrategyFactory {
 			return new StatModelItemMiStrategy();
 		case VALUE_ITEM:
 		case CASCADE_REFERENCE_ITEM:
+		case CALCULATED_ITEM:
 			return new ValueItemMiStrategy();
 		case FACT_ITEM:
 			return new FactMiStrategy();

@@ -48,6 +48,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					} else if (modelItem.type == 212) {
 						//事实属性
 						initFactAttr(modelItem, $parent);
+					}else if (modelItem.type == 209) {
+						//计算属性
+						initaddCalculatedAttr(modelItem, $parent);
 					}else {
 						initCommAttr(modelItem, $parent);
 					}
@@ -161,6 +164,53 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	  return attrGroupHtml;
     }
     
+    /**
+     * 添加计算属性方法
+      */
+    function addCalculatedAttr(el, modelItem) {// 这个有用
+        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
+        var attrGroupHtml = getaddCalculatedAttrAttrNode(modelItem);
+        var $html = $(attrGroupHtml).prependTo($content);  
+	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
+	    addUnfold(el)
+        drag($(".dragEdit-wrap").length);
+    };
+    
+    //计算属性初始化方法
+    function initaddCalculatedAttr(modelItem, $parent) {
+    	var attrGroupHtml = getaddCalculatedAttrAttrNode(modelItem);
+	    var $html = $(attrGroupHtml).prependTo($($parent));
+	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
+        drag($(".dragEdit-wrap").length);
+    }
+    
+    //计算属性节点
+    function getaddCalculatedAttrAttrNode(modelItem) {
+    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
+        var attrGroupHtml = "<li class='add-attr clear-fix'>" +
+            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
+            "<div class='icon-label attr'>" +
+            "<i class='icon icon-attr'></i>" +
+            "<span class='text'>"+modelItem.showType+"</span>" +
+            "</div>" +
+            "<div class='label-bar al-save attr'>" +
+            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
+            "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
+	         attrGroupHtml += "<div class='btn-wrap'>" +
+	         "<i class='icon glyphicon glyphicon-filter factFilterView'></i>"+
+	         "<i class='icon fa fa-keyboard-o expressionView'></i>"+
+	         "<i class='icon fa fa-edit icon-edit'></i>"+
+	         "<i class='icon glyphicon glyphicon-trash delModelItem'></i>" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
+            "</ul>" +
+            "</li>";
+	         
+	  return attrGroupHtml;
+    }
     
     /**
      * 添加通用属性方法
@@ -1360,6 +1410,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
                 "<i class='icon icon-card-attr'></i>" +
                 "<span class='text'>添加级联引用属性</span>" +
                 "</li>" +
+                
+                "<li class='card-list add_CALCULATED_ITEM' modelItemType='209' modelItemShowName='添加计算属性'>" +
+                "<i class='icon icon-card-attr'></i>" +
+                "<span class='text'>添加计算属性</span>" +
+                "</li>" +
+                
                 
                 "</ul>";
         }
@@ -4066,6 +4122,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     							//添加事实属性
     							addFactAttr(el, modelItem);
     							
+    						} else if (modelItem.type == 209) {
+    							addCalculatedAttr(el, modelItem);
     						}else {
     							addCommAttr(el, modelItem);
     						}

@@ -25,6 +25,7 @@ import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.Constants;
 import cho.carbon.imodel.model.modelitem.pojo.MiCalExpress;
+import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterRgroup;
@@ -145,6 +146,14 @@ public class ExpressionAndFilterController {
 				 MiStatFact miStatFact = commService.get(MiStatFact.class, miCode);
 				 if (miStatFact != null) {
 						MiCalExpress miCalExpress = commService.get(MiCalExpress.class, miStatFact.getExpressId());
+						codeTxt = miCalExpress == null ?"":miCalExpress.getCodeTxt();
+					}
+				break;
+			case CALCULATED_ITEM:
+				// 计算属性对应的表达式
+				 MiCalculated miCalculated = commService.get(MiCalculated.class, miCode);
+				 if (miCalculated != null) {
+						MiCalExpress miCalExpress = commService.get(MiCalExpress.class, miCalculated.getExpressId());
 						codeTxt = miCalExpress == null ?"":miCalExpress.getCodeTxt();
 					}
 				break;
