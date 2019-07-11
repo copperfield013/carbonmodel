@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/jsp/common/base_empty.jsp"%>
 <script src="media/admin/plugins/beyond/js/select2/select2.js"></script>
 
-<div id="filterRgroupAdd" >
+<div id="filterRgroupAdd"  leftMiCode="${leftMiCode }">
 	<div class="page-header">
 		<div class="header-title">
 			<h1>添加属性</h1>
@@ -41,7 +41,7 @@
 					<div class="form-group">
 						<label class="col-lg-2 control-label" for="miFilterGroup.rightMiCode">右实体模型</label>
 						<div class="col-lg-5">
-							<select class="" name="miFilterGroup.rightMiCode">
+							<select class="rightMiCode" name="miFilterGroup.rightMiCode">
 								<c:forEach items="${rightModelList }" var="item">
 									<option <c:if test="${item.code eq miFilterGroup.rightMiCode}">selected</c:if> value="${item.code }">${item.name }</option>
 								</c:forEach>
@@ -52,7 +52,7 @@
 					<div class="form-group">
 						<label class="col-lg-2 control-label" for="miFilterRgroup.inRelationType">存在关系</label>
 						<div class="col-lg-5">
-							<select multiple="multiple" class="" name="miFilterRgroup.inRelationType">
+							<select multiple="multiple" class="relationData" name="miFilterRgroup.inRelationType">
 								<option value=""></option>
 								<c:forEach items="${relationList }" var="item">
 									<option <c:if test="${fn:contains(miFilterRgroup.inRelationType , item.typeCode)}">selected</c:if> value="${item.typeCode }">${item.name }</option>
@@ -69,7 +69,7 @@
 					<div class="form-group">
 						<label class="col-lg-2 control-label" for="miFilterRgroup.exRelationType">不存在关系</label>
 						<div class="col-lg-5">
-							<select multiple="multiple" class="" name="miFilterRgroup.exRelationType">
+							<select multiple="multiple" class="relationData" name="miFilterRgroup.exRelationType">
 								<option value=""></option>
 								<c:forEach items="${relationList }" var="item">
 									<option <c:if test="${fn:contains(miFilterRgroup.exRelationType, item.typeCode)}">selected</c:if> value="${item.typeCode }">${item.name }</option>
@@ -99,6 +99,31 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 
 	 $('select',$page).css("width","100%").select2();
 
+	 
+	//右实体模型改变的时候， 改变select 关系
+ 	$($page).on("change", ".rightMiCode", function() {  
+
+ 		 var leftMiCode = $page.attr("leftMiCode");
+ 		var rightMiCode = $(this).val();
+
+ 		 Ajax.ajax('admin/modelRelationType/getModelRela',{
+ 			leftModelCode:leftMiCode,
+ 			rightModelCode:leftMiCode
+ 	 		 }, function(data) {		
+
+				var modelRelaList = data.modelRelaList;
+
+				var str = '<option value=""></option>';
+				for ( var key in modelRelaList) {
+					var ModelRelationType = modelRelaList[key];
+					str += '<option value="'+ModelRelationType.typeCode+'">'+ModelRelationType.name+'</option>'
+				}
+
+				$('.relationData').html("").append(str);
+				$('select',$page).css("width","100%").select2();
+ 	 			 
+			});
+ 	});
 	  $($page).on("click", "#btn-save", function (e) {
 
 		 	//这里获取属性的值

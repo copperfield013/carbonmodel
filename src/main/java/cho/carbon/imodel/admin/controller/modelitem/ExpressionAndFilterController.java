@@ -97,10 +97,19 @@ public class ExpressionAndFilterController {
 
 		 // 获取左MODEL 和右MODEL 共同的关系
 		 List<ModelRelationType> relationList = null;
-		 if (!rightModelList.isEmpty()) {
-			 relationList = modelRelationTypeService.getEntityRelaByBitemId(belongmodel, rightModelList.get(0).getCode());
+		 
+		 String rightMiCode = rightModelList.get(0).getCode();
+		 
+		 if (miFilterGroup!=null) {
+			 rightMiCode = miFilterGroup.getRightMiCode();
 		 }
 		 
+		 if (!rightModelList.isEmpty()) {
+			 relationList = modelRelationTypeService.getEntityRelaByBitemId(belongmodel, rightMiCode);
+		 }
+		 
+		 
+		 model.addAttribute("leftMiCode", belongmodel);
 		 model.addAttribute("miFilterRgroup", miFilterRgroup);
 		 model.addAttribute("miFilterGroup", miFilterGroup);
 		 model.addAttribute("rightModelList", rightModelList);
