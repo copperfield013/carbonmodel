@@ -105,21 +105,19 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 
  		 var leftMiCode = $page.attr("leftMiCode");
  		var rightMiCode = $(this).val();
-
  		 Ajax.ajax('admin/modelRelationType/getModelRela',{
  			leftModelCode:leftMiCode,
- 			rightModelCode:leftMiCode
+ 			rightModelCode:rightMiCode
  	 		 }, function(data) {		
 
 				var modelRelaList = data.modelRelaList;
-
 				var str = '<option value=""></option>';
 				for ( var key in modelRelaList) {
 					var ModelRelationType = modelRelaList[key];
 					str += '<option value="'+ModelRelationType.typeCode+'">'+ModelRelationType.name+'</option>'
 				}
 
-				$('.relationData').html("").append(str);
+				$('.relationData').empty().append(str);
 				$('select',$page).css("width","100%").select2();
  	 			 
 			});
