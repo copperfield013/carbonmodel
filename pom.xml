@@ -167,10 +167,9 @@
 	
 	<repositories>
 		<repository>
-			<id>nexus</id>
-			<name>nexus</name>
-			<url>http://139.196.123.44:32108/repository/nexus-group/</url>
-		</repository>
+		 <id>rdc-releases</id>
+	        <url>https://repo.rdc.aliyun.com/repository/78687-release-z5GPTo/</url>
+	</repository>
 	</repositories>
 	<build>
 		<finalName>carbonmodel</finalName>

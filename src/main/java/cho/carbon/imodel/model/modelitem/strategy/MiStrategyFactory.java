@@ -41,6 +41,8 @@ public class MiStrategyFactory {
 			return new MultiLineGroupMiStrategy();
 		case TWO_LEVEL_ITEM:
 			return new TwoLevelAttrMiStrategy();
+		case FACT_GROUP:
+			return new FactGroupMiStrategy();
 			
 		default:
 			break;

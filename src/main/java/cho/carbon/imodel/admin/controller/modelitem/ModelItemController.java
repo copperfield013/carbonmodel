@@ -22,8 +22,10 @@ import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
+import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiReference;
+import cho.carbon.imodel.model.modelitem.pojo.MiStatFact;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
@@ -331,6 +333,21 @@ public class ModelItemController {
    				if (!miCascadeList.isEmpty()) {
    					map.put("code", 400);
    	   	   			map.put("msg", "请先删除级联引用的孩子！");
+   	   	   			return jobj.toString();
+   				}
+   			}
+   			
+   			if (ModelItemType.FACT_ITEM.equals(itemType)) {
+   				MiStatFact miStatFact = commService.get(MiStatFact.class, modelItem.getCode());		
+   				
+   				MiFilterGroup miFilterGroup = null;
+   				if (miStatFact.getFilterId() !=null) {
+   					miFilterGroup = commService.get(MiFilterGroup.class, miStatFact.getFilterId());		
+   				}
+   				
+   				if (miFilterGroup!=null) {
+   					map.put("code", 400);
+   	   	   			map.put("msg", "请先删除事实属性的过滤条件！");
    	   	   			return jobj.toString();
    				}
    			}
