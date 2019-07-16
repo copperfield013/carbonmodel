@@ -33,11 +33,9 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-2 control-label" for="order">描述</label>
+						<label class="col-lg-2 control-label" for="modelItem.description">描述</label>
 						<div class="col-lg-5">
-							<textarea  class="form-control" name="modelItem.description">
-							${modelItem.description }
-							</textarea>
+							<textarea  class="form-control" name="modelItem.description">${modelItem.description }</textarea>
 						</div>
 					</div>
 					<div class="form-group">

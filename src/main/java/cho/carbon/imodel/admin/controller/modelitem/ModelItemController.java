@@ -138,7 +138,6 @@ public class ModelItemController {
 	@RequestMapping(value = "/createModelItem")
 	public AjaxPageResponse createModelItem(ModelItemContainer modelItemContainer) {
 		try {
-
 			ModelItemContainer itemContainer = miService.saveOrUpdate(modelItemContainer);
 			return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("添加成功", "modelitem_list");
 		} catch (Exception e) {
