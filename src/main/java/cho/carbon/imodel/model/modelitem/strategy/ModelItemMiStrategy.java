@@ -36,7 +36,7 @@ public class ModelItemMiStrategy implements MiStrategy {
 		
 		String tableName = "t_" + modelItem.getBelongModel()+ "_m";
 		MiValue miValue_ED = new MiValue(code_ED, ItemValueType.TIMESTAMP.getIndex() + "", "3", tableName, 0);
-		MiValue miValue_SP = new MiValue(code_ED, ItemValueType.STRING.getIndex() + "", "32", tableName, 0);
+		MiValue miValue_SP = new MiValue(code_SP, ItemValueType.STRING.getIndex() + "", "32", tableName, 0);
 		
 		commService.insert(miValue_ED);
 		commService.insert(miValue_SP);
