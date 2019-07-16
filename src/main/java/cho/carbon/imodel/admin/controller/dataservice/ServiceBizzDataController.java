@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,9 +19,6 @@ import cho.carbon.imodel.utils.WebServiceUtil;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
 import cn.sowell.copframe.dto.ajax.NoticeType;
 import cn.sowell.copframe.dto.page.PageInfo;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 @Controller
 @RequestMapping(AdminConstants.URI_DATASERVICE + "/serviceBizzData")
@@ -32,10 +27,6 @@ public class ServiceBizzDataController {
 	@Resource
 	ServiceBizzDataService sBizzDataService;
 	
-	 @ApiOperation(value = "获取数据列表", nickname = "list", notes = "获取数据列表", response = ModelAndView.class, tags={ "serviceBizzData", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "操作成功", response = ModelAndView.class),
-        @ApiResponse(code = 401, message = "操作失败") })
     @RequestMapping(value = "/list",
         method = RequestMethod.POST)
 	public ModelAndView list(ServiceBizzDataCriteria criteria, PageInfo pageInfo){
@@ -48,12 +39,7 @@ public class ServiceBizzDataController {
 		return mv;
 	}
 	
-	 @ApiOperation(value = "跳转到添加页面", nickname = "add", notes = "跳转到添加页面", response = ModelAndView.class, tags={ "serviceBizzData", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "操作成功", response = ModelAndView.class),
-        @ApiResponse(code = 401, message = "操作失败") })
-    @RequestMapping(value = "/add",
-        method = RequestMethod.POST)
+    @RequestMapping(value = "/add")
 	public ModelAndView add(){
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName(AdminConstants.JSP_DATASERVICE + "/serviceBizzData/add.jsp");
@@ -61,46 +47,33 @@ public class ServiceBizzDataController {
 	}
 	 
 	@ResponseBody
-	@ApiOperation(value = "创建数据服务", nickname = "doAdd", notes = "创建数据服务",response = AjaxPageResponse.class, tags={ "serviceBizzData", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "添加成功", response = AjaxPageResponse.class),
-        @ApiResponse(code = 401, message = "添加失败") })
-    @RequestMapping(value = "/do_add",
-        method = RequestMethod.POST)
-	public ResponseEntity<AjaxPageResponse> doAdd(ServiceBizzData sd){
+    @RequestMapping(value = "/do_add")
+	public AjaxPageResponse doAdd(ServiceBizzData sd){
 		try {
 			sBizzDataService.insert(sd);
-			return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("添加成功", "serviceBizzData_list"), HttpStatus.OK);
+			return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("添加成功", "serviceBizzData_list");
 		} catch (Exception e) {
-			return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.FAILD("添加失败"), HttpStatus.INTERNAL_SERVER_ERROR);
+			return AjaxPageResponse.FAILD("添加失败");
 		}
 	}
 	
 	@ResponseBody
-	@ApiOperation(value = "移除数据服务", nickname = "doDelte", notes = "移除数据服务",response = AjaxPageResponse.class, tags={ "serviceBizzData", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "删除成功", response = AjaxPageResponse.class),
-        @ApiResponse(code = 401, message = "删除失败") })
     @RequestMapping(value = "/do_delete",
         method = RequestMethod.POST)
-	public ResponseEntity<AjaxPageResponse> doDelte(Integer id){
+	public AjaxPageResponse doDelte(Integer id){
 		try {
 			sBizzDataService.delete(id);
-			return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.REFRESH_LOCAL("删除成功"), HttpStatus.OK);
+			return AjaxPageResponse.REFRESH_LOCAL("删除成功");
 		} catch (Exception e) {
-			return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.FAILD("删除失败"), HttpStatus.INTERNAL_SERVER_ERROR);
+			return AjaxPageResponse.FAILD("删除失败");
 		}
 	}
 	
 	//禁用启用
 	@ResponseBody
-	@ApiOperation(value = "测试数据服务", nickname = "testService", notes = "测试数据服务",response = AjaxPageResponse.class, tags={ "serviceBizzData", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "操作成功", response = AjaxPageResponse.class),
-        @ApiResponse(code = 401, message = "操作失败") })
     @RequestMapping(value = "/testService",
         method = RequestMethod.POST)
-	public ResponseEntity<AjaxPageResponse> testService(Integer id){
+	public AjaxPageResponse testService(Integer id){
 		try {
 			ServiceBizzData serviceBizzData = sBizzDataService.getOne(id);
 			String params = null;
@@ -111,15 +84,15 @@ public class ServiceBizzDataController {
 			if ("true".equals(wsdlResult)) {
 				serviceBizzData.setState("1");
 				sBizzDataService.update(serviceBizzData);
-				return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.REFRESH_LOCAL("测试通过"), HttpStatus.OK);
+				return AjaxPageResponse.REFRESH_LOCAL("测试通过");
 			} else {
 				serviceBizzData.setState("2");
 				sBizzDataService.update(serviceBizzData);
-				return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.REFRESH_LOCAL_BY_TYPE("测试不通过", NoticeType.INFO), HttpStatus.OK);
+				return AjaxPageResponse.REFRESH_LOCAL_BY_TYPE("测试不通过", NoticeType.INFO);
 			}
 		
 		} catch (Exception e) {
-			return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.FAILD("操作失败"), HttpStatus.INTERNAL_SERVER_ERROR);
+			return AjaxPageResponse.FAILD("操作失败");
 		}
 	}
 
@@ -128,13 +101,9 @@ public class ServiceBizzDataController {
 	}
 	
 	@ResponseBody
-	@ApiOperation(value = "刷新应用配置", nickname = "refreshERXmlDom", notes = "刷新应用配置",response = AjaxPageResponse.class, tags={ "serviceBizzData", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "操作成功", response = AjaxPageResponse.class),
-        @ApiResponse(code = 401, message = "操作失败") })
     @RequestMapping(value = "/refreshERXmlDom",
         method = RequestMethod.POST)
-	public ResponseEntity<AjaxPageResponse> refreshERXmlDom(Integer id){
+	public AjaxPageResponse refreshERXmlDom(Integer id){
 		try {
 			ServiceBizzData serviceBizzData = sBizzDataService.getOne(id);
 			String params = null;
@@ -145,21 +114,16 @@ public class ServiceBizzDataController {
 			String dataResult = WebServiceUtil.getWsdlResult(dataUrl, "syncCache", null);
 			
 			if ("true".equals(wsdlResult)) {
-				return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.REFRESH_LOCAL("刷新成功"), HttpStatus.OK);
+				return AjaxPageResponse.REFRESH_LOCAL("刷新成功");
 			} else {
-				return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.FAILD("刷新失败"), HttpStatus.INTERNAL_SERVER_ERROR);
+				return AjaxPageResponse.FAILD("刷新失败");
 			}
 		} catch (Exception e) {
-			return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.FAILD("刷新失败"), HttpStatus.INTERNAL_SERVER_ERROR);
+			return AjaxPageResponse.FAILD("刷新失败");
 		}
 	}
 	
-	 @ApiOperation(value = "跳转到编辑页面", nickname = "edit", notes = "跳转到编辑页面", response = ModelAndView.class, tags={ "serviceBizzData", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "操作成功", response = ModelAndView.class),
-        @ApiResponse(code = 401, message = "操作失败") })
-    @RequestMapping(value = "/edit",
-        method = RequestMethod.POST)
+    @RequestMapping(value = "/edit")
 	public ModelAndView edit(Integer id){
 		ServiceBizzData serviceBizzData = sBizzDataService.getOne(id);
 		ModelAndView mv = new ModelAndView();
@@ -169,18 +133,14 @@ public class ServiceBizzDataController {
 	}
 	
 	@ResponseBody
-	@ApiOperation(value = "编辑", nickname = "do_edit", notes = "编辑",response = AjaxPageResponse.class, tags={ "serviceBizzData", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "编辑成功", response = AjaxPageResponse.class),
-        @ApiResponse(code = 401, message = "编辑失败") })
     @RequestMapping(value = "/do_edit",
         method = RequestMethod.POST)
-	public ResponseEntity<AjaxPageResponse> do_edit(ServiceBizzData sd){
+	public AjaxPageResponse do_edit(ServiceBizzData sd){
 		try {
 			sBizzDataService.update(sd);
-		return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("编辑成功", "serviceBizzData_list"), HttpStatus.OK);
+		return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("编辑成功", "serviceBizzData_list");
 	} catch (Exception e) {
-		return new ResponseEntity<AjaxPageResponse>(AjaxPageResponse.FAILD("编辑失败"), HttpStatus.INTERNAL_SERVER_ERROR);
+		return AjaxPageResponse.FAILD("编辑失败");
 	}
 		
 	}

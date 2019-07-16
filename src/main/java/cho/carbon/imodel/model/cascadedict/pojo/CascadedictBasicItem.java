@@ -10,8 +10,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import io.swagger.annotations.ApiModelProperty;
-
 @Entity
 @Table(name = "t_cc_casenum_item")
 public class CascadedictBasicItem {

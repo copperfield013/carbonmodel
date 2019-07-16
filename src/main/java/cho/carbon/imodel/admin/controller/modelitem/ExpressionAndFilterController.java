@@ -48,7 +48,6 @@ import cho.carbon.meta.enun.RelationType;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
 import cn.sowell.copframe.dto.ajax.NoticeType;
 import cn.sowell.copframe.dto.page.PageInfo;
-import springfox.documentation.schema.configuration.ModelsConfiguration;
 
 /**
  * 	表达式和过滤条件
