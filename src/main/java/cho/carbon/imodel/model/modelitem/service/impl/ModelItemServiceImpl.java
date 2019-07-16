@@ -164,7 +164,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 			viewLabelList.add(new ViewLabel("input", "hidden", "miEnum.code", miEnum.getCode(), null));
 			
 			//级联枚举孩子数量
-			viewLabelList.add(new ViewLabel("input", "text", "modelItem.casEnumChildCount", "只能为数字，最大数量为所选枚举字典孩子数量", "级联枚举孩子数量"));
+			viewLabelList.add(new ViewLabel("input", "number", "modelItem.casEnumChildCount", "", "级联枚举孩子数量"));
 			
 			return viewLabelList;
 		case MULTI_ENUM_ITEM:

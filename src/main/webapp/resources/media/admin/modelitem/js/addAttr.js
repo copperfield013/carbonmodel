@@ -57,6 +57,14 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				strLabel+='</div></div>';
 				
 				return strLabel;
+			}  else if(viewLabel.type == "number") {
+				var strLabel = '<div class="form-group">';
+				strLabel+='<label class="col-lg-2 control-label" for="'+viewLabel.name+'">'+viewLabel.showName+'</label>';
+				strLabel+='<div class="col-lg-5">';
+				strLabel+='<'+	viewLabel.label +' type="number" name="' +viewLabel.name+'" value="' +viewLabel.value +'" placeholder="只能为大于0数字" data-bv-notempty="true" data-bv-notempty-message="不能为空" class="form-control name" />';
+				strLabel+='</div></div>';
+				
+				return strLabel;
 			} else if (viewLabel.type == "radio") {
 				var checkedstr1 = "";
 				var checkedstr0 = "checked";
