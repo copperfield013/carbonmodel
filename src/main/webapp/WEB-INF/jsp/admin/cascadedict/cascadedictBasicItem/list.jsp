@@ -37,7 +37,7 @@
 						<td>${item.id }</td>
 						<td>${item.name }</td>
 						<td>${item.enName }</td>
-						<td>${item.status }</td>
+						<td>${item.status eq '1'?"启用":"废弃" }</td>
 						<td>${item.order }</td>
 						<td>
 							<a class="tab" href="admin/cascadedict/cascadedictBasicItem/getOne?id=${item.id }" target="cascadedictBasicItem_child" title="管理子数据">管理子数据</a>

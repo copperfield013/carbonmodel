@@ -23,8 +23,8 @@
 				<tr>
 					<th>序号</th>
 					<th>关系编码</th>
-					<th>关系名称</th>
 					<th>左模型编码</th>
+					<th>关系名称</th>
 					<th>右模型编码</th>
 					<th>逆关系编码</th>
 					<th>状态</th>
@@ -35,24 +35,23 @@
 				<c:forEach items="${modelRelaList }" var="item" varStatus="i">
 					<tr>
 						<td>${i.index + 1 }</td>
-						<td>${item.typeCode }</td>
-						<td>${item.name }</td>
+						<td>${item[0] }</td>
+						<td>${item[8] }</td>
+						<td>${item[1] }</td>
+						<td>${item[9] }</td>
+						<td>${item[4] }</td>
 						
-						<td>${item.leftModelCode }</td>
-						<td>${item.rightModelCode }</td>
-						<td>${item.reverseCode }</td>
-						
-						<td>${item.usingState }</td>
+						<td>${item[6] }</td>
 						<td>
 							 <%-- <a id="update" typeCode="${item.typeCode }"href="javascript:;"  title="修改">修改</a> --%>
-							<c:if test="${item.usingState  eq 2}">
-								<a href="admin/modelRelationType/saveStatus?typeCode=${item.typeCode }&usingState=${item.usingState }" confirm="改变状态？">解除弃用</a>
+							<c:if test="${item[6]  eq 2}">
+								<a href="admin/modelRelationType/saveStatus?typeCode=${item[0] }&usingState=${item[6] }" confirm="改变状态？">解除弃用</a>
 							</c:if>
-							<c:if test="${item.usingState  ne 2}">
-								<a href="admin/modelRelationType/saveStatus?typeCode=${item.typeCode }&usingState=${item.usingState }" confirm="改变状态？">弃用关系</a>
+							<c:if test="${item[6]  ne 2}">
+								<a href="admin/modelRelationType/saveStatus?typeCode=${item[0] }&usingState=${item[6] }" confirm="改变状态？">弃用关系</a>
 							</c:if>
 							
-							<a href="admin/modelRelationType/delete?typeCode=${item.typeCode }" confirm="确认删除？">删除</a>
+							<a href="admin/modelRelationType/delete?typeCode=${item[0] }" confirm="确认删除？">删除</a>
 						</td>
 					</tr>
 				</c:forEach>

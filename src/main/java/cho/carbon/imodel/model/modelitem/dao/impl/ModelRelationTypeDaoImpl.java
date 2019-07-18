@@ -8,6 +8,9 @@ import javax.annotation.Resource;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.transform.ResultTransformer;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import cho.carbon.imodel.model.modelitem.dao.ModelRelationTypeDao;
@@ -15,6 +18,7 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.meta.enun.RelationType;
 import cn.sowell.copframe.dao.deferedQuery.DeferedParamQuery;
+import cn.sowell.copframe.dao.deferedQuery.ResultSetter;
 import cn.sowell.copframe.dao.deferedQuery.sqlFunc.WrapForCountFunction;
 import cn.sowell.copframe.dao.utils.QueryUtils;
 import cn.sowell.copframe.dto.page.PageInfo;
@@ -29,26 +33,35 @@ public class ModelRelationTypeDaoImpl implements ModelRelationTypeDao {
 	
 	@Override
 	public List<ModelRelationType> queryList(ModelRelationType criteria, PageInfo pageInfo) {
-		String hql = "from ModelRelationType b WHERE leftModelCode=:leftModelCode";
-		DeferedParamQuery dQuery = new DeferedParamQuery(hql);
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(" SELECT a.*, b.name leftModelName, c.name rightModelName FROM t_cc_model_relation_type a")
+		.append(" left join t_cc_model_item b on a.left_model_code=b.code")
+		.append(" left join t_cc_model_item c on a.right_model_code=c.code")
+		.append(" WHERE A.left_model_code=:leftModelCode");
+		
+		DeferedParamQuery dQuery = new DeferedParamQuery(sb.toString());
 		dQuery.setParam("leftModelCode", criteria.getLeftModelCode());
 		
 		if(TextUtils.hasText(criteria.getName())){
-			dQuery.appendCondition(" and b.name like :name")
+			dQuery.appendCondition(" and a.name like :name")
 					.setParam("name", "%" + criteria.getName() + "%");
 		}
 		
 		if(TextUtils.hasText(criteria.getTypeCode())){
-			dQuery.appendCondition(" and b.typeCode =:typeCode")
+			dQuery.appendCondition(" and a.typeCode =:typeCode")
 					.setParam("typeCode", criteria.getTypeCode());
 		}
-		Query countQuery = dQuery.createQuery(sFactory.getCurrentSession(), false, new WrapForCountFunction());
-		Integer count = FormatUtils.toInteger(countQuery.uniqueResult());
+		
+		 SQLQuery createSQLQuery = dQuery.createSQLQuery(sFactory.getCurrentSession(), false, new WrapForCountFunction());
+		
+		Integer count = FormatUtils.toInteger(createSQLQuery.uniqueResult());
 		pageInfo.setCount(count);
 		if(count > 0){
-			Query query = dQuery.createQuery(sFactory.getCurrentSession(), false, null);
-			QueryUtils.setPagingParamWithCriteria(query , pageInfo);
-			return query.list();
+			SQLQuery sqlQuery = dQuery.createSQLQuery(sFactory.getCurrentSession(), false, null);
+			
+			QueryUtils.setPagingParamWithCriteria(sqlQuery , pageInfo);
+			return sqlQuery.list();
 		}
 		
 		return new ArrayList<ModelRelationType>();

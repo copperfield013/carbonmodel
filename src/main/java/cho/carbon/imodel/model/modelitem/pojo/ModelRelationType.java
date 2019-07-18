@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -36,6 +37,13 @@ public class ModelRelationType {
 	
 	@Column(name="giant")
 	private Integer giant; //  关系是巨型的
+	
+	
+	@Transient
+	private String leftModelName;
+	
+	@Transient
+	private String rightModelName;
 
 	public ModelRelationType() {}
 	
@@ -114,4 +122,21 @@ public class ModelRelationType {
 	public void setGiant(Integer giant) {
 		this.giant = giant;
 	}
+
+	public String getLeftModelName() {
+		return leftModelName;
+	}
+
+	public String getRightModelName() {
+		return rightModelName;
+	}
+
+	public void setLeftModelName(String leftModelName) {
+		this.leftModelName = leftModelName;
+	}
+
+	public void setRightModelName(String rightModelName) {
+		this.rightModelName = rightModelName;
+	}
+	
 }
