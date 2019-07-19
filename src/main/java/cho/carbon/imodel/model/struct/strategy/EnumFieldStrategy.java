@@ -49,9 +49,9 @@ public class EnumFieldStrategy  implements StructBaseStrategy {
 		StrucFieldSubenum strucFieldSubenum = new StrucFieldSubenum(sbId, null);
 		StrucFieldValue strucFieldValue = new StrucFieldValue(sbId, null);
 		
-		commService.insert(strucMiCode);
-		commService.insert(strucFieldSubenum);
-		commService.insert(strucFieldValue);
+		commService.delete(strucMiCode);
+		commService.delete(strucFieldSubenum);
+		commService.delete(strucFieldValue);
 	}
 
 	@Override

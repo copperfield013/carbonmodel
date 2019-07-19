@@ -128,12 +128,12 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 	public List queryCreRepeatTabIndex(String dataBaseName) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" SELECT")
-		.append(" CONCAT( \" ALTER TABLE \", a.tablename, \" ADD INDEX index_p(\", codein, \");\" ) ")
+		.append(" CONCAT( \" ALTER TABLE \", a.tablename, \" ADD INDEX IF NOT EXISTS index_p(\", codein, \");\" ) ")
 		.append(" FROM")
 		.append(" ( SELECT CONCAT('t_', belong_model, '_', code) tablename, CONCAT(code,'_P') codein FROM t_cc_model_item WHERE type = '6' ) a")
 		.append(" 	left JOIN ")
 		.append(" ( SELECT table_name, COLUMN_NAME, INDEX_NAME FROM information_schema.statistics t ")
-		.append(" WHERE t.table_schema = 'digital_community' 	AND INDEX_NAME = 'index_p') b")
+		.append(" WHERE t.table_schema = '"+dataBaseName+"' 	AND INDEX_NAME = 'index_p') b")
 		.append(" ON a.tablename = b.table_name and a.codein=b.COLUMN_NAME")
 		.append(" WHERE	b.table_name IS NULL ");
 		

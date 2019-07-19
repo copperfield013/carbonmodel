@@ -571,7 +571,6 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 				
 				createGroupChil(modelItem, strucBaseGroup);
 				break;
-						
 			case MULTI_LINE_GROUP:
 			case GIANT_LINE_GROUP:
 				sbc = new StrucBaseContainer();
