@@ -47,8 +47,8 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 	}
 
 	@Override
-	public void update(ModelRelationType dictParentItem) {
-		commService.update(dictParentItem);
+	public void update(ModelRelationType modelRelationType) {
+		commService.update(modelRelationType);
 	}
 
 	@Override

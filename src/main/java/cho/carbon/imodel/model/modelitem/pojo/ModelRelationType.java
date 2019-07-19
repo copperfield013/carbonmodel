@@ -12,26 +12,32 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "t_cc_model_relation_type")
 public class ModelRelationType {
 
+	// 关系code
 	@Id
 	@Column(name = "type_code")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	private String typeCode;// 主键规则待定
-
+	// 关系名称
 	@Column(name = "name")
 	private String name;
 
+	// 左模型code
 	@Column(name = "left_model_code")
 	private String leftModelCode;
 
+	// 右模型code
 	@Column(name = "right_model_code")
 	private String rightModelCode;
 
+	// 逆向关系code
 	@Column(name = "reverse_code")
 	private String reverseCode;
 	
+	// 我的状态
 	@Column(name="using_state")
 	private Integer usingState;
 	
+	// 对一、 对多
 	@Column(name="relation_type")
 	private Integer relationType;
 	

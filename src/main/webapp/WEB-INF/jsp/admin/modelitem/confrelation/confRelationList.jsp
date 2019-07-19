@@ -43,7 +43,7 @@
 						
 						<td>${item[6] }</td>
 						<td>
-							 <%-- <a id="update" typeCode="${item.typeCode }"href="javascript:;"  title="修改">修改</a> --%>
+							  <a id="update" typeCode="${item[0] }"href="javascript:;"  title="修改">修改</a>
 							<c:if test="${item[6]  eq 2}">
 								<a href="admin/modelRelationType/saveStatus?typeCode=${item[0] }&usingState=${item[6] }" confirm="改变状态？">解除弃用</a>
 							</c:if>
@@ -76,10 +76,9 @@
 
 		$("tbody", $page).on("click", "#update", function() {
 
-			alert("sssss");
-			return;
+			
 			var typeCode = $(this).attr("typeCode");
-            Dialog.openDialog("admin/modelItem/update?itemCode=", "修改", "", {
+            Dialog.openDialog("admin/modelRelationType/edit?typeCode="+typeCode, "修改", "", {
                 width :1000,
                 height : 500
             });

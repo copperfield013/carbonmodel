@@ -165,22 +165,38 @@ public class ModelRelationTypeController {
 	 * @param isPastDue
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping("/edit")
-	public String edit(String typeCode){
-		Map<String, Object> map = new HashMap<String, Object>();
-		JSONObject jobj = new JSONObject(map);
+	public String edit(Model model,String typeCode){
 		try {
-			 ModelRelationType recordRelationType = modelRelationTypeService.getRecordRelationType(typeCode);
-			map.put("recordRelationType", recordRelationType);
-			map.put("code", 200);
-			map.put("msg", "成功！");
-			return jobj.toJSONString();
+     		//  正向关系 
+			 ModelRelationType relation= modelRelationTypeService.getRecordRelationType(typeCode);
+			 // 逆向关系
+			/*
+			 * ModelRelationType reverseRela = null; // 是否为对称关系 String symmetryRela =
+			 * "symmetry"; if (relation.getTypeCode() != relation.getReverseCode()) {
+			 * reverseRela =
+			 * modelRelationTypeService.getRecordRelationType(relation.getReverseCode());
+			 * symmetryRela = ""; }
+			 */
+					
+			 //逆向模型名称
+			/*
+			 * ModelItem reverseModelItem = commService.get(ModelItem.class,
+			 * relation.getRightModelCode());
+			 */
+			 
+			 //TODO......
+			// model.addAttribute("symmetryRela", symmetryRela);
+			 model.addAttribute("relation", relation);
+			// model.addAttribute("reverseRela", reverseRela);
+			 //model.addAttribute("reverseModelItem", reverseModelItem);
+			 
+			return AdminConstants.JSP_BASE + "/modelitem/confrelation/editRelation.jsp";
 		} catch (Exception e) {
-			map.put("code", 400);
-			map.put("msg", "失败！");
-			return jobj.toJSONString();
+			e.printStackTrace();
 		}
+		
+		return null;
 	}
 	
 	/**
@@ -214,24 +230,19 @@ public class ModelRelationTypeController {
 	 */
 	@ResponseBody
 	@RequestMapping("/do_edit")
-	public String edit(String name, String typeCode, Integer relationType, Integer giant){
-		Map<String, Object> map = new HashMap<String, Object>();
-		JSONObject jobj = new JSONObject(map);
+	public AjaxPageResponse doEdit(String leftName, String typeCode, Integer leftRelationType, Integer leftgiant){
 		try {
 			
 			ModelRelationType recordRelationType = modelRelationTypeService.getRecordRelationType(typeCode);
-			recordRelationType.setName(name);
-			recordRelationType.setRelationType(relationType);
-			recordRelationType.setGiant(giant);
+			recordRelationType.setName(leftName);
+			recordRelationType.setRelationType(leftRelationType);
+			recordRelationType.setGiant(leftgiant);
+			
 			modelRelationTypeService.update(recordRelationType);
-			map.put("recordRelationType", recordRelationType);
-			map.put("code", 200);
-			map.put("msg", "成功！");
-			return jobj.toJSONString();
+			
+			return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("添加成功", "modelItem_confRelationList");
 		} catch (Exception e) {
-			map.put("code", 400);
-			map.put("msg", "失败！");
-			return jobj.toJSONString();
+			return AjaxPageResponse.FAILD("操作失败！");
 		}
 	}
 	
