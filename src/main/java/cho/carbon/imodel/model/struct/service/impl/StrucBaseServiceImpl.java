@@ -556,6 +556,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 	private void quickCreateStrucGroup(StrucBase pStrucBase, List<ModelItem> modelItemGroup) throws Exception {
 		StrucBaseContainer sbc = null;
 		for (ModelItem modelItem : modelItemGroup) {
+			
 			ModelItemType itemType = ModelItemType.getItemType(modelItem.getType());
 			
 			switch (itemType) {
