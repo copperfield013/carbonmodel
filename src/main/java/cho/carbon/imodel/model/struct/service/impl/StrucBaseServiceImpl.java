@@ -452,7 +452,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		
 		titleVb.setViewClazz("strucBaseTitle");
 		viewLabelList.add(titleVb);
-		
+		 
 		ViewLabel optVb = new ViewLabel("select", "text", "strucBase.opt",strucBase.getOpt()+"" , "权限", 19);
 		// 获取值域
 		Map<String, String> optValue = new HashMap<String, String>();

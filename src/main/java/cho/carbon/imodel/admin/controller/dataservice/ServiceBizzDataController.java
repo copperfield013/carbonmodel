@@ -107,7 +107,8 @@ public class ServiceBizzDataController {
 		try {
 			ServiceBizzData serviceBizzData = sBizzDataService.getOne(id);
 			String params = null;
-			String method = "loadERXmlDomFromDB";
+
+			String method = "reload";
 			String url = buildWSURL(serviceBizzData);
 			String wsdlResult = WebServiceUtil.getWsdlResult(url, method, params);
 			String dataUrl = "http://"+serviceBizzData.getIp()+":"+serviceBizzData.getPort()+"/"+serviceBizzData.getName()+"/services/configReloadService?wsdl";

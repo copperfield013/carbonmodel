@@ -1,6 +1,7 @@
 package cho.carbon.imodel.model.modelitem.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -117,7 +118,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 		// 这里设置通用属性
 		viewLabelList.add(new ViewLabel("textarea", "text", "modelItem.description", modelItem.getDescription(), "描述"));
 		viewLabelList.add(new ViewLabel("input", "hidden", "modelItem.code", modelItem.getCode(), null));
-		viewLabelList.add(new ViewLabel("input", "text", "modelItem.name", modelItem.getName(), "名称"));
+		viewLabelList.add(new ViewLabel("input", "text", "modelItem.name", modelItem.getName(), "名称", 20));
 		viewLabelList.add(new ViewLabel("input", "hidden", "modelItem.type", "" + modelItem.getType(), null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "modelItem.parent", mipCode, null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "modelItem.belongModel", modelItem.getBelongModel(), null));
@@ -129,7 +130,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 		case FACT_GROUP:
 		case DIMENSION_GROUP:
 		case FILE_ITEM:
-			return viewLabelList;
+			break;
 		case GIANT_LINE_GROUP:
 		case MULTI_LINE_GROUP:
 			break;
@@ -139,14 +140,14 @@ public class ModelItemServiceImpl implements ModelItemService {
 		case CASCADE_REFERENCE_ITEM:
 		case CALCULATED_ITEM:
 			getViewLabelToMiValue(miValue, viewLabelList);
-			return viewLabelList;
+			break;
 		case ENUM_ITEM:
 		case PREENUM_STRING_ITEM:
 			//miValue
 			getViewLabelToMiValue(miValue, viewLabelList);
 			//miEnum
 			getViewLabelToMiEnum(miEnum, viewLabelList);
-			return viewLabelList;
+			break;
 		case CASCADE_ENUM_ITEM:
 			//miValue
 			getViewLabelToMiValue(miValue, viewLabelList);
@@ -165,20 +166,18 @@ public class ModelItemServiceImpl implements ModelItemService {
 			
 			//级联枚举孩子数量
 			viewLabelList.add(new ViewLabel("input", "number", "modelItem.casEnumChildCount", "", "级联枚举孩子数量"));
-			
-			return viewLabelList;
+			break;
 		case MULTI_ENUM_ITEM:
 			//miEnum
 			getViewLabelToMiEnum(miEnum, viewLabelList);
-			return viewLabelList;
-		
+			break;
 		case REFERENCE_ITEM:
 			//miValue
 			getViewLabelToMiValue(miValue, viewLabelList);
 			//miReference
 			getViewLabelToMiReference(miReference, viewLabelList);
 			
-			return viewLabelList;
+			break;
 		case ENCRYPTION_ITEM:
 
 			break;
@@ -189,7 +188,9 @@ public class ModelItemServiceImpl implements ModelItemService {
 
 			break;
 		}
-
+		
+		Collections.sort(viewLabelList);
+		
 		return viewLabelList;
 	}
 
@@ -212,7 +213,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 	 */
 	private void getViewLabelToMiValue(MiValue miValue, List<ViewLabel> viewLabelList) {
 		viewLabelList.add(new ViewLabel("input", "hidden", "miValue.code", miValue.getCode(), null));
-		ViewLabel dataType = new ViewLabel("select", "text", "miValue.dataType", miValue.getDataType(), "数据类型");
+		ViewLabel dataType = new ViewLabel("select", "text", "miValue.dataType", miValue.getDataType(), "数据类型", 19);
 		// 获取值域
 		Map<String, String> valueDomain = new HashMap<String, String>();
 		ItemValueType[] itemValueTypes = ItemValueType.values();
