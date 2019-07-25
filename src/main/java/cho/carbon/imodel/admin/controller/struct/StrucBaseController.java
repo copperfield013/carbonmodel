@@ -326,6 +326,29 @@ public class StrucBaseController {
 		}
 	    
 	    
+	    @ResponseBody
+		@RequestMapping("/getGroup1DChild")
+		public String getGroup1DChild(Integer sbId){
+			Map<String, Object> map = new HashMap<String, Object>();
+			JSONObject jobj = new JSONObject(map);
+			try {
+				
+				List<StrucBase> group1dChild = strucBaseService.getGroup1DChild(sbId);
+				
+				map.put("group1dChild", group1dChild);
+				map.put("code", 200);
+				map.put("msg", "成功！");
+				return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+			} catch (Exception e) {
+				logger.error("添加失败", e);
+				e.printStackTrace();
+				map.put("code", 400);
+				map.put("msg", "操作失败！");
+				return jobj.toString();
+			}
+		}
+	    
+	    
 	    /**
 	     * 快速生成结构体
 	     * @return
@@ -357,5 +380,8 @@ public class StrucBaseController {
 				return AjaxPageResponse.FAILD("操作失败");
 			}
 		}
+	    
+	    
+	    
 	    
 }

@@ -79,22 +79,25 @@
 	    
 	    
 	    $(".page-body", $page).on("change", "#mappingId", function() {
+
+		    
 	    	var $this = $(this);
 	    	var options=$("#mappingId option:selected"); //获取选中的项
-	    	var parentId = options.attr("data-id");
+	    	var sbId = options.attr("data-id");
 	    	
-	    	 Ajax.ajax('admin/module/configModule/childNodeList', {
-	    		 parentId:parentId
+	    	 Ajax.ajax('admin/structBase/getGroup1DChild', {
+	    		 sbId:sbId
 	    	 }, function(data) {
-	    		 var child = data.childNode;
+
+	    		 var child = data.group1dChild;
 	    		 var str = "<option selected=\"selected\" value=\"\">唯一编码</option>";
 	    		 var str1 = "<option selected=\"selected\" value=\"\"></option>";
 	    		 for (var p in child) { //遍历json数组时，这么写p为索引，0,1
-                     str = str + "<option value=\"" + child[p].name + "\">" + child[p].name + "</option>";
-                     str1 = str1 + "<option value=\"" + child[p].name + "\">" + child[p].name + "</option>"; 
+                     str = str + "<option value=\"" + child[p].title + "\">" + child[p].title + "</option>";
+                     str1 = str1 + "<option value=\"" + child[p].title + "\">" + child[p].title + "</option>"; 
                  }
 	    		 
-	    		 $("#codeName").empty().append(str);
+	    		 /* $("#codeName").empty().append(str); */
 	    		 $("#titleName").empty().append(str1);
 	    		 $("#codeName").options.selectedIndex = 0; //回到初始状态
 	    		 $("#titleName").options.selectedIndex = 0; //回到初始状态
