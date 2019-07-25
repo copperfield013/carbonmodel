@@ -26,13 +26,13 @@ public class CascadedictSubsectionChild {
 	  @Column(name="child_id")
 	  private Integer childId;
 	  
-	  @Column(name="c_status")
+	  @Column(name="using_state")
 	  private String status;
 	 
-	  @Column(name="c_order")
+	  @Column(name="corder")
 	  private Integer order;
 	  
-	  @Column(name=" c_update_time")
+	  @Column(name="update_time")
 	  private String  updateTime;
 
 	/**

@@ -22,19 +22,19 @@ public class CascadedictSubsection {
 	  @GenericGenerator(name = "system-uuid", strategy = "uuid")
 	  private Integer id;//单独生成规则
 	  
-	  @Column(name="c_name")
+	  @Column(name="name")
 	  private String name;
 	 
 	  @Column(name="parent_id")
 	  private Integer parentId;
 	  
-	  @Column(name="c_status")
+	  @Column(name="using_state")
 	  private String status;
 	 
-	  @Column(name="c_order")
+	  @Column(name="corder")
 	  private Integer order;
 	  
-	  @Column(name=" c_update_time")
+	  @Column(name="update_time")
 	  private String  updateTime;
 
 	/**
