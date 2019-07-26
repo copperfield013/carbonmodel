@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -403,7 +404,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		
 		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucRelation.modelRelationType",strucRelation.getModelRelationType()==null?"":strucRelation.getModelRelationType() , "选择关系", 16);
 		// 获取值域
-		Map<String, String> valueDomain = new HashMap<String, String>();
+		Map<String, String> valueDomain = new LinkedHashMap<String, String>();
 		  for (ModelRelationType modelRelation : relationOne) {
 			  valueDomain.put(modelRelation.getTypeCode() + "", modelRelation.getName()); 
 		  }

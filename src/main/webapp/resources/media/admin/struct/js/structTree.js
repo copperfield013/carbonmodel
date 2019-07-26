@@ -289,10 +289,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         }
 	} 	
 	
-	
-	
-	
-    
 	function addEntityOPT() {
 		var $select = $("#structBaseEdit .entity-title").find(".node-ops-type");	
 		var selectedVal = $select.attr("data-val");
@@ -2911,7 +2907,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 						if (strucBase.type == 101) {//单行属性分组
  							addGroup(el, strucBase);
 						} else if (strucBase.type == 102) {
-							addMoreGroup(strucBase, $parent);
+							addMoreGroup(el, strucBase)
 						}
 					}
 				}
@@ -2933,12 +2929,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
           	   afterSave	: function(strucBase){
  					if(strucBase){
  						console.log(strucBase.id);
- 						
+ 					
  						if (strucBase.type == 103) {
  							// 添加关系结构
  							addRStruc(el, strucBase);
 						} else {
-							addCommAttr(strucBase, $parent);
+							addCommAttr(el, strucBase);
 						}
 						
  					}
