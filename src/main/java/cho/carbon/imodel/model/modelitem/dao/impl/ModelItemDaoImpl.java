@@ -65,7 +65,7 @@ public class ModelItemDaoImpl implements ModelItemDao {
 
 	@Override
 	public List<ModelItem> getModelItemStairChild(String pmiCode) {
-		String hql = "from ModelItem b WHERE parent=:pmiCode AND type<>'4'";
+		String hql = "from ModelItem b WHERE parent=:pmiCode AND type<>'4' AND code NOT LIKE '%_CNT%'";
 		return sFactory.getCurrentSession().createQuery(hql).setParameter("pmiCode", pmiCode).list();
 	}
 
