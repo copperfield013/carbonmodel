@@ -179,8 +179,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
 	    	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 
 	    	            }
-	    	            	
 	    	        		$strucMiCodeItemCode.empty().append(str);
+	    	        		$strucMiCodeItemCode.trigger("change");
 	    	            }); 
 	    			 
 	    			 
