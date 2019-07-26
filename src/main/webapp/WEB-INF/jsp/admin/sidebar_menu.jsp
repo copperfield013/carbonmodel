@@ -27,7 +27,7 @@
     </a>
     <ul class="submenu">
         <li>
-            <a class="tab" href="admin/modelItem/list" target="modelItem_list" title="新实体管理">
+            <a class="tab" href="admin/modelItem/list" target="modelItem_list" title="模型管理">
                 <span class="menu-text">模型管理</span>
             </a>
         </li>

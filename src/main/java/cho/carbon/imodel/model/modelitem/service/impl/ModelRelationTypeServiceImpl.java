@@ -82,20 +82,8 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 				String LeftRecordRelaCode = "";
 				String rightRecordRelaCode = "";
 				
-				if (lefRrecordType.getLeftModelCode().equals(rightRrecordType.getLeftModelCode())) {//实体相同的情况
-					LeftRecordRelaCode = miCodeGenService.getRelaCode(lefRrecordType.getLeftModelCode());
-					
-					int indexOf = LeftRecordRelaCode.indexOf("R");
-					String codeStr = LeftRecordRelaCode.substring(indexOf+1);
-					int code = Integer.parseInt(codeStr) + 1;
-			        String format = String.format("%03d", code);  
-					
-			        rightRecordRelaCode = lefRrecordType.getLeftModelCode() + "R" + format;
-				} else {//实体不同的情况
-					LeftRecordRelaCode = miCodeGenService.getRelaCode(lefRrecordType.getLeftModelCode());
-					rightRecordRelaCode = miCodeGenService.getRelaCode(rightRrecordType.getLeftModelCode());
-					
-				}
+				LeftRecordRelaCode = miCodeGenService.getRelaCode(lefRrecordType.getLeftModelCode());
+				rightRecordRelaCode = miCodeGenService.getRelaCode(rightRrecordType.getLeftModelCode());
 				
 				lefRrecordType.setTypeCode(LeftRecordRelaCode);
 				lefRrecordType.setReverseCode(rightRecordRelaCode);

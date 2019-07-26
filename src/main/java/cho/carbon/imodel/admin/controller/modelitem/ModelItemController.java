@@ -135,14 +135,20 @@ public class ModelItemController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/createModelItem")
+	@RequestMapping("/createModelItem")
 	public AjaxPageResponse createModelItem(ModelItemContainer modelItemContainer) {
 		try {
 			ModelItemContainer itemContainer = miService.saveOrUpdate(modelItemContainer);
 			return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("添加成功", "modelitem_list");
 		} catch (Exception e) {
 			logger.error("添加失败", e);
-			return AjaxPageResponse.FAILD("添加失败");
+			String message = e.getMessage();
+			
+			if (!message.contains("t_cc_model_item_fix")) {
+				message = "操作失败！";
+			}
+			
+			return AjaxPageResponse.FAILD(message);
 		}
 	}
 	

@@ -12,7 +12,7 @@
 				<input type="text" class="form-control" name="name" value="${modelItem.name }" />
 			</div>
 			<button type="submit" class="btn btn-default">查询</button>
-			<a id="add" class="btn btn-primary tab" title="创建">创建</a>
+			<a id="add" class="btn btn-primary tab" title="创建" target="modelItem-add">创建</a>
 			<div id="createDBTable" style="float: right; font-size: 32px;    margin-right: 50px;">
 				<a title="刷新表结构" href="admin/modelItem/createDBTable" confirm="确认刷新表结构"><i class="fa fa-sitemap"></i></a>
 			</div>
@@ -24,9 +24,9 @@
 			<thead>
 				<tr>
 					<th>序号</th>
-					<th>实体类型</th>
-					<th>模型编码</th>
 					<th>模型名称</th>
+					<th>模型编码</th>
+					<th>实体类型</th>
 					<th>状态</th>
 					<th>操作</th>
 				</tr>
@@ -35,9 +35,9 @@
 				<c:forEach items="${modelItemList }" var="item" varStatus="i">
 					<tr>
 						<td>${i.index + 1 }</td>
-						<td><font color="${item.type eq '1'? '': '#00bcd4'}">${item.showType }</font></td>
-						<td>${item.code }</td>
 						<td>${item.name }</td>
+						<td>${item.code }</td>
+						<td><font color="${item.type eq '1'? '': '#00bcd4'}">${item.showType }</font></td>
 						<td>${item.showUsingState }</td>
 						<td>
 							<a id="update" itemCode="${item.code }" href="javascript:;"  title="修改">修改</a>
