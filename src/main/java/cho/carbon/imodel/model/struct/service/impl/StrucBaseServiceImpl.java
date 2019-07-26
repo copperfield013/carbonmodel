@@ -269,7 +269,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					MiReference miReference = commService.get(MiReference.class, modelCode);
 					ModelItemType[] pTypes1 = {ModelItemType.ONE_LINE_GROUP};
 					//属性列表
-					List<ModelItem> modelItemByBelongMode = modelItemService.getModelItemByBelongMode(miReference.getModelCode(), pTypes1 , null, false);
+					List<ModelItem> modelItemByBelongMode = modelItemService.getModelItemByBelongMode(miReference == null? null:miReference.getModelCode(), pTypes1 , null, false);
 					
 					// 
 					ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucRRef.refItemCode",strucRRef.getRefItemCode(), "引用关联", 15);
@@ -618,7 +618,9 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		if (miValue != null) {
 			itemVType = ItemValueType.getValueType(Integer.parseInt(miValue.getDataType()));
 		}
-		StrucFieldValue strucFieldValue = new StrucFieldValue(null, itemVType.getIndex());
+		
+		List<AttributeValueType> valueTypeCo = (List<AttributeValueType>)ValueTypeMapping.getCanTransType(itemVType);
+		StrucFieldValue strucFieldValue = new StrucFieldValue(null, valueTypeCo.get(0).getIndex());
 		
 		sbc.setStrucBase(strucBaseEnum);
 		sbc.setStrucMiCode(strucMiCodeEnum);

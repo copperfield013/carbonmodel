@@ -312,7 +312,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	}
 	
 	 //拖拽排序方法
-    function drag(length) {
+    function drag(length) {/*
     	
     	var dragWrap = document.getElementById("dragEdit-"+length); 
 		var name = "dragEdit-"+length;		
@@ -368,7 +368,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    	    });	        	
 	        }
 	    });     
-    };
+    */};
     
   //普通 引用->引用属性初始化方法
     function initrRefattribute(abcattr,abcattrCode,dataType,id,name,opt,order,parent,commList, relAbcnodeId, allAbc, subdomain, rRefattributeList) {  
