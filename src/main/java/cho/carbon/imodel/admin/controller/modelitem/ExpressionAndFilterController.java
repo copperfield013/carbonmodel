@@ -207,7 +207,7 @@ public class ExpressionAndFilterController {
 			if (type == 1) {
 				// 获取事实属性
 				MiStatFact miStatFact = commService.get(MiStatFact.class, miCode);
-				filterId = miStatFact.getFilterId();
+				filterId = miStatFact == null? null : miStatFact.getFilterId();
 				
 				//获取事实属性， 对应的实体
 				ModelItem modelItem = commService.get(ModelItem.class, miCode);
@@ -221,7 +221,7 @@ public class ExpressionAndFilterController {
 				belongModel = miModelStat.getSourceCode();
 			} else if (type == 2) {
 				MiCalculated miCalculated = commService.get(MiCalculated.class, miCode);
-				filterId = miCalculated.getFilterId();
+				filterId = miCalculated == null? null :miCalculated.getFilterId();
 				belongModel = commService.get(ModelItem.class, miCode).getBelongModel();
 			}else if (type == 3) {
 				// 配置文件 结构体和 关系结构
