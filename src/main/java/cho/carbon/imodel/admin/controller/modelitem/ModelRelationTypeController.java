@@ -171,25 +171,24 @@ public class ModelRelationTypeController {
      		//  正向关系 
 			 ModelRelationType relation= modelRelationTypeService.getRecordRelationType(typeCode);
 			 // 逆向关系
-			/*
-			 * ModelRelationType reverseRela = null; // 是否为对称关系 String symmetryRela =
-			 * "symmetry"; if (relation.getTypeCode() != relation.getReverseCode()) {
-			 * reverseRela =
-			 * modelRelationTypeService.getRecordRelationType(relation.getReverseCode());
-			 * symmetryRela = ""; }
-			 */
+			
+			  ModelRelationType reverseRela = null; 
+			 //  是否为对称关系 
+			  String symmetry = "symmetry";
+			  if (!relation.getTypeCode().equals(relation.getReverseCode())) {
+				  reverseRela =	  modelRelationTypeService.getRecordRelationType(relation.getReverseCode());
+				  symmetry = "";
+			  }
 					
 			 //逆向模型名称
-			/*
-			 * ModelItem reverseModelItem = commService.get(ModelItem.class,
-			 * relation.getRightModelCode());
-			 */
+			  ModelItem reverseModelItem = commService.get(ModelItem.class,  relation.getRightModelCode());
+			 
 			 
 			 //TODO......
-			// model.addAttribute("symmetryRela", symmetryRela);
+			 model.addAttribute("symmetry", symmetry);
 			 model.addAttribute("relation", relation);
-			// model.addAttribute("reverseRela", reverseRela);
-			 //model.addAttribute("reverseModelItem", reverseModelItem);
+			 model.addAttribute("reverseRela", reverseRela);
+			 model.addAttribute("reverseModelItem", reverseModelItem);
 			 
 			return AdminConstants.JSP_BASE + "/modelitem/confrelation/editRelation.jsp";
 		} catch (Exception e) {
@@ -230,13 +229,24 @@ public class ModelRelationTypeController {
 	 */
 	@ResponseBody
 	@RequestMapping("/do_edit")
-	public AjaxPageResponse doEdit(String leftName, String typeCode, Integer leftRelationType, Integer leftgiant){
+	public AjaxPageResponse doEdit( String typeCode, String leftName,Integer leftRelationType, Integer leftgiant,
+			String symmetry,
+			String reverseCode, String rightName, Integer rightRelationType, Integer rightgiant){
 		try {
-			
 			ModelRelationType recordRelationType = modelRelationTypeService.getRecordRelationType(typeCode);
 			recordRelationType.setName(leftName);
 			recordRelationType.setRelationType(leftRelationType);
 			recordRelationType.setGiant(leftgiant);
+			if (!"symmetry".equals(symmetry) ) {
+				// 不对称关系
+				 ModelRelationType reverseRela = modelRelationTypeService.getRecordRelationType(reverseCode);
+				 reverseRela.setName(rightName);
+				 reverseRela.setRelationType(rightRelationType);
+				 reverseRela.setGiant(rightgiant);
+				 
+				 modelRelationTypeService.update(reverseRela);
+			} 
+			
 			
 			modelRelationTypeService.update(recordRelationType);
 			

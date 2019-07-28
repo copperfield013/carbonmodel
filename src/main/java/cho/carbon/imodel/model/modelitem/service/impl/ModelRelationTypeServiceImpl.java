@@ -49,6 +49,7 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 	@Override
 	public void update(ModelRelationType modelRelationType) {
 		commService.update(modelRelationType);
+		
 	}
 
 	@Override
