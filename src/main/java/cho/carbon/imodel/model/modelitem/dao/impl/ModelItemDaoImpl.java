@@ -124,14 +124,15 @@ public class ModelItemDaoImpl implements ModelItemDao {
 		.append(" where a.belong_model =:belongMode ");
 		
 		if (pTypes == null || pTypes.length == 0) {
-			sb.append(" AND b.type =" + ModelItemType.ONE_LINE_GROUP);
+			sb.append(" AND b.type =" + ModelItemType.ONE_LINE_GROUP.getIndex());
 		} else {
 			String str = "";
 			for (ModelItemType modelItemType : pTypes) {
 				int index = modelItemType.getIndex();
 				str+=index + ",";
 			}
-			str = str.substring(0,str.length()-1);
+			//str = str.substring(0,str.length()-1);
+			str = str+ModelItemType.MODEL.getIndex();
 			sb.append(" AND b.type in ("+str+") ");
 		}
 		
