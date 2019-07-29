@@ -63,20 +63,18 @@
 			    var $div = $(".entityItems");
 			    
 			    $div.empty();
-			    
 			    //  获取实体列表
 			     Ajax.ajax('admin/buildproject/getBasicChangeList', {
 			    }, function(data1){	
 			    	var basicChangeList = data1.basicChangeList;
-			    
-			    	
-			    Ajax.ajax('admin/dictionary/basicItem/entityList', {
+			    Ajax.ajax('admin/modelItem/getModelList', {
 			    }, function(data){		    	
-			    	var entityList = data.entity;
+
+			    	var modelList = data.modelList;
 			    	var str = "";
-			    	for(var key in entityList) {
-			    		var cnName = entityList[key].cnName;
-			    		var code = entityList[key].code;
+			    	for(var key in modelList) {
+			    		var name = modelList[key].name;
+			    		var code = modelList[key].code;
 			    		
 			    		str+="<div entityId='"+code+"' class='entity_attr' > <font color='";
 			    		for(var k in basicChangeList) {
@@ -84,7 +82,7 @@
 			    				str+="red";
 			    			} 
 			    		}
-			    		str +="'>" + cnName + "</font></div>";
+			    		str +="'>" + name + "</font></div>";
 			    	}
 			    	$(str).prependTo($div);
 			    	

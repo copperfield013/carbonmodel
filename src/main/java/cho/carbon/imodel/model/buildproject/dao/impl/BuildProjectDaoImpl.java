@@ -29,14 +29,14 @@ public class BuildProjectDaoImpl implements BuildProjectDao {
 		 StringBuffer sb = new StringBuffer(100);
 		 sb.append("SELECT ")
 		 .append("  CONCAT('public static final Integer ENUM_',")
-		 .append(" replace(replace(replace(replace(b.c_name, '（', '_'), '）', '_'), '(', '_'), ')', '_'), ")
+		 .append(" replace(replace(replace(replace(b.name, '（', '_'), '）', '_'), '(', '_'), ')', '_'), ")
 		 .append(" '_', ")
-		 .append(" replace(replace(replace(replace(a.c_name, '（', '_'), '）', '_'), '(', '_'), ')', '_'), ")
+		 .append(" replace(replace(replace(replace(a.name, '（', '_'), '）', '_'), '(', '_'), ')', '_'), ")
 		 .append(" '=', a.id, ';')")
 		 .append(" FROM")
-		 .append(" t_sc_cascadedict_basic_item a")
+		 .append(" t_cc_casenum_item a")
 		 .append(" LEFT JOIN")
-		 .append("  t_sc_cascadedict_basic_item b ON a.parent_id = b.id")
+		 .append("  t_cc_casenum_item b ON a.parent_id = b.id")
 		 .append(" WHERE")
 		 .append(" a.parent_id != 0")
 		 .append(" ORDER BY b.id , a.id");

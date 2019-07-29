@@ -32,6 +32,7 @@ import cho.carbon.imodel.model.struct.service.StrucBaseService;
 import cho.carbon.imodel.model.struct.vo.StrucBaseContainer;
 import cho.carbon.meta.enun.AttributeValueType;
 import cho.carbon.meta.enun.ItemValueType;
+import cho.carbon.meta.enun.ModelItemType;
 import cho.carbon.meta.enun.StrucElementType;
 import cho.carbon.meta.mapping.ValueTypeMapping;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
@@ -279,8 +280,13 @@ public class StrucBaseController {
 					itemType = ItemValueType.getValueType(Integer.parseInt(miValue.getDataType()));
 				}
 					
+				ModelItem modelItem = commService.get(ModelItem.class, miCode);
 				Map<String, Object> valueTypeMap = new HashMap<String, Object>();
-				Collection<AttributeValueType> valueTypeCo = ValueTypeMapping.getCanTransType(itemType);
+				
+				Integer aa = modelItem == null? null:modelItem.getType();
+				ModelItemType miType = ModelItemType.getItemType(aa==null?-1:aa);
+				
+				Collection<AttributeValueType> valueTypeCo = ValueTypeMapping.getCanTransType(itemType, miType);
 			
 			  for (AttributeValueType attrValueType : valueTypeCo) {
 				  valueTypeMap.put(attrValueType.getIndex() + "", attrValueType.getCName()); 

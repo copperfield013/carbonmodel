@@ -491,8 +491,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 	}
 	
 		//获取  StrucFieldValue 的必填字段
-		private void getViewLabelToStrucFieldValue(List<ViewLabel> viewLabelList, StrucMiCode strucMiCode,StrucFieldValue strucFieldValue) {
-			String sbId =  "";
+		private void getViewLabelToStrucFieldValue(List<ViewLabel> viewLabelList, StrucMiCode strucMiCode,StrucFieldValue strucFieldValue) {			String sbId =  "";
 			String valueType = "";
 			
 			  if (strucFieldValue !=null) { 
@@ -509,8 +508,14 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 				if (miValue != null) {
 					itemType = ItemValueType.getValueType(Integer.parseInt(miValue.getDataType()));
 				}
-					
-			Collection<AttributeValueType> canTransType = ValueTypeMapping.getCanTransType(itemType);
+				
+				
+				ModelItem modelItem = commService.get(ModelItem.class, strucMiCode.getItemCode());
+				
+				Integer aa = modelItem == null? null:modelItem.getType();
+				ModelItemType miType = ModelItemType.getItemType(aa==null?-1:aa);
+				
+			Collection<AttributeValueType> canTransType = ValueTypeMapping.getCanTransType(itemType, miType);
 			
 			// 获取值域
 			Map<String, String> valueDomain = new HashMap<String, String>();
@@ -620,7 +625,10 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 			itemVType = ItemValueType.getValueType(Integer.parseInt(miValue.getDataType()));
 		}
 		
-		List<AttributeValueType> valueTypeCo = (List<AttributeValueType>)ValueTypeMapping.getCanTransType(itemVType);
+		Integer aa = modelItem == null? null:modelItem.getType();
+		ModelItemType miType = ModelItemType.getItemType(aa==null?-1:aa);
+		
+		List<AttributeValueType> valueTypeCo = (List<AttributeValueType>)ValueTypeMapping.getCanTransType(itemVType, miType);
 		StrucFieldValue strucFieldValue = new StrucFieldValue(null, valueTypeCo.get(0).getIndex());
 		
 		sbc.setStrucBase(strucBaseEnum);
