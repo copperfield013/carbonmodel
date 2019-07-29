@@ -120,6 +120,7 @@ public class ServiceBizzDataController {
 				return AjaxPageResponse.FAILD("刷新失败");
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return AjaxPageResponse.FAILD("刷新失败");
 		}
 	}

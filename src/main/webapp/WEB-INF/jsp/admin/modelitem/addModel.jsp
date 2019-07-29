@@ -38,6 +38,17 @@
 						</div>
 					</div>
 					
+					<div class="form-group"  style="display:none;">
+						<label class="col-lg-2 control-label" for="miModel.needHistory">是否记录历史</label>
+						<div class="col-lg-5">
+							<select class="" name="miModel.needHistory">
+								<option selected value="0">否</option>
+								<option value="1">是</option>
+							</select>
+						</div>
+					</div>
+					
+					
 					<div class="form-group">
 						<label class="col-lg-2 control-label" for="modelItem.description">描述</label>
 						<div class="col-lg-5">

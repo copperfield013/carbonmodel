@@ -15,11 +15,19 @@ public class MiModel {
 	@Column(name = "code")
 	private String code;
 
-	//是否记录历史
+	/**
+	 * 是否记录历史
+	 * 0.否
+	 * 1.是 
+	 */
 	@Column(name = "need_history")
 	private Integer needHistory;
 	
-	//是否需要缓存
+	/**
+	 * 是否需要缓存
+	 * 0.否
+	 * 1.是
+	 */
 	@Column(name = "need_cache")
 	private Integer needCache;
 	
