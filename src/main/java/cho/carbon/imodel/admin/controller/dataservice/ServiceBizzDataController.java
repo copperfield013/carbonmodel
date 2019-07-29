@@ -100,6 +100,7 @@ public class ServiceBizzDataController {
 		return "http://"+serviceBizzData.getIp()+":"+serviceBizzData.getPort()+"/"+serviceBizzData.getName()+"/services/modelReLoadService?wsdl";
 	}
 	
+	
 	@ResponseBody
     @RequestMapping(value = "/refreshERXmlDom",
         method = RequestMethod.POST)
@@ -108,9 +109,9 @@ public class ServiceBizzDataController {
 			ServiceBizzData serviceBizzData = sBizzDataService.getOne(id);
 			String params = null;
 
-			String method = "reload";
 			String url = buildWSURL(serviceBizzData);
-			String wsdlResult = WebServiceUtil.getWsdlResult(url, method, params);
+			String wsdlResult = WebServiceUtil.getWsdlResult(url, "reload", params);
+			
 			String dataUrl = "http://"+serviceBizzData.getIp()+":"+serviceBizzData.getPort()+"/"+serviceBizzData.getName()+"/services/configReloadService?wsdl";
 			String dataResult = WebServiceUtil.getWsdlResult(dataUrl, "syncCache", null);
 			
