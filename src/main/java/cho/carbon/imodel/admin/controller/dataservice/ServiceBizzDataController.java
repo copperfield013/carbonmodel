@@ -118,7 +118,7 @@ public class ServiceBizzDataController {
 			String dataUrl = "http://"+serviceBizzData.getIp()+":"+serviceBizzData.getPort()+"/"+serviceBizzData.getName()+"/services/configReloadService?wsdl";
 			String dataResult = WebServiceUtil.getWsdlResult(dataUrl, "syncCache", null);
 			
-			if ("true".equals(wsdlResult)) {
+			if ("200".equals(wsdlResult) && "200".equals(dataResult)) {
 				return AjaxPageResponse.REFRESH_LOCAL("刷新成功");
 			} else {
 				return AjaxPageResponse.FAILD("刷新失败");
