@@ -359,8 +359,8 @@ public class StrucBaseController {
 			try {
 				
 				strucBaseService.createStrucBaseQuick(belongModel);
-				
-				return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("操作成功", "modelitem_list");
+				return AjaxPageResponse.REFRESH_LOCAL("操作成功");
+				//return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("操作成功", "modelitem_list");
 			} catch (Exception e) {
 				logger.error("操作失败", e);
 				return AjaxPageResponse.FAILD("操作失败");
