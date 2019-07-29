@@ -78,12 +78,10 @@ public class ServiceBizzDataController {
 	public AjaxPageResponse testService(Integer id){
 		try {
 			ServiceBizzData serviceBizzData = sBizzDataService.getOne(id);
-			String params = null;
-			String method = null;
-			String url = buildWSURL(serviceBizzData);
-			String wsdlResult = WebServiceUtil.getWsdlResult(url);
+			//检测ip是否通过
+			String detectionIp = detectionIp(serviceBizzData);
 			
-			if ("true".equals(wsdlResult)) {
+			if ("200".equals(detectionIp)) {
 				serviceBizzData.setState("1");
 				sBizzDataService.update(serviceBizzData);
 				return AjaxPageResponse.REFRESH_LOCAL("测试通过");
@@ -99,10 +97,61 @@ public class ServiceBizzDataController {
 		}
 	}
 
-	protected String buildWSURL(ServiceBizzData serviceBizzData) {
-		return "http://"+serviceBizzData.getIp()+":"+serviceBizzData.getPort()+"/"+serviceBizzData.getName()+"/services/modelReLoadService?wsdl";
+	/**
+	 * 组装uri
+	 * @param serviceBizzData
+	 * @return
+	 */
+	protected String buildWSURI(ServiceBizzData serviceBizzData) {
+		return "http://"+serviceBizzData.getIp()+":"+serviceBizzData.getPort()+"/"+serviceBizzData.getName()+"/services/";
 	}
 	
+	/**
+	 * 组装url
+	 * @param serviceBizzData
+	 * @param interMethod
+	 * @return
+	 */
+	protected String buildWSURL(ServiceBizzData serviceBizzData, String interMethod) {
+		String buildWSURI = buildWSURI(serviceBizzData);
+		return buildWSURI + interMethod + "?wsdl";
+	}
+	
+	/**
+	 * 执行调用
+	 * @param serviceBizzData
+	 * @return
+	 */
+	private String executeWSURL(ServiceBizzData serviceBizzData) {
+		String url = buildWSURL(serviceBizzData, "modelReLoadService");
+		String wsdlResult = WebServiceUtil.getWsdlResult(url, "reload", null);
+		
+		String urlTwo = buildWSURL(serviceBizzData, "configReloadService");
+		String dataResult = WebServiceUtil.getWsdlResult(urlTwo, "syncCache", null);
+
+		if ("200".equals(wsdlResult) && "200".equals(dataResult)) {
+			return "200";
+		} else {
+			return "400";
+		}
+	}
+	
+	/**
+	 * 检测ip是否通过
+	 */
+	private String detectionIp(ServiceBizzData serviceBizzData){
+		String url = buildWSURL(serviceBizzData, "modelReLoadService");
+		String wsdlResult = WebServiceUtil.getWsdlResult(url);
+		
+		String urlTwo = buildWSURL(serviceBizzData, "configReloadService");
+		String dataResult = WebServiceUtil.getWsdlResult(urlTwo);
+		 
+		if ("200".equals(wsdlResult) && "200".equals(dataResult)) {
+			return "200";
+		} else {
+			return "400";
+		}
+	}
 	
 	@ResponseBody
     @RequestMapping(value = "/refreshERXmlDom",
@@ -110,15 +159,13 @@ public class ServiceBizzDataController {
 	public AjaxPageResponse refreshERXmlDom(Integer id){
 		try {
 			ServiceBizzData serviceBizzData = sBizzDataService.getOne(id);
-			String params = null;
-
-			String url = buildWSURL(serviceBizzData);
-			String wsdlResult = WebServiceUtil.getWsdlResult(url, "reload", params);
 			
-			String dataUrl = "http://"+serviceBizzData.getIp()+":"+serviceBizzData.getPort()+"/"+serviceBizzData.getName()+"/services/configReloadService?wsdl";
-			String dataResult = WebServiceUtil.getWsdlResult(dataUrl, "syncCache", null);
+			/**
+			 * 调用接口
+			 */
+			String executeWSURL = executeWSURL(serviceBizzData);
 			
-			if ("200".equals(wsdlResult) && "200".equals(dataResult)) {
+			if ("200".equals(executeWSURL)) {
 				return AjaxPageResponse.REFRESH_LOCAL("刷新成功");
 			} else {
 				return AjaxPageResponse.FAILD("刷新失败");

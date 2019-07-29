@@ -30,7 +30,7 @@ public class WebServiceUtil {
 	public static String getWsdlResult(String url){
 		HttpURLConnection conn = null;
 		
-		String flag = "false";
+		String flag = "400";
         try {
             URL realUrl = new URL(url);
             conn = (HttpURLConnection) realUrl.openConnection();
@@ -39,7 +39,7 @@ public class WebServiceUtil {
             conn.setInstanceFollowRedirects(false);
             int code = conn.getResponseCode();
            if (code == 200) {
-        	   flag = "true";
+        	   flag = "200";
            }
         }catch (Exception e){
         	e.printStackTrace();
