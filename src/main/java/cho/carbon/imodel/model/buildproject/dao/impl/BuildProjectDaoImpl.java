@@ -52,13 +52,15 @@ public class BuildProjectDaoImpl implements BuildProjectDao {
 		 StringBuffer sb = new StringBuffer(200);
 		 sb.append(" SELECT ")
 		 .append(" CONCAT('public static final String RR_',")
-		 .append("  b.c_cn_name, '_', a.name, '_', c.c_cn_name, '=\"', a.type_code, '\";')")
+		 .append("  b.name, '_', a.name, '_', c.name, '=\"', a.type_code, '\";')")
 		 .append(" FROM")
-		 .append(" t_sc_record_relation_type a")
+		 .append(" t_cc_model_relation_type a")
 		 .append("  LEFT JOIN")
-		 .append(" t_sc_basic_item b ON a.left_record_type = b.c_code")
+		 .append(" t_cc_model_item b ON a.left_model_code = b.code")
 		 .append(" LEFT JOIN")
-		 .append(" t_sc_basic_item c ON a.right_record_type = c.c_code order by a.type_code");
+		 .append(" t_cc_model_item c ON a.right_model_code = c.code ")
+		 .append(" 	WHERE b.type=1 AND c.type=1")
+		 .append(" order by a.type_code");
 		
 		 return sFactory.getCurrentSession().createSQLQuery(sb.toString()).list();
 	 }
@@ -71,22 +73,15 @@ public class BuildProjectDaoImpl implements BuildProjectDao {
 	  */
 	 public List<String> getItemData(String entityCode, String entityPrefix) {
 		 
-		 String multEntityPre = entityCode + "_" + entityPrefix;
-		 
 		 StringBuffer sb = new StringBuffer(400);
-		 sb.append(" SELECT ")
-		 .append(" CONCAT('public static final String ',")
-		 .append("  replace(replace(d.c_cn_name,'）', '_'), '（', '_'), '=\"', d.c_code, '\";') as item")
-		 .append(" FROM   t_sc_basic_item d")
-		 .append(" WHERE   d.c_code LIKE '%"+entityPrefix+"%' and d.c_parent='"+entityCode+"' ")
-		 .append(" UNION ")
-		 .append(" SELECT ")
-		 .append("  CONCAT('public static final String ',")
-		 .append("   replace(replace(b.c_cn_name,'）', '_'), '（', '_'),'_', replace(replace(a.c_cn_name,'）', '_'), '（', '_'), '=\"',a.c_code, '\";') as item")
-		 .append(" FROM    t_sc_basic_item a")
-		 .append(" inner join t_sc_basic_item b on b.c_code = substring_index(a.c_parent, '_', -1)")
-		 .append(" WHERE ")
-		 .append(" a.c_code LIKE '%"+entityPrefix+"%' and a.c_parent  like '"+multEntityPre+"%' and a.c_cn_name not like '多值属性%' ");
+		 
+		 sb.append(" SELECT")
+		 .append(" CONCAT(	'public static final String ',p.name,'_',")
+		 .append(" REPLACE ( REPLACE ( d.name, '）', '_' ), '（', '_' ),")
+		 .append(" '=\"',	d.code,	'\";' ) AS item ")
+		 .append(" FROM	t_cc_model_item d ")
+		 .append(" left join t_cc_model_item p on d.parent=p.code")
+		 .append(" WHERE	d.code LIKE '%DXJD%' 	AND d.belong_model = 'DXJDE2020'");
 		 
 		 return sFactory.getCurrentSession().createSQLQuery(sb.toString()).list();
 	 }

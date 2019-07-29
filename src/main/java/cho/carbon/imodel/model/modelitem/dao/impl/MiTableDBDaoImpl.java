@@ -176,7 +176,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" SELECT	concat(	\"CREATE TABLE \",	a.tablename,	\"(`id` bigint(20) NOT NULL AUTO_INCREMENT,\",	\"`\",")
 		.append(" a.code,	\"_HP` varchar(32) NOT NULL COMMENT 'history_code',\",	\"`ABP0001` varchar(32) NOT NULL,\",")
-		.append(" \"`ABP0002` varchar(32) DEFAULT NULL,\",	\"`\",	a.code,	\"_FP` varchar(32) NOT NULL COMMENT 'bytes_code',\",")
+		.append(" \"`ABP0002` varchar(32) DEFAULT NULL,\",	\"`\",	a.code,	\"_FP` varchar(32) COMMENT 'bytes_code',\",")
 		.append(" \"`\",	a.code,	\"_F4` varchar(32) NOT NULL COMMENT 'abcattr',\",	\"`\",")
 		.append(" a.code,	\"_F5` datetime(3) NOT NULL COMMENT 'insert_time',\",")
 		.append(" \"PRIMARY KEY (`id`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC\" 	) ")
