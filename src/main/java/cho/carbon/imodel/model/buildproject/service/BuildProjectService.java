@@ -37,6 +37,12 @@ public interface BuildProjectService {
 	  * @return
 	  */
 	 boolean zipCompress(String zipFilePath, String sourceFilePath);
+	 
+	 /**
+		 * 获取通用数据
+		 * @return
+		 */
+	List<String> getBaseConstant();
 			 
 	 /**
 	  * 初始化项目

@@ -22,6 +22,12 @@ public interface BuildProjectDao {
 	  * @return
 	  */
 	List<String> getItemData(String entityCode, String entityPrefix);
+	
+	/**
+	 * 获取通用数据
+	 * @return
+	 */
+	List<String> getBaseConstant();
 	 
 	 /**
 	  * 建立项目

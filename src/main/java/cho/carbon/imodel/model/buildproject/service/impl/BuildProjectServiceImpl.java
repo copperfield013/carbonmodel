@@ -182,5 +182,11 @@ public class BuildProjectServiceImpl implements BuildProjectService {
 		boolean deleteFile = FileManager.deleteFile(path);
 		return deleteFile;
 	}
+
+	@Override
+	public List<String> getBaseConstant() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -95,4 +95,14 @@ public class BuildProjectDaoImpl implements BuildProjectDao {
 		 
 		 return null;
 	 }
+
+	@Override
+	public List<String> getBaseConstant() {
+		StringBuffer sb = new StringBuffer();
+		 sb.append(" SELECT ")
+		 .append(" CONCAT(	'public static final String TYPE_',d.name,'=\"',d.code,'\";' ) AS item ")
+		 .append(" FROM	t_cc_model_item d WHERE	d.type='1'");
+		
+		 return sFactory.getCurrentSession().createSQLQuery(sb.toString()).list();
+	}
 }
