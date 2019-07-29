@@ -81,8 +81,8 @@ public class BuildProjectDaoImpl implements BuildProjectDao {
 		 .append(" '=\"',	d.code,	'\";' ) AS item ")
 		 .append(" FROM	t_cc_model_item d ")
 		 .append(" left join t_cc_model_item p on d.parent=p.code")
-		 .append(" WHERE	d.code LIKE '%"+entityPrefix+"%' 	AND d.belong_model = '"+entityCode+"'");
-		 
+		 .append(" WHERE	d.code LIKE '%"+entityPrefix+"%' 	AND d.belong_model = '"+entityCode+"'")
+		 .append(" AND d.code <>'"+entityCode+"'");
 		 return sFactory.getCurrentSession().createSQLQuery(sb.toString()).list();
 	 }
 	 

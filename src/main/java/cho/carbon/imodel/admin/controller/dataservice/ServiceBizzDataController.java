@@ -53,6 +53,7 @@ public class ServiceBizzDataController {
 			sBizzDataService.insert(sd);
 			return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("添加成功", "serviceBizzData_list");
 		} catch (Exception e) {
+			e.printStackTrace();
 			return AjaxPageResponse.FAILD("添加失败");
 		}
 	}
@@ -65,6 +66,7 @@ public class ServiceBizzDataController {
 			sBizzDataService.delete(id);
 			return AjaxPageResponse.REFRESH_LOCAL("删除成功");
 		} catch (Exception e) {
+			e.printStackTrace();
 			return AjaxPageResponse.FAILD("删除失败");
 		}
 	}
@@ -92,6 +94,7 @@ public class ServiceBizzDataController {
 			}
 		
 		} catch (Exception e) {
+			e.printStackTrace();
 			return AjaxPageResponse.FAILD("操作失败");
 		}
 	}
@@ -143,6 +146,7 @@ public class ServiceBizzDataController {
 			sBizzDataService.update(sd);
 		return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("编辑成功", "serviceBizzData_list");
 	} catch (Exception e) {
+		e.printStackTrace();
 		return AjaxPageResponse.FAILD("编辑失败");
 	}
 		
