@@ -780,7 +780,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             
             moreAttrHtml += "</select>"; 
             
-            moreAttrHtml +=  "<input type='text' class='value edit-input text' value='值'>";
+            moreAttrHtml +=  "<input type='text' class='value edit-input text' value='"+miFilterCriterion.value+"'>";
             
 		    moreAttrHtml += "<div class='btn-wrap'>" +
 		    "<i class='icon icon-save'></i>" +
