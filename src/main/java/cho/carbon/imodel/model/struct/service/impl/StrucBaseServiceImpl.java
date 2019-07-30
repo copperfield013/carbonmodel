@@ -212,7 +212,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 						enumCode = strucMiCode.getItemCode();
 					}
 					
-				// 这个对应的美剧子集
+				// 这个对应的枚举子集
 				
 				// 获取子集下拉框
 				MiEnum miEnum = commService.get(MiEnum.class, enumCode);
