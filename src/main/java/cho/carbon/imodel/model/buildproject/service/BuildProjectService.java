@@ -1,6 +1,7 @@
 package cho.carbon.imodel.model.buildproject.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public interface BuildProjectService {
@@ -42,7 +43,7 @@ public interface BuildProjectService {
 		 * 获取通用数据
 		 * @return
 		 */
-	List<String> getBaseConstant();
+	void getBaseConstant(File file, String fileName) throws IOException;
 			 
 	 /**
 	  * 初始化项目

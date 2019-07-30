@@ -99,7 +99,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" then   set vdepth=vdepth+1;  end if; END WHILE; RETURN substr(vResult,2); END' ) ")
 		.append(" FROM	( SELECT")
 		.append(" concat( 't_', code, '_r1' ) tablename,	code,	concat( 'GetALLRelated', code ) funName ")
-		.append(" FROM	t_cc_model_item WHERE 	type=1 	) a")
+		.append(" FROM	t_cc_model_item WHERE 	type in('1', '101') 	) a")
 		.append(" LEFT JOIN ( SELECT SPECIFIC_NAME FROM information_schema.ROUTINES t WHERE t.ROUTINE_SCHEMA = '"+dataBaseName+"' ) b ON a.funName = b.SPECIFIC_NAME ")
 		.append(" WHERE	b.SPECIFIC_NAME IS NULL");
 		
@@ -115,7 +115,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" `ABC0913`  varchar(32) DEFAULT NULL ,")
 		.append(" `ABC0914`  varchar(32) DEFAULT NULL,PRIMARY KEY (`id`))\" ) ")
 		.append(" FROM")
-		.append(" ( SELECT concat( 't_', code, '_r1' ) tablename FROM t_cc_model_item WHERE type = '1' ) a")
+		.append(" ( SELECT concat( 't_', code, '_r1' ) tablename FROM t_cc_model_item WHERE type  in('1', '101') ) a")
 		.append(" 	LEFT JOIN ( SELECT table_name FROM information_schema.TABLES t WHERE t.table_schema = '"+dataBaseName+"' ) b ")
 		.append(" ON a.tablename = b.table_name ")
 		.append(" WHERE	b.table_name IS NULL");
@@ -148,7 +148,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" a.code,	\"_F2` datetime(3) DEFAULT NULL COMMENT 'insert_time',\",	\"`\",	a.code,	\"_F3` mediumblob DEFAULT NULL COMMENT 'content',\",	\"PRIMARY KEY (`\",")
 		.append(" 	a.code,	\"_FP`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC\" 	) ")
 		.append(" FROM")
-		.append(" ( SELECT concat( 't_', code, '_f1' ) tablename, code FROM t_cc_model_item WHERE type='1' ) a")
+		.append(" ( SELECT concat( 't_', code, '_f1' ) tablename, code FROM t_cc_model_item WHERE type in('1', '101') ) a")
 		.append(" LEFT JOIN ( SELECT table_name FROM information_schema.TABLES t WHERE t.table_schema = '"+dataBaseName+"' ) b ON a.tablename = b.table_name ")
 		.append(" WHERE	b.table_name IS NULL");
 		return sFactory.getCurrentSession().createSQLQuery(sb.toString()).list();
@@ -164,7 +164,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" \"`\",	a.code,	\"_F4` varchar(32) NOT NULL COMMENT 'abcattr',\",	\"`\",	a.code,	\"_F5` datetime(3) NOT NULL COMMENT 'insert_time',\",")
 		.append(" \"PRIMARY KEY (`id`, `\",	a.code,	\"_F5`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC\" 	) ")
 		.append(" FROM")
-		.append(" ( SELECT concat( 't_', code, '_f2' ) tablename, code FROM t_cc_model_item WHERE type = '1' ) a")
+		.append(" ( SELECT concat( 't_', code, '_f2' ) tablename, code FROM t_cc_model_item WHERE type  in('1', '101') ) a")
 		.append(" LEFT JOIN ( SELECT table_name FROM information_schema.TABLES t WHERE t.table_schema = '"+dataBaseName+"' ) b ON a.tablename = b.table_name ")
 		.append(" WHERE	b.table_name IS NULL");
 
@@ -181,7 +181,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" a.code,	\"_F5` datetime(3) NOT NULL COMMENT 'insert_time',\",")
 		.append(" \"PRIMARY KEY (`id`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC\" 	) ")
 		.append(" FROM")
-		.append(" ( SELECT concat( 't_', code, '_f3' ) tablename, code FROM t_cc_model_item WHERE type = '1' ) a")
+		.append(" ( SELECT concat( 't_', code, '_f3' ) tablename, code FROM t_cc_model_item WHERE type  in('1', '101') ) a")
 		.append(" LEFT JOIN ( SELECT table_name FROM information_schema.TABLES t WHERE t.table_schema = '"+dataBaseName+"' ) b ON a.tablename = b.table_name ")
 		.append(" WHERE	b.table_name IS NULL");
 		
@@ -199,7 +199,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" 	\"`\",	a.code,	\"_H5` int(2) DEFAULT 0,\",	\"`\",	a.code,	\"_H6` blob NOT NULL,\",")
 		.append(" \"PRIMARY KEY (`\",	a.code,	\"_HP`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC\" 	) ")
 		.append(" FROM")
-		.append(" ( SELECT concat( 't_', code, '_h1' ) tablename, code FROM t_cc_model_item WHERE type = '1' ) a")
+		.append(" ( SELECT concat( 't_', code, '_h1' ) tablename, code FROM t_cc_model_item WHERE type  in('1', '101') ) a")
 		.append(" LEFT JOIN ( SELECT table_name FROM information_schema.TABLES t WHERE t.table_schema = '"+dataBaseName+"' ) b ON a.tablename = b.table_name ")
 		.append(" WHERE	b.table_name IS NULL");
 		
@@ -219,7 +219,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" \"`\",	a.code,	\"_H6` blob NOT NULL  COMMENT 'content',\",")
 		.append(" \"PRIMARY KEY (`\",	a.code,	\"_HP`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC\" 	) ")
 		.append(" FROM")
-		.append(" ( SELECT concat( 't_', code, '_h2' ) tablename, code FROM t_cc_model_item WHERE type = '1' ) a")
+		.append(" ( SELECT concat( 't_', code, '_h2' ) tablename, code FROM t_cc_model_item WHERE type  in('1', '101') ) a")
 		.append(" LEFT JOIN ( SELECT table_name FROM information_schema.TABLES t WHERE t.table_schema = '"+dataBaseName+"' ) b ON a.tablename = b.table_name  ")
 		.append(" WHERE	b.table_name IS NULL ");
 
@@ -236,7 +236,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" a.code,	\"_D2` varchar(255) DEFAULT NULL COMMENT 'reason',\",")
 		.append(" \"PRIMARY KEY (`ABP0001`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC\" 	) ")
 		.append(" FROM")
-		.append(" ( SELECT concat( 't_', code, '_d1' ) tablename, code FROM t_cc_model_item WHERE type = '1' ) a")
+		.append(" ( SELECT concat( 't_', code, '_d1' ) tablename, code FROM t_cc_model_item WHERE type in('1', '101') ) a")
 		.append(" LEFT JOIN ( SELECT table_name FROM information_schema.TABLES t WHERE t.table_schema = '"+dataBaseName+"' ) b ON a.tablename = b.table_name ")
 		.append(" WHERE	b.table_name IS NULL");
 
@@ -252,7 +252,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" \"`\",	a.code,	\"_C1` mediumblob NOT NULL,\",")
 		.append(" \"PRIMARY KEY (`ABP0001`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC\" 	) ")
 		.append(" FROM")
-		.append(" ( SELECT concat( 't_', code, '_c1' ) tablename, code FROM t_cc_model_item WHERE type = '1' ) a")
+		.append(" ( SELECT concat( 't_', code, '_c1' ) tablename, code FROM t_cc_model_item WHERE type in('1', '101') ) a")
 		.append(" LEFT JOIN ( SELECT table_name FROM information_schema.TABLES t WHERE t.table_schema = '"+dataBaseName+"' ) b ON a.tablename = b.table_name ")
 		.append(" WHERE	b.table_name IS NULL");
 
@@ -268,7 +268,7 @@ public class MiTableDBDaoImpl implements MiTableDBDao {
 		.append(" a.code,	\"_C1` mediumblob NOT NULL,\",")
 		.append(" \"PRIMARY KEY (`ABP0001`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC\" 	) ")
 		.append(" FROM")
-		.append(" 	( SELECT concat( 't_', code, '_c2' ) tablename, code FROM t_cc_model_item WHERE type = '1' ) a")
+		.append(" 	( SELECT concat( 't_', code, '_c2' ) tablename, code FROM t_cc_model_item WHERE type  in('1', '101') ) a")
 		.append(" LEFT JOIN ( SELECT table_name FROM information_schema.TABLES t WHERE t.table_schema = '"+dataBaseName+"' ) b ON a.tablename = b.table_name ")
 		.append(" WHERE	b.table_name IS NULL");
 		

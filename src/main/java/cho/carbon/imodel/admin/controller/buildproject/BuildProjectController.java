@@ -172,6 +172,28 @@ public class BuildProjectController {
     }
     
     
+    @RequestMapping(value="/downloadBaseConstant")
+    public ResponseEntity<byte[]> downloadBaseConstant()throws Exception {
+    	
+    	File file = File.createTempFile("BaseConstant", ".java");
+    	String fileName = "BaseConstant.java";
+    	buildProjectService.getBaseConstant(file, fileName);
+    	byte[] readFileToByteArray = FileUtils.readFileToByteArray(file);
+	   	if (file.exists() && file.isFile()) {
+	    	//在程序退出时删除临时文件
+	   		file.delete();
+	      }
+	   	
+		HttpHeaders headers = new HttpHeaders();  
+	    String downloadFileName = new String(fileName.getBytes("UTF-8"),"iso-8859-1");//设置编码
+	    headers.setContentDispositionFormData("attachment", downloadFileName);
+	    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	    
+       return new ResponseEntity<byte[]>(readFileToByteArray,    
+               headers, HttpStatus.OK);  
+    }
+    
+    
     
     // 获取所有改变的t_sc_basic_change数据
     @ResponseBody

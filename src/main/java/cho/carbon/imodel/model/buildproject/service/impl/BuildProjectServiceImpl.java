@@ -184,9 +184,18 @@ public class BuildProjectServiceImpl implements BuildProjectService {
 	}
 
 	@Override
-	public List<String> getBaseConstant() {
-		// TODO Auto-generated method stub
-		return null;
+	public void getBaseConstant(File file, String fileName) throws IOException {
+		
+		FileManager.writeFileContent(file, "package com.zhsq.biz.constant.item;");
+		FileManager.writeFileContent(file, "public class BaseConstant {");
+		List<String> baseConstant = buildProjectDao.getBaseConstant();
+		
+		String str = "public static final String COLUMN_ABP0001 = \"ABP0001\"";
+		FileManager.writeFileContent(file, str);
+		for (String data : baseConstant) {
+			FileManager.writeFileContent(file, data);
+		}
+		FileManager.writeFileContent(file, "}");
 	}
 	
 }

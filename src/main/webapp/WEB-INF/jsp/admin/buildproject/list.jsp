@@ -16,6 +16,7 @@
 		<a id="downloadItemFile" href="javascript:;" >下载Item文件</a>
 		<a id="downloadEnumFile" href="javascript:;" >下载枚举文件</a>
 		<a id="downloadRelationFile" href="javascript:;" >下载关系文件</a>
+		<a id="downloadBaseContant" href="javascript:;" >下载BaseContant</a>
 		<a id="downloadProject" href="javascript:;" >下载项目</a>
 	</div>
 </div>
@@ -103,6 +104,17 @@
 		    	}
 		    	
 	  	    }); 
+
+		    //下载baseContant
+		    $(".buildproject", $page).on("click", "#downloadBaseContant", function (e) {
+				Dialog.confirm('确认下载BaseContant？', function(yes){
+		        	if(yes){
+		        		var url="admin/buildproject/downloadBaseConstant";
+		        		Ajax.download(url);
+		        	}
+				});
+				
+		  	 }); 
 		
 		
 		 //下载
