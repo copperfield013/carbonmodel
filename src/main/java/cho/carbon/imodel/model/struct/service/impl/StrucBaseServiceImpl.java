@@ -156,7 +156,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 						StrucMiCode p1 = commService.get(StrucMiCode.class, pStrucBase.getParentId());
 						ModelItem modelItem = commService.get(ModelItem.class, p1.getItemCode());
 						//获取实体下， 所有普通分组下的孩子
-						ModelItemType[] pTypes = {ModelItemType.ONE_LINE_GROUP};
+						ModelItemType[] pTypes = {ModelItemType.ONE_LINE_GROUP, ModelItemType.DIMENSION_GROUP};
 						ModelItemType[] chilTypes = {ModelItemType.VALUE_ITEM,
 								ModelItemType.FILE_ITEM,
 								ModelItemType.ENCRYPTION_ITEM,
@@ -186,11 +186,12 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 						StrucMiCode p1 = commService.get(StrucMiCode.class, pStrucBase.getParentId());
 						ModelItem modelItem = commService.get(ModelItem.class, p1.getItemCode());
 						//获取实体下， 所有普通分组下的孩子
-						ModelItemType[] pTypes = {ModelItemType.ONE_LINE_GROUP};
+						ModelItemType[] pTypes = {ModelItemType.ONE_LINE_GROUP, ModelItemType.DIMENSION_GROUP};
 						ModelItemType[] chilTypes = {ModelItemType.ENUM_ITEM,
 								ModelItemType.PREENUM_STRING_ITEM,
 								ModelItemType.MULTI_ENUM_ITEM,
-								ModelItemType.CASCADE_ENUM_ITEM};
+								ModelItemType.CASCADE_ENUM_ITEM,
+								ModelItemType.DIMENSION_ENUM_ITEM};
 						
 						modelItemList2 = modelItemService.getModelItemByBelongMode(modelItem.getBelongModel(), pTypes,chilTypes, false);
 						
@@ -216,7 +217,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 				// 获取子集下拉框
 				MiEnum miEnum = commService.get(MiEnum.class, enumCode);
 				// 获取他的子集 值域
-				List<CascadedictSubsection> subSelectByParentId = casSubsectionService.getSubSelectByParentId(miEnum.getPid());
+				List<CascadedictSubsection> subSelectByParentId = casSubsectionService.getSubSelectByParentId(miEnum == null? null:miEnum.getPid());
 				//枚举对应的子集
 				viewLabelList.add(new ViewLabel("input", "hidden", "strucFieldSubenum.sbId", strucFieldSubenum.getSbId()==null?"":strucFieldSubenum.getSbId()+"", null));
 				ViewLabel subViewLabel = new ViewLabel("select", "text", "strucFieldSubenum.subenumId",strucFieldSubenum.getSubenumId() == null?"":strucFieldSubenum.getSubenumId()+"" , "选择子集");
