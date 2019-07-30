@@ -3,6 +3,7 @@ package cho.carbon.imodel.model.modelitem.strategy;
 
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.comm.service.CommService;
+import cho.carbon.imodel.model.modelitem.pojo.MiModel;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
@@ -24,9 +25,18 @@ public class ModelItemMiStrategy implements MiStrategy {
 		ModelItem modelItem = modelItemContainer.getModelItem();
 		modelItem.setUsingState(0);
 		
+		MiModel miModel = modelItemContainer.getMiModel();
+		miModel.setCode(modelItem.getCode());
+		
 		if ("add".equals(flag)) {
+			
+			commService.insert(miModel);
+			
+			// 生成伴生属性
 			createCorrelationMiValue(modelItem, commService);
-		} 
+		} else {
+			commService.update(miModel);
+		}
 	}
 	
 	//实体伴生属性

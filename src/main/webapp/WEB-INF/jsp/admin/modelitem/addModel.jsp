@@ -38,10 +38,20 @@
 						</div>
 					</div>
 					
-					<div class="form-group"  style="display:none;">
-						<label class="col-lg-2 control-label" for="miModel.needHistory">是否记录历史</label>
+					<div class="form-group">
+						<label class="col-lg-2 control-label" for="miModel.needHistory">记录历史</label>
 						<div class="col-lg-5">
 							<select class="" name="miModel.needHistory">
+								<option selected value="0">否</option>
+								<option value="1">是</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-lg-2 control-label" for="miModel.needCache">缓存</label>
+						<div class="col-lg-5">
+							<select class="" name="miModel.needCache">
 								<option selected value="0">否</option>
 								<option value="1">是</option>
 							</select>

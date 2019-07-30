@@ -32,6 +32,27 @@
 							<input type="text" placeholder="名字不能为空" data-bv-notempty="true" data-bv-notempty-message="名字不能为空" class="form-control name" name="modelItem.name" value="${modelItem.name }" />
 						</div>
 					</div>
+					
+					<div class="form-group">
+						<label class="col-lg-2 control-label" for="miModel.needHistory">记录历史</label>
+						<div class="col-lg-5">
+							<select class="" name="miModel.needHistory">
+								<option  value="0" <c:if test="${miModel.needHistory eq 0 }">selected</c:if>>否</option>
+								<option value="1" <c:if test="${miModel.needHistory eq 1 }">selected</c:if>>是</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-lg-2 control-label" for="miModel.needCache">缓存</label>
+						<div class="col-lg-5">
+							<select class="" name="miModel.needCache">
+								<option value="0" <c:if test="${miModel.needCache eq 0 }">selected</c:if>>否</option>
+								<option value="1" <c:if test="${miModel.needCache eq 1 }">selected</c:if>>是</option>
+							</select>
+						</div>
+					</div>
+					
 					<div class="form-group">
 						<label class="col-lg-2 control-label" for="modelItem.description">描述</label>
 						<div class="col-lg-5">
@@ -49,6 +70,9 @@
 	</div>
 </div>
 <script>
+
+$('select').css("width","100%").select2();
+
 /* function checkName() {
 	var $cnName = $("form").find(".name");
 	var nameValue = $cnName.val();

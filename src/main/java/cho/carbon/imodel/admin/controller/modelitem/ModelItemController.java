@@ -23,6 +23,7 @@ import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
+import cho.carbon.imodel.model.modelitem.pojo.MiModel;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiReference;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatFact;
@@ -130,7 +131,10 @@ public class ModelItemController {
 			model.addAttribute("sourceModelItem", sourceModelItem);
 		}
 		
+		MiModel miModel = commService.get(MiModel.class, itemCode);
+		
 		model.addAttribute("modelItem", modelItem);
+		model.addAttribute("miModel", miModel);
 		return AdminConstants.JSP_BASE + "/modelitem/updateModel.jsp";
 	}
 

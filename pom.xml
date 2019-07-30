@@ -16,6 +16,7 @@
 		 <version.entityResolver>2.34</version.entityResolver>
 	</properties>
 	<dependencies>
+	
 		<dependency>
 			<groupId>cn.sowell.copframe</groupId>
 			<artifactId>cpf-web</artifactId>
