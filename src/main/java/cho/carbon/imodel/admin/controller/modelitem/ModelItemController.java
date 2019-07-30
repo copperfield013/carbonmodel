@@ -350,7 +350,7 @@ public class ModelItemController {
    				MiStatFact miStatFact = commService.get(MiStatFact.class, modelItem.getCode());		
    				
    				MiFilterGroup miFilterGroup = null;
-   				if (miStatFact.getFilterId() !=null) {
+   				if (miStatFact != null && miStatFact.getFilterId() !=null) {
    					miFilterGroup = commService.get(MiFilterGroup.class, miStatFact.getFilterId());		
    				}
    				
