@@ -38,6 +38,7 @@ public class MiExpreAndFilterServiceImpl implements MiExpreAndFilterService {
 		
 		switch (itemType) {
 		case DIMENSION_ITEM:
+		case DIMENSION_ENUM_ITEM:
 			saveDimensionExpress(codeTxt, modelItemCode);
 			break;
 		case FACT_ITEM:

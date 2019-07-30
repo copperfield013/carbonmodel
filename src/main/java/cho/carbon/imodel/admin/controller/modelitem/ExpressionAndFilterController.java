@@ -134,6 +134,7 @@ public class ExpressionAndFilterController {
 			String codeTxt = "";
 			switch (itemType) {
 			case DIMENSION_ITEM:
+			case DIMENSION_ENUM_ITEM:
 				//查询维度对应的表达式
 				MiStatDimension miStatDimension = commService.get(MiStatDimension.class, miCode);
 				if (miStatDimension != null) {

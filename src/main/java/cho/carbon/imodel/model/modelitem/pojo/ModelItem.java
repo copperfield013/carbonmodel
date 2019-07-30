@@ -178,6 +178,8 @@ public class ModelItem {
 			return ModelItemType.DIMENSION_ITEM.getCName();
 		case 212:
 			return ModelItemType.FACT_ITEM.getCName();
+		case 214:
+			return "维度枚举";
 		case 4:
 			return "二级属性";
 		case 5:

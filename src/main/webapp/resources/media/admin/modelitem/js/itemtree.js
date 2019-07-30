@@ -42,7 +42,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					} else if (modelItem.type == 207) {
 						//级联枚举属性
 						initCascadeReferenceAttr(modelItem, $parent);
-					} else if (modelItem.type == 211) {
+					} else if (modelItem.type == 211 || modelItem.type == 214) {
 						//维度属性
 						initDimensionAttr(modelItem, $parent);
 					} else if (modelItem.type == 212) {
@@ -1380,6 +1380,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             html += "<li class='card-list add_DIMENSION_ITEM'  modelItemType='211' modelItemShowName='添加维度属性'>" +
                 "<i class='icon icon-card-attr'></i>" +
                 "<span class='text'>添加维度属性</span>" +
+                "</li>" +
+                "<li class='card-list add_DIMENSION_ENUM_ITEM' modelItemType='214' modelItemShowName='添加维度枚举'>" +
+                "<i class='icon icon-card-attr'></i>" +
+                "<span class='text'>添加维度枚举属性</span>" +
                 "</li>" +
                
                 "</ul>";
@@ -4127,7 +4131,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     							addCascadeEnumAttr(el, modelItem);
     						} else if (modelItem.type == 207) {
     							addCascadeReferenceAttr(el, modelItem);
-    						} else if (modelItem.type == 211) {
+    						} else if (modelItem.type == 211 || modelItem.type == 214) {
     							//添加维度属性
     							addDimensionAttr(el, modelItem);
     							

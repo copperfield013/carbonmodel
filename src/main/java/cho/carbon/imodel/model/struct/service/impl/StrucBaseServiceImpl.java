@@ -594,6 +594,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 			break;
 		
 			case ENUM_ITEM:
+			case DIMENSION_ENUM_ITEM:
 			case PREENUM_STRING_ITEM:
 			case MULTI_ENUM_ITEM:
 			case CASCADE_ENUM_ITEM:

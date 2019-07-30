@@ -25,6 +25,8 @@ public class MiStrategyFactory {
 			return new FactMiStrategy();
 		case DIMENSION_ITEM:	
 			return new DimensionMiStrategy();
+		case DIMENSION_ENUM_ITEM:
+			return new DimenEnumItemMiStrategy();
 		case ENUM_ITEM:
 		case PREENUM_STRING_ITEM:
 			return new EnumItemMiStrategy();

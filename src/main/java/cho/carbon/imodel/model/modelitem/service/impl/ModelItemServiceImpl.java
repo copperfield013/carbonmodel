@@ -142,6 +142,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 			getViewLabelToMiValue(miValue, viewLabelList);
 			break;
 		case ENUM_ITEM:
+		case DIMENSION_ENUM_ITEM:
 		case PREENUM_STRING_ITEM:
 			//miValue
 			getViewLabelToMiValue(miValue, viewLabelList);
