@@ -37,16 +37,17 @@ public class MiStrategyContext {
 		ModelItem modelItem = modelItemContainer.getModelItem();
 		ModelItemType itemType = ModelItemType.getItemType(modelItem.getType());
 		
-		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType);
-		if (miStrategy!=null) {
-			miStrategy.saveOrUpdate(modelItemContainer, commService, flag, casenumItemService, modelItemService, modelItemCodeGeneratorService);
-		}
 		
 		// 这里没什么问题， 先保存为敬
 		if ("add".equals(flag)) {
 			commService.insert(modelItem);
 		} else {
 			commService.update(modelItem);
+		}
+		
+		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType);
+		if (miStrategy!=null) {
+			miStrategy.saveOrUpdate(modelItemContainer, commService, flag, casenumItemService, modelItemService, modelItemCodeGeneratorService);
 		}
 		
 	}

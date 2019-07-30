@@ -49,7 +49,7 @@ public class FactGroupMiStrategy implements MiStrategy {
 		MiCalExpress miCalExpress = new MiCalExpress(null, "count(*)", "count(*)");
 		commService.insert(miCalExpress);
 		//创建事实
-		MiStatFact miStatFact = new MiStatFact(code_cnt, miCalExpress.getId() , null, AggregateFunctionType.COUNT.getIndex(), 1);
+		MiStatFact miStatFact = new MiStatFact(code_cnt, miCalExpress.getId() , null, AggregateFunctionType.SUM.getIndex(), 1);
 		commService.insert(miStatFact);
 		
 	}
