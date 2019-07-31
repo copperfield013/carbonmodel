@@ -1,27 +1,15 @@
 package com.abc.rule.people.secondipm.secondipmTimer;
 
 import cho.carbon.meta.enun.AttributeValueType;
-import com.zhsq.biz.people.algorithm.BirthdayIntrospection;
 import java.util.Date;
-import com.zhsq.biz.common.CommonCalculation;
-import com.zhsq.biz.people.algorithm.BirthdayIntrospection;
 import cho.carbon.fuse.improve.attribute.FuseAttribute;
 import cho.carbon.relation.RecordRelation;
 import cho.carbon.rrc.record.FGAttribute;
 import cho.carbon.fuse.improve.attribute.FuseAttributeFactory;
-import com.zhsq.biz.constant.people.PeopleItem;
-import com.zhsq.biz.constant.EnumKeyValue;
-import com.zhsq.biz.constant.RelationType;
-import com.zhsq.biz.constant.CommonAlgorithm;
-import com.zhsq.biz.constant.interview.InterviewItem;
-import com.zhsq.biz.people.algorithm.IDIntrospection;
-import com.zhsq.biz.constant.DateUtils;
-import com.zhsq.biz.constant.worktask.WorkTaskItem;
 import cho.carbon.rrc.record.FGRootRecord;
 import cho.carbon.sysdate.SystemDateTimeManager;
 import cho.carbon.rrc.builder.FGRootRecordBuilder;
 import cho.carbon.ops.builder.RecordRelationOpsBuilder;
-import com.zhsq.biz.constant.BaseConstant;
 
 
 
@@ -40,65 +28,3 @@ global java.util.Map removedLeafAttrMap;
 global cho.carbon.rrc.record.FGRootRecord fgRootRecord;
 global  cho.carbon.ops.builder.RecordRelationOpsBuilder recordRelationOpsBuilder;
 global cho.carbon.complexus.FGRecordComplexus recordComplexus;
-
-//80岁以上老人走访规则
-rule "80岁以上老人"
-	when
-		$nameA:FuseAttribute(name==PeopleItem.出生日期, CommonCalculation.isBasicLawful((String)getValue(AttributeValueType.STRING)));
-		eval(BirthdayIntrospection.extractAge((Date)$nameA.getValue(AttributeValueType.DATE))>=80);
-	then
-		//激活 
-	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup( "走访80岁老人" ).setFocus();
-end
-
-rule "80岁以上待走访老人"
-	salience 8
-	agenda-group "走访80岁老人"
-when
-	not RecordRelation(type==RelationType.RR_人口信息_走访记录_走访记录, $value:right,CommonCalculation.isBasicLawful(CommonAlgorithm.getDataValue(recordComplexus, $value, InterviewItem.走访类型)), EnumKeyValue.ENUM_走访类型_老年人走访.equals(Integer.parseInt(String.valueOf(CommonAlgorithm.getDataValue(recordComplexus, $value, InterviewItem.走访类型)))))
-then 
-	FGAttribute attribute=FuseAttributeFactory.buildAttribute(PeopleItem._80岁老人月走访状态, EnumKeyValue.ENUM_80岁老人月走访状态_未走访);
-	attributeList.add(attribute);
-end
-
-rule "存在走访记录30天内"//与当前时间比较， 在30天内
-	salience 7
-	agenda-group "走访80岁老人"
-	when 
-		eval( CommonCalculation.isBasicLawful(IDIntrospection.getNewestRelationPro(recordComplexus, recordName, recordCode, RelationType.RR_人口信息_走访记录_走访记录, InterviewItem.走访时间, InterviewItem.走访时间) ))
-		eval(DateUtils.getShortDaytoCurr(IDIntrospection.getNewestRelationPro(recordComplexus, recordName, recordCode, RelationType.RR_人口信息_走访记录_走访记录, InterviewItem.走访时间, InterviewItem.走访时间) ) <30)
-	then
-		FGAttribute attribute=FuseAttributeFactory.buildAttribute(PeopleItem._80岁老人月走访状态, EnumKeyValue.ENUM_80岁老人月走访状态_已走访);
-		attributeList.add(attribute);
-end
-
-rule "存在走访记录30天外"//与当前时间比较， 在30天外
-	salience 7
-	agenda-group "走访80岁老人"
-	when 
-		eval( CommonCalculation.isBasicLawful(IDIntrospection.getNewestRelationPro(recordComplexus, recordName, recordCode, RelationType.RR_人口信息_走访记录_走访记录, InterviewItem.走访时间, InterviewItem.走访时间) ))
-		eval(DateUtils.getShortDaytoCurr(IDIntrospection.getNewestRelationPro(recordComplexus, recordName, recordCode, RelationType.RR_人口信息_走访记录_走访记录, InterviewItem.走访时间, InterviewItem.走访时间)) >=30)
-	then
-		FGAttribute attribute=FuseAttributeFactory.buildAttribute(PeopleItem._80岁老人月走访状态, EnumKeyValue.ENUM_80岁老人月走访状态_未走访);
-		attributeList.add(attribute);
-		
-		//80岁老人月未走访， 发布任务 需要走访的任务
-	FGRootRecordBuilder fgRootRecordBuilder = FGRootRecordBuilder.getInstance(BaseConstant.TYPE_工作任务);
-	fgRootRecordBuilder.putAttribute(WorkTaskItem.任务状态, EnumKeyValue.ENUM_任务状态_新建);
-	fgRootRecordBuilder.putAttribute(WorkTaskItem.任务标题,  " 80岁老人未走访，请执行任务");
-	fgRootRecordBuilder.putAttribute(WorkTaskItem.任务编号, "NSOEFO39483");
-	fgRootRecordBuilder.putAttribute(WorkTaskItem.具体描述, "80岁老人未走访，请执行任务");
-	fgRootRecordBuilder.putAttribute(WorkTaskItem.类型, EnumKeyValue.ENUM_问题类型_民政);
-	fgRootRecordBuilder.putAttribute(WorkTaskItem.任务开始时间,  SystemDateTimeManager.getCunrrentTime());
-	fgRootRecordBuilder.putAttribute(WorkTaskItem.是否需要领用,  EnumKeyValue.ENUM_是否_是);
-	fgRootRecordBuilder.putAttribute(WorkTaskItem.是否智能匹配, EnumKeyValue.ENUM_是否_否);
-	fgRootRecordBuilder.putAttribute(WorkTaskItem.保存派发, EnumKeyValue.ENUM_保存派发_派发);
-	
-	FGRootRecord record = fgRootRecordBuilder.getRootRecord();
-	rootRecordList.add(record);
-	//添加关系
-	RecordRelationOpsBuilder builderNew = RecordRelationOpsBuilder.getInstance(BaseConstant.TYPE_工作任务,
-				record.getCode());
-	builderNew.putRelation(RelationType.RR_工作任务_老人走访任务_人口信息, recordCode); 
-	recordRelationOpsBuilderNew.add(builderNew);	
-end

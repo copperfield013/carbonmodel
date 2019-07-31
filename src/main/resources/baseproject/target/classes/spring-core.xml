@@ -13,8 +13,8 @@
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
     
-    <context:component-scan base-package="com.zhsq" />
-    <context:component-scan base-package="com.abc" />
+   <!--  <context:component-scan base-package="cho.carbon"" /> -->
+    <context:component-scan base-package="cho.carbon" />
 		<!-- 加载jdbc.properties配置文件 -->
     <bean id="propConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="order" value="1" />

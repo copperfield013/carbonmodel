@@ -19,7 +19,7 @@ import cho.carbon.hc.HCFusionContext;
 import cho.carbon.meta.criteria.model.ModelCriterion;
 import cho.carbon.ops.complexus.OpsComplexus;
 
-@Repository(value = "XFJDE001")
+@Repository(value = "DXJDE2020")
 public class PeopleFG implements FuseCheck,FunctionalGroup, IdentityQuery,OneRoundImprovement, ThreeRoundImprovement, IFusitionCallBack {
 
 	

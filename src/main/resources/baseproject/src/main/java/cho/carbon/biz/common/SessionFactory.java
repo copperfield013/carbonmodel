@@ -1,6 +1,7 @@
 package cho.carbon.biz.common;
 
 import org.apache.log4j.Logger;
+import org.kie.api.KieServices;
 import org.kie.api.event.rule.AfterMatchFiredEvent;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.event.rule.AgendaGroupPoppedEvent;
@@ -12,9 +13,9 @@ import org.kie.api.event.rule.MatchCancelledEvent;
 import org.kie.api.event.rule.MatchCreatedEvent;
 import org.kie.api.event.rule.RuleFlowGroupActivatedEvent;
 import org.kie.api.event.rule.RuleFlowGroupDeactivatedEvent;
+import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-
-import com.zhsq.util.kieutil.KieSessionFactory;
+import org.kie.api.KieServices.Factory;
 
 
 public class SessionFactory {
@@ -23,7 +24,9 @@ public class SessionFactory {
 	//findKeepSession
 	public static KieSession findScannerSession(String sessionName) {
 		
-		KieSession kSession = KieSessionFactory.findKeepSession(sessionName);
+		KieServices kieServices = Factory.get();
+		KieContainer kieContainer = kieServices.getKieClasspathContainer();
+		KieSession kSession = kieContainer.newKieSession(sessionName);
 		
 		kSession.addEventListener(new AgendaEventListener() {
             public void matchCreated(MatchCreatedEvent event) {
@@ -59,19 +62,6 @@ public class SessionFactory {
             public void afterRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event) {
             }
         });
-		
-		return kSession;
-	}
-	
-	//findScannerSession
-	public static KieSession  findKeepSession(String sessionName){
-		KieSession kSession = KieSessionFactory.newScannerSession("com.zhsq.biz", "threeservices", "LATEST", sessionName);
-		kSession.addEventListener( new DefaultAgendaEventListener() {
-			public void afterMatchFired(AfterMatchFiredEvent event) {
-				super.afterMatchFired( event );
-					System.out.println( event.getMatch().getRule().getName()+" is fired" );
-				}
-			});
 		
 		return kSession;
 	}

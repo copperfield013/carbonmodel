@@ -1,28 +1,17 @@
 package com.abc.rule.people.ipm
 
-import com.zhsq.biz.constant.people.PeopleItem;
 import cho.carbon.meta.enun.AttributeValueType;
 import cho.carbon.fuse.improve.attribute.FuseAttributeFactory;
 import cho.carbon.rrc.builder.FGRootRecordBuilder;
 import cho.carbon.fuse.improve.attribute.OpsAttribute;
 import cho.carbon.rrc.record.FGAttribute;
-import com.zhsq.biz.common.CommonCalculation;
 import cho.carbon.fuse.improve.attribute.FuseAttribute;
 import cho.carbon.ops.builder.RecordRelationOpsBuilder;
-import com.zhsq.biz.constant.RelationType;
-import com.zhsq.biz.constant.BaseConstant;
 import cho.carbon.rrc.record.FGRootRecord;
 import cho.carbon.ops.builder.RecordRelationOpsBuilder;
-import com.zhsq.biz.constant.FourTypePeople.FourTypePeopleItem;
 import cho.carbon.sysdate.SystemDateTimeManager;
-import com.zhsq.biz.people.algorithm.CommIntrospection;
-import com.zhsq.biz.constant.FourTypePeople.FourTypePeopleItem;
-import com.zhsq.biz.constant.EnumKeyValue;
-import com.zhsq.biz.constant.CommonAlgorithm;
 import cho.carbon.relation.RecordRelation;
 import cho.carbon.relation.RelationCorrelation;
-import com.zhsq.biz.constant.family.FamilyItem;
-
 
 
 global java.lang.String hostCode; 

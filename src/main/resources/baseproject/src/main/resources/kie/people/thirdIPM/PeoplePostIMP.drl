@@ -1,26 +1,17 @@
 package com.abc.rule.people.postimp
 
-import com.zhsq.biz.constant.people.PeopleItem;
 import cho.carbon.meta.enun.AttributeValueType;
 import cho.carbon.fuse.improve.attribute.FuseAttributeFactory;
 import cho.carbon.rrc.builder.FGRootRecordBuilder;
 import cho.carbon.fuse.improve.attribute.OpsAttribute;
 import cho.carbon.rrc.record.FGAttribute;
-import com.zhsq.biz.common.CommonCalculation;
 import cho.carbon.fuse.improve.attribute.FuseAttribute;
 import cho.carbon.ops.builder.RecordRelationOpsBuilder;
-import com.zhsq.biz.constant.RelationType;
-import com.zhsq.biz.constant.BaseConstant;
 import cho.carbon.rrc.record.FGRootRecord;
 import cho.carbon.ops.builder.RecordRelationOpsBuilder;
-import com.zhsq.biz.constant.FourTypePeople.FourTypePeopleItem;
 import cho.carbon.sysdate.SystemDateTimeManager;
-import com.zhsq.biz.people.algorithm.CommIntrospection;
-import com.zhsq.biz.constant.FourTypePeople.FourTypePeopleItem;
-import com.zhsq.biz.constant.EnumKeyValue;
 import cho.carbon.fuse.improve.attribute.leaf.FuseLeafAttribute;
 import cho.carbon.util.CodeManager;
-import com.zhsq.biz.people.algorithm.IDIntrospection;
 
 global java.lang.String hostCode; 
 global java.lang.String hostType;
@@ -38,6 +29,7 @@ global cho.carbon.rrc.record.FGRootRecord fgRootRecord;
 global  cho.carbon.ops.builder.RecordRelationOpsBuilder recordRelationOpsBuilder;
 global cho.carbon.complexus.FGRecordComplexus recordComplexus;
 
+/*
 //下面识别身份证号错误信息
 rule "清空人口错误"
 	salience 7
@@ -90,3 +82,5 @@ then
 	FuseLeafAttribute leafAttr2 = FuseAttributeFactory.buildFuseLeafAttribute($idValue2.getCode(), PeopleItem.人口错误信息, code, PeopleItem.人口错误信息_描述, "身份证号性别与性别属性是不一致");
 	addedLeafAttrList.add(leafAttr2);
 end
+
+*/

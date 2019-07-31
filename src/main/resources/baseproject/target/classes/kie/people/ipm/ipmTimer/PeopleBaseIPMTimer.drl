@@ -1,11 +1,5 @@
 package com.abc.rule.people.ipm.ipmTimer
 
-import cho.carbon.meta.enun.AttributeValueType;
-import com.zhsq.biz.constant.EnumKeyValue;
-import com.zhsq.biz.people.algorithm.BirthdayIntrospection;
-import java.util.Date;
-import cho.carbon.rrc.record.FGAttribute;
-
 
 global java.lang.String hostCode; 
 global java.lang.String hostType;

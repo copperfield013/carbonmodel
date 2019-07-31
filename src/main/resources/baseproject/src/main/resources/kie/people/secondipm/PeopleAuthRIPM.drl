@@ -1,25 +1,13 @@
 package com.abc.rule.people.secondipm
 
 
-import com.zhsq.biz.constant.people.PeopleItem;
 import cho.carbon.meta.enun.AttributeValueType;
 import cho.carbon.fuse.improve.attribute.FuseAttributeFactory;
 import cho.carbon.rrc.builder.FGRootRecordBuilder;
 import cho.carbon.fuse.improve.attribute.OpsAttribute;
 import cho.carbon.rrc.record.FGAttribute;
-import com.zhsq.biz.common.CommonCalculation;
 import cho.carbon.fuse.improve.attribute.FuseAttribute;
 import cho.carbon.ops.builder.RecordRelationOpsBuilder;
-import com.zhsq.biz.constant.RelationType;
-import com.zhsq.biz.constant.BaseConstant;
-import cho.carbon.rrc.record.FGRootRecord;
-import cho.carbon.ops.builder.RecordRelationOpsBuilder;
-import com.zhsq.biz.constant.FourTypePeople.FourTypePeopleItem;
-import cho.carbon.sysdate.SystemDateTimeManager;
-import com.zhsq.biz.people.algorithm.CommIntrospection;
-import com.zhsq.biz.constant.FourTypePeople.FourTypePeopleItem;
-import com.zhsq.biz.constant.EnumKeyValue;
-import com.zhsq.biz.common.AuthAlgorithm;
 import cho.carbon.auth.AuthHelper;
 import cho.carbon.relation.RecordRelation;
 
@@ -40,31 +28,3 @@ global java.util.Map removedLeafAttrMap;
 global cho.carbon.rrc.record.FGRootRecord fgRootRecord;
 global  cho.carbon.ops.builder.RecordRelationOpsBuilder recordRelationOpsBuilder;
 global cho.carbon.complexus.FGRecordComplexus recordComplexus;
-
-rule "无正確社区信息权限"
-	salience 10 
-when
-  	FuseAttribute(name==PeopleItem.所属社区,!CommonCalculation.isBasicLawful(getValue(AttributeValueType.STRING))) or (not FuseAttribute(name==PeopleItem.所属社区))
-then 
-	recordRelationOpsBuilder.putRelation(RelationType.RR_人口信息_可被访问_权限,AuthAlgorithm.getNoAreaAuthCode());
-end
-
-rule "移除原社区数据访问"
-	salience 10 
-when
- $areaFA:FuseAttribute(name==PeopleItem.所属社区,$areaValue:getValue(AttributeValueType.INT));
- RecordRelation(type==RelationType.RR_人口信息_可被访问_权限,$oldauth:right,AuthHelper.isMatchedAuthAndLabel($oldauth,EnumKeyValue.ENUM_权限标签_社区数据访问),$oldauth!=AuthAlgorithm.getAreaAuthCode((Integer)$areaValue));
-then 
-	recordRelationOpsBuilder.removeRelation(RelationType.RR_人口信息_可被访问_权限,$oldauth);
-end
-
-rule "添加社区数据访问"
-	salience 9
-when
- $areaFA:FuseAttribute(name==PeopleItem.所属社区,$areaValue:getValue(AttributeValueType.INT));
-not RecordRelation(type==RelationType.RR_人口信息_可被访问_权限,$oldauth:right,AuthHelper.isMatchedAuthAndLabel($oldauth,EnumKeyValue.ENUM_权限标签_社区数据访问),$oldauth==AuthAlgorithm.getAreaAuthCode((Integer)$areaValue));
-then
-	com.zhsq.biz.common.OutputDisplay.showText("$areaValue : " + $areaValue);
-
-	recordRelationOpsBuilder.putRelation(RelationType.RR_人口信息_可被访问_权限,AuthAlgorithm.getAreaAuthCode((Integer)$areaValue));
-end

@@ -19,7 +19,7 @@
 		<version.kie>7.10.0.Final</version.kie>
 		<version.kie.ci>7.10.0.Final</version.kie.ci>
 		<version.abcitem>4.2.139.alphal</version.abcitem>
-		<version.kieutil>0.0.5</version.kieutil>
+		<!-- <version.kieutil>0.0.5</version.kieutil> -->
 		
 		<project.builder.sourcesEncoding>UTF-8</project.builder.sourcesEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -28,11 +28,11 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.zhsq.util</groupId>
 			<artifactId>kieutil</artifactId>
 			<version>${version.kieutil}</version>
-		</dependency>
+		</dependency> -->
 		
 		<dependency>
 			<groupId>cho.carbon</groupId>
