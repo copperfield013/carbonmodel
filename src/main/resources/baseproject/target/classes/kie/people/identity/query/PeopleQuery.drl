@@ -1,0 +1,35 @@
+package com.abc.rule.people.identity.query
+
+import cho.carbon.fuse.improve.attribute.FuseAttribute;
+import cho.carbon.query.model.FGConJunctionFactory;
+import com.zhsq.biz.constant.people.PeopleItem;
+import com.zhsq.biz.common.CommonCalculation;
+import cho.carbon.meta.enun.AttributeValueType;
+import cho.carbon.meta.enun.operator.UnaryOperator;
+
+global java.lang.String recordName;
+global cho.carbon.query.model.FGConJunctionFactory conJunctionFactory;
+
+rule "姓名 and 身份证号 criteria" 
+	activation-group "people查询条件"
+	salience 9  
+when
+    $nameFB:FuseAttribute(name==PeopleItem.姓名,CommonCalculation.isBasicLawful((String)getValue(AttributeValueType.STRING)));
+	$IdFB: FuseAttribute( name==PeopleItem.身份证号码, CommonCalculation.isBasicLawful((String)getValue(AttributeValueType.STRING)))
+then 
+
+	conJunctionFactory.getGroupFactory().addCommon($nameFB.getAttribute().getName(), $nameFB.getAttribute().getValueStr(), UnaryOperator.EQUAL);
+	conJunctionFactory.getGroupFactory().addCommon($IdFB.getAttribute().getName(), $IdFB.getAttribute().getValueStr(), UnaryOperator.EQUAL);
+end
+
+rule "姓名 and 户籍地址 criteria" 
+	activation-group "people查询条件"
+	salience 8  
+when
+    $nameFA:FuseAttribute(name==PeopleItem.姓名,CommonCalculation.isBasicLawful((String)getValue(AttributeValueType.STRING)));
+    $siteFB:FuseAttribute(name == PeopleItem.户籍所在地,CommonCalculation.isBasicLawful((String)getValue(AttributeValueType.STRING)));
+then      
+	
+	conJunctionFactory.getGroupFactory().addCommon($nameFA.getAttribute().getName(), $nameFA.getAttribute().getValueStr(), UnaryOperator.EQUAL);
+	conJunctionFactory.getGroupFactory().addCommon($siteFB.getAttribute().getName(), $siteFB.getAttribute().getValueStr(), UnaryOperator.EQUAL);
+end
