@@ -1,5 +1,28 @@
 package com.abc.rule.people.ipm
 
+import com.zhsq.biz.constant.CommonAlgorithm;
+import com.zhsq.biz.constant.family.FamilyItem;
+import com.zhsq.biz.constant.EnumKeyValue;
+import com.zhsq.biz.people.algorithm.BirthdayIntrospection;
+import com.zhsq.biz.common.CommonCalculation;
+import java.util.Date;
+import com.zhsq.biz.constant.people.PeopleItem;
+import com.zhsq.biz.constant.DateUtils;
+import com.zhsq.biz.constant.BaseConstant;
+import com.zhsq.biz.constant.RelationType;
+import com.zhsq.biz.constant.worktask.WorkTaskItem;
+import cho.carbon.fuse.improve.attribute.FuseAttributeFactory;
+import cho.carbon.rrc.record.FGAttribute;
+import cho.carbon.meta.enun.AttributeValueType;
+import cho.carbon.fuse.improve.attribute.FuseAttribute;
+import cho.carbon.ops.builder.RecordRelationOpsBuilder;
+import cho.carbon.ops.builder.RecordRelationOpsBuilder;
+import cho.carbon.sysdate.SystemDateTimeManager;
+import cho.carbon.rrc.builder.FGRootRecordBuilder;
+import cho.carbon.rrc.record.FGRootRecord;
+import cho.carbon.fuse.improve.attribute.leaf.FuseLeafAttribute;
+
+
 global java.lang.String hostCode; 
 global java.lang.String hostType;
 
@@ -10,14 +33,139 @@ global java.lang.String recordName;
 global java.util.List recordRelationOpsBuilderNew;
 global java.util.List rootRecordList;
 global java.util.List attributeList;
-global java.util.List addedLabelList;
-global java.util.List removedLabelList;
-global java.util.List addedLabelList;
-global java.util.List putFuseLeafAttributeList;
 global java.util.List addedLeafAttrList;
 global java.util.Map removedLeafAttrMap;
-global com.abc.rrc.record.RootRecord rootRecord;
-global  com.abc.ops.builder.RecordRelationOpsBuilder recordRelationOpsBuilder;
-global com.abc.complexus.RecordComplexus recordComplexus;
+global cho.carbon.rrc.record.FGRootRecord fgRootRecord;
+global cho.carbon.ops.builder.RecordRelationOpsBuilder recordRelationOpsBuilder;
+global cho.carbon.complexus.FGRecordComplexus recordComplexus;
 
 
+
+rule "新增人口标记为没死亡"
+	salience 9 
+when
+	FuseAttribute(name==PeopleItem.是否死亡, getValue(AttributeValueType.INT) == null) or (not FuseAttribute(name==PeopleItem.是否死亡))
+then
+	FGAttribute attr = FuseAttributeFactory.buildAttribute(PeopleItem.是否死亡, EnumKeyValue.ENUM_是否_否);
+	attributeList.add(attr);
+end
+
+rule "人口死亡标记为未确认"
+	salience 9 
+when
+	FuseAttribute(name==PeopleItem.姓名, $name:getValue(AttributeValueType.STRING));
+	FuseAttribute(name==PeopleItem.是否死亡,CommonCalculation.isBasicLawful(getValue(AttributeValueType.STRING)), getValue(AttributeValueType.INT)==EnumKeyValue.ENUM_是否_是);
+    FuseAttribute(name==PeopleItem.待确认死亡, getValue(AttributeValueType.INT)==null) or (not  FuseAttribute(name==PeopleItem.待确认死亡));
+then 
+	FGAttribute attrc = FuseAttributeFactory.buildAttribute(PeopleItem.待确认死亡, EnumKeyValue.ENUM_待确认死亡_未确认);
+	attributeList.add(attrc);
+	FGAttribute attra = FuseAttributeFactory.buildAttribute(PeopleItem.死亡人口对应任务, "1.停止资金发送");
+	attributeList.add(attra);
+	
+	//新增死亡人口发布任务
+	FGRootRecordBuilder fgRootRecordBuilder = FGRootRecordBuilder.getInstance(BaseConstant.TYPE_工作任务);
+	
+	fgRootRecordBuilder.putAttribute(WorkTaskItem.任务状态, EnumKeyValue.ENUM_任务状态_新建);
+	fgRootRecordBuilder.putAttribute(WorkTaskItem.任务标题,  $name + " 已死亡，请执行任务");
+	fgRootRecordBuilder.putAttribute(WorkTaskItem.任务编号, "JFOE01101");
+	fgRootRecordBuilder.putAttribute(WorkTaskItem.具体描述, $name + "已死亡，请执行任务");
+	fgRootRecordBuilder.putAttribute(WorkTaskItem.类型, EnumKeyValue.ENUM_问题类型_民政);
+	fgRootRecordBuilder.putAttribute(WorkTaskItem.任务开始时间,  SystemDateTimeManager.getCunrrentTime());
+	fgRootRecordBuilder.putAttribute(WorkTaskItem.是否需要领用,  EnumKeyValue.ENUM_是否_是);
+	fgRootRecordBuilder.putAttribute(WorkTaskItem.是否智能匹配, EnumKeyValue.ENUM_是否_否);
+	fgRootRecordBuilder.putAttribute(WorkTaskItem.保存派发, EnumKeyValue.ENUM_保存派发_派发);
+	
+	FGRootRecord record = fgRootRecordBuilder.getRootRecord();
+	rootRecordList.add(record);
+	//添加关系
+	RecordRelationOpsBuilder builderNew = RecordRelationOpsBuilder.getInstance(BaseConstant.TYPE_工作任务,
+				record.getCode());
+	builderNew.putRelation(RelationType.RR_工作任务_死亡人口_人口信息, recordCode); 
+	recordRelationOpsBuilderNew.add(builderNew);	
+end
+
+rule "人口没死亡标记待确认为null"
+	salience 9 
+when
+	$nameB:FuseAttribute(name==PeopleItem.是否死亡,CommonCalculation.isBasicLawful(getValue(AttributeValueType.STRING)), getValue(AttributeValueType.INT)==EnumKeyValue.ENUM_是否_否);
+then
+	FGAttribute namec = FuseAttributeFactory.buildAttribute(PeopleItem.待确认死亡, null);
+	attributeList.add(namec);
+
+	FGAttribute named = FuseAttributeFactory.buildAttribute(PeopleItem.死亡时间, null);
+	attributeList.add(named);
+	
+	FGAttribute attra = FuseAttributeFactory.buildAttribute(PeopleItem.死亡人口对应任务, null);
+	attributeList.add(attra);
+end
+
+rule "获取最新户籍变更信息设置户籍地门牌号"
+	salience 15
+when
+	$FAa:FuseLeafAttribute(name==PeopleItem.户籍变更_变动后街路巷,$leafCode:leafCode);
+    $FAb:FuseLeafAttribute(name==PeopleItem.户籍变更_变动后门楼详址, $leafCode==leafCode);
+    $FAc:FuseLeafAttribute(name==PeopleItem.户籍变更_更改户籍门牌号, $leafCode==leafCode, $value:getValue(AttributeValueType.INT));
+	eval(EnumKeyValue.ENUM_是否_是.equals($value))
+then    
+	//设置户籍门牌号
+	FGAttribute attribute=FuseAttributeFactory.buildAttribute(PeopleItem.户籍所在地, $FAa.getValue(AttributeValueType.STRING)+"" +$FAb.getValue(AttributeValueType.STRING));
+	attributeList.add(attribute);
+	FuseLeafAttribute leaf = FuseAttributeFactory.buildFuseLeafAttribute($FAc.getCode(), $FAc.getLeafName(), $FAc.getLeafCode(), PeopleItem.户籍变更_更改户籍门牌号, EnumKeyValue.ENUM_是否_否);
+	addedLeafAttrList.add(leaf);
+end
+
+rule "残疾信息有值设置【是否残疾】为是"
+	salience 10 
+when
+	exists FuseLeafAttribute(name==PeopleItem.残疾信息_残疾类别)
+	(not FuseAttribute( name==PeopleItem.是否残疾 )) or FuseAttribute( name==PeopleItem.是否残疾, getValue(AttributeValueType.INT)!=EnumKeyValue.ENUM_是否_是 )
+then 
+	FGAttribute attr = FuseAttributeFactory.buildAttribute(PeopleItem.是否残疾, EnumKeyValue.ENUM_是否_是);
+	attributeList.add(attr);
+end
+
+rule "把居住地址的值赋值给居住地门牌号"
+	salience 10 
+when
+	$fa: FuseLeafAttribute(name==PeopleItem.居住信息_居住地址)
+then 
+	FuseLeafAttribute leafAttr = FuseAttributeFactory.buildFuseLeafAttribute($fa.getCode(), $fa.getLeafName(), $fa.getLeafCode(), PeopleItem.居住信息_居住地门牌号, $fa.getAttribute().getValue(AttributeValueType.STRING));
+	addedLeafAttrList.add(leafAttr);
+end 
+
+rule "设置事项数量"//获取多值属性的数量 并且根据数量设置金额
+	salience 10 
+when
+	eval(CommonAlgorithm.getLeafCount(recordComplexus, recordCode, PeopleItem.事项名称) >0)
+then 
+	FGAttribute attribute=FuseAttributeFactory.buildAttribute(PeopleItem.事项数量, CommonAlgorithm.getLeafCount(recordComplexus, recordCode, PeopleItem.事项名称));
+	attributeList.add(attribute);
+	
+	//设置月发放金额
+	Integer monthMoney = CommonAlgorithm.getMonthMoney(recordComplexus, recordCode, PeopleItem.事项名称, PeopleItem.事项名称_事项名称);
+	FGAttribute monthattribute=FuseAttributeFactory.buildAttribute(PeopleItem.救助月发放金额, monthMoney);
+	attributeList.add(monthattribute);	
+	
+	//设置年发放金额
+	Integer yearMoney =CommonAlgorithm.getYearMoney(recordComplexus, recordCode, PeopleItem.事项名称, PeopleItem.事项名称_事项名称);
+	FGAttribute yearattribute=FuseAttributeFactory.buildAttribute(PeopleItem.救助年发放金额, yearMoney);
+	attributeList.add(yearattribute);	
+end
+
+rule "添加精准扶贫人员标签"//事项数量大于等于3
+	salience 10
+	when
+		not FuseLabelAttribute(getValue(AttributeValueType.INT) == EnumKeyValue.ENUM_人口标签_精准扶贫人员);
+		eval(CommonAlgorithm.getLeafCount(recordComplexus, recordCode, PeopleItem.事项名称) >=3)
+	then
+		addedLabelList.add(EnumKeyValue.ENUM_人口标签_精准扶贫人员);
+end
+
+rule "移除精准扶贫人员标签"//事项数量小于3
+	salience 10
+	when
+		FuseLabelAttribute(getValue(AttributeValueType.INT) == EnumKeyValue.ENUM_人口标签_精准扶贫人员);
+		eval(CommonAlgorithm.getLeafCount(recordComplexus, recordCode, PeopleItem.事项名称) <3)
+	then
+		removedLabelList.add(EnumKeyValue.ENUM_人口标签_精准扶贫人员);
+end

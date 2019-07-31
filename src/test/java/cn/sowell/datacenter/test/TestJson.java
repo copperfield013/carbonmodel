@@ -2,25 +2,34 @@ package cn.sowell.datacenter.test;
 
 public class TestJson {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
 		
-		StringBuffer sb = new StringBuffer();
-		sb.append(" {    \"id\": \"123\",")
-		.append("  \"name\": \"张三\",")
-		.append("  \"studentList\": [")
-		.append("  {")
-		.append("  \"id\": \"2222\",")
-		.append(" \"name\": \"李四\",")
-		.append(" \"age\": \"13\"")
-		.append(" },")
-		.append("  {")
-		.append("   \"id\": \"33333\",")
-		.append("  \"name\": \"王u\",")
-		.append(" \"age\": \"18\"")
-		.append(" }")
-		.append(" ]")
-		.append(" }");
+		Class<? extends Teacher> clazz = new Teacher().getClass();
 		
+		ClassLoader classLoader = clazz.getClassLoader();
+		System.out.println(classLoader);
+		
+		
+		clazz = null;
+		System.gc();
+		
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			Teacher teacher = new Teacher();
+			
+			System.out.println(teacher);
+			
+//			System.out.println(newInstance);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		
 		
 		

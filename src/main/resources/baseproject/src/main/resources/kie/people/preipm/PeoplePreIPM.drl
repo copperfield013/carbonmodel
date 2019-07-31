@@ -1,5 +1,22 @@
 package com.abc.rule.people.preipm
 
+import com.zhsq.biz.constant.BaseConstant;
+import cho.carbon.relation.RelationCorrelation;
+import com.zhsq.biz.constant.people.PeopleItem;
+import com.zhsq.biz.constant.CommonAlgorithm;
+import cho.carbon.fuse.improve.attribute.FuseAttributeFactory;
+import cho.carbon.rrc.record.FGAttribute;
+import cho.carbon.meta.enun.AttributeValueType;
+import cho.carbon.relation.RecordRelation;
+import cho.carbon.fuse.improve.attribute.FuseAttribute;
+import cho.carbon.fuse.improve.attribute.OpsAttribute;
+import com.zhsq.biz.people.algorithm.IDIntrospection;
+import cho.carbon.fuse.improve.attribute.leaf.OpsLeafAttribute;
+import com.zhsq.biz.constant.EnumKeyValue;
+import com.zhsq.biz.common.CommonCalculation;
+import com.zhsq.biz.constant.BaseConstant;
+import com.zhsq.biz.constant.RelationType;
+
 global java.lang.String hostCode; 
 global java.lang.String hostType;
 
@@ -7,13 +24,37 @@ global java.lang.String userCode;
 global java.lang.String recordCode;
 global java.lang.String recordName;
 
+global java.util.List recordRelationOpsBuilderNew;
+global java.util.List rootRecordList;
 global java.util.List attributeList;
-global java.util.List addedLabelList;
-global java.util.List removedLabelList;
-global java.util.List addedLabelList;
-global java.util.List putFuseLeafAttributeList;
 global java.util.List addedLeafAttrList;
 global java.util.Map removedLeafAttrMap;
-global com.abc.rrc.record.RootRecord rootRecord;
-global  com.abc.ops.builder.RecordRelationOpsBuilder recordRelationOpsBuilder;
-global com.abc.complexus.RecordComplexus recordComplexus;
+global cho.carbon.rrc.record.FGRootRecord fgRootRecord;
+global  cho.carbon.ops.builder.RecordRelationOpsBuilder recordRelationOpsBuilder;
+global cho.carbon.complexus.FGRecordComplexus recordComplexus;
+
+rule "把身份证号从15位改为18位"
+	salience 20 
+when 
+	OpsAttribute(name==PeopleItem.身份证号码, $value:getValue(AttributeValueType.STRING));
+	eval(IDIntrospection.validate15IDCard(String.valueOf($value)))
+then
+	FGAttribute attr = FuseAttributeFactory.buildAttribute(PeopleItem.身份证号码, IDIntrospection.convertIdTo18(String.valueOf($value)));
+	attributeList.add(attr);
+end
+
+rule "根据身份证号自动填写性别和生日"
+	salience 15
+when
+	$idtype:OpsLeafAttribute(name==PeopleItem.证件信息_证件类型,getValue(AttributeValueType.INT)==EnumKeyValue.ENUM_证件类型_身份证,$leafCode:leafCode);
+    $idValue:OpsLeafAttribute(name==PeopleItem.证件信息_证件号码,leafCode==$leafCode,CommonCalculation.isBasicLawful(getValue(AttributeValueType.STRING)));
+	 eval(IDIntrospection.inspectId((String)$idValue.getValue(AttributeValueType.STRING)));
+then 
+	//设置出生日期
+	FGAttribute birthday=FuseAttributeFactory.buildAttribute(PeopleItem.出生日期, IDIntrospection.extractBirthday((String)$idValue.getValue(AttributeValueType.STRING)));
+	attributeList.add(birthday);
+	//设置性别
+	FGAttribute sex=FuseAttributeFactory.buildAttribute(PeopleItem.性别, IDIntrospection.extractSex((String)$idValue.getValue(AttributeValueType.STRING)));
+	attributeList.add(sex);
+end
+

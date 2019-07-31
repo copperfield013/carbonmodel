@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kmodule xmlns="http://www.drools.org/xsd/kmodule">
 	
-	
-	<!-- people -->
+	<!-- people start-->
 	<kbase name="peopleidtquery" packages="kie.people.identity.query">
 		<ksession name="ks-people-idt-query" />
 	</kbase>
@@ -26,5 +25,10 @@
 		<ksession name="ks-people-secondipm-secondipmTimer" />
 	</kbase>
 	
+	<kbase name="peoplethirdIPM" packages="kie.people.thirdIPM">
+		<ksession name="ks-people-thirdIPM" />
+	</kbase>
+	
+	<!-- people end-->
 	
 </kmodule>

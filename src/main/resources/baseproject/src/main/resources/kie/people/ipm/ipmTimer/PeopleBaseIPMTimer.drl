@@ -1,5 +1,11 @@
 package com.abc.rule.people.ipm.ipmTimer
 
+import cho.carbon.meta.enun.AttributeValueType;
+import com.zhsq.biz.constant.EnumKeyValue;
+import com.zhsq.biz.people.algorithm.BirthdayIntrospection;
+import java.util.Date;
+import cho.carbon.rrc.record.FGAttribute;
+
 
 global java.lang.String hostCode; 
 global java.lang.String hostType;
@@ -11,11 +17,8 @@ global java.lang.String recordName;
 global java.util.List recordRelationOpsBuilderNew;
 global java.util.List rootRecordList;
 global java.util.List attributeList;
-global java.util.List removedLabelList;
-global java.util.List addedLabelList;
-global java.util.List putFuseLeafAttributeList;
 global java.util.List addedLeafAttrList;
 global java.util.Map removedLeafAttrMap;
-global com.abc.rrc.record.RootRecord rootRecord;
-global  com.abc.ops.builder.RecordRelationOpsBuilder recordRelationOpsBuilder;
-global com.abc.complexus.RecordComplexus recordComplexus;
+global cho.carbon.rrc.record.FGRootRecord fgRootRecord;
+global  cho.carbon.ops.builder.RecordRelationOpsBuilder recordRelationOpsBuilder;
+global cho.carbon.complexus.FGRecordComplexus recordComplexus;

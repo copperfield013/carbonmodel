@@ -29,7 +29,7 @@ import cho.carbon.meta.enun.ModelItemType;
 public class BuildProjectServiceImpl implements BuildProjectService {
 	
 	
-	private static final String CONSTANTPATH = "\\src\\main\\java\\com\\zhsq\\biz\\constant";
+	private static final String CONSTANTPATH = "\\src\\main\\java\\cho\\carbon\\biz\\constant";
 	private static final String ITEMPATH = CONSTANTPATH + "\\item"; 
 	@Resource
 	BuildProjectDao buildProjectDao;
@@ -109,7 +109,7 @@ public class BuildProjectServiceImpl implements BuildProjectService {
 			
 			basicChangeService.delete(BasicChange.CASCADEDICT);
 			
-			FileManager.writeFileContent(file, "package com.zhsq.biz.constant;");
+			FileManager.writeFileContent(file, "package cho.carbon.biz.constant;");
 			FileManager.writeFileContent(file, "public class "+fileName+" {");
 			List<String> enumData = buildProjectDao.getEnumData();
 			for (String data : enumData) {
@@ -128,7 +128,7 @@ public class BuildProjectServiceImpl implements BuildProjectService {
 			
 			basicChangeService.delete(BasicChange.RECORDRELATION);
 			
-			FileManager.writeFileContent(file, "package com.zhsq.biz.constant;");
+			FileManager.writeFileContent(file, "package cho.carbon.biz.constant;");
 			FileManager.writeFileContent(file, "public class "+fileName+" {");
 			List<String> relationData = buildProjectDao.getRelationData();
 			for (String data : relationData) {
@@ -147,7 +147,7 @@ public class BuildProjectServiceImpl implements BuildProjectService {
 			basicChangeService.delete(entityCode);
 			
 			
-			FileManager.writeFileContent(file, "package com.zhsq.biz.constant.item;");
+			FileManager.writeFileContent(file, "package cho.carbon.biz.constant.item;");
 			FileManager.writeFileContent(file, "public class "+fileName+" {");
 			List<String> itemData = buildProjectDao.getItemData(entityCode, entityPrefix);
 			
@@ -186,7 +186,7 @@ public class BuildProjectServiceImpl implements BuildProjectService {
 	@Override
 	public void getBaseConstant(File file, String fileName) throws IOException {
 		
-		FileManager.writeFileContent(file, "package com.zhsq.biz.constant.item;");
+		FileManager.writeFileContent(file, "package cho.carbon.biz.constant.item;");
 		FileManager.writeFileContent(file, "public class BaseConstant {");
 		List<String> baseConstant = buildProjectDao.getBaseConstant();
 		

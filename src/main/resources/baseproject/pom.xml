@@ -18,7 +18,7 @@
 		<version.proxool>0.9.1</version.proxool>
 		<version.kie>7.10.0.Final</version.kie>
 		<version.kie.ci>7.10.0.Final</version.kie.ci>
-		<version.item>4.1.94.alphal</version.item>
+		<version.abcitem>4.2.139.alphal</version.abcitem>
 		<version.kieutil>0.0.5</version.kieutil>
 		
 		<project.builder.sourcesEncoding>UTF-8</project.builder.sourcesEncoding>
@@ -35,10 +35,11 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.abc</groupId>
+			<groupId>cho.carbon</groupId>
 			<artifactId>item</artifactId>
-			<version>${version.item}</version>
+			<version>${version.abcitem}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -299,10 +300,10 @@
 	</dependencies>
 	<repositories>
 		<repository>
-			<id>nexus</id>
-			<name>nexus</name>
-			<url>http://139.196.123.44:32108/repository/nexus-group/</url>
-		</repository>
+	        <id>rdc-releases</id>
+	        <name>rdc-releases</name>
+	        <url>https://repo.rdc.aliyun.com/repository/78687-release-z5GPTo/</url>
+	    </repository>
 	</repositories>
 	<build>
 		<plugins>
