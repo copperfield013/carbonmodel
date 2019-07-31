@@ -79,6 +79,10 @@ public class BuildProjectServiceImpl implements BuildProjectService {
 			//往文件写入关系数据
 			File relationTypeFile = FileManager.createFile(constantPath, relationTypeFileName + fileNmaeSuffix);
 			createRelationFile(relationTypeFile, relationTypeFileName);
+			// 往文件写入BaseContant数据
+			File constantFile = FileManager.createFile(constantPath, "BaseConstant"+fileNmaeSuffix);
+			getBaseConstant(constantFile, "BaseConstant");
+			
 			//往文件写入item数据
 			for (String entityCode : entityCodes) {
 				
