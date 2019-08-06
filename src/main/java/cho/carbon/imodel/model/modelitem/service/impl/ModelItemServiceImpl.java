@@ -118,7 +118,10 @@ public class ModelItemServiceImpl implements ModelItemService {
 		// 这里设置通用属性
 		viewLabelList.add(new ViewLabel("textarea", "text", "modelItem.description", modelItem.getDescription(), "描述"));
 		viewLabelList.add(new ViewLabel("input", "hidden", "modelItem.code", modelItem.getCode(), null));
-		viewLabelList.add(new ViewLabel("input", "text", "modelItem.name", modelItem.getName(), "名称", 20));
+		
+		ViewLabel viewLabel = new ViewLabel("input", "text", "modelItem.name", modelItem.getName(), "名称", 20);
+		viewLabel.setViewClazz("required");
+		viewLabelList.add(viewLabel);
 		viewLabelList.add(new ViewLabel("input", "hidden", "modelItem.type", "" + modelItem.getType(), null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "modelItem.parent", mipCode, null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "modelItem.belongModel", modelItem.getBelongModel(), null));

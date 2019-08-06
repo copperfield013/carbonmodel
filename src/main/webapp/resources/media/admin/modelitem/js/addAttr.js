@@ -53,7 +53,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				var strLabel = '<div class="form-group">';
 				strLabel+='<label class="col-lg-2 control-label" for="'+viewLabel.name+'">'+viewLabel.showName+'</label>';
 				strLabel+='<div class="col-lg-5">';
-				strLabel+='<'+	viewLabel.label +' type="' +viewLabel.type+'" name="' +viewLabel.name+'" value="' +viewLabel.value +'" placeholder="不能为空" data-bv-notempty="true" data-bv-notempty-message="不能为空" class="form-control name" />';
+				strLabel+='<input type="' +viewLabel.type+'" name="' +viewLabel.name+'" value="' +viewLabel.value +'" placeholder="不能为空"   data-bv-notempty="true" data-bv-notempty-message="不能为空"   class="form-control '+viewLabel.viewClazz+' name" />';
 				strLabel+='</div></div>';
 				
 				return strLabel;
@@ -61,7 +61,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				var strLabel = '<div class="form-group">';
 				strLabel+='<label class="col-lg-2 control-label" for="'+viewLabel.name+'">'+viewLabel.showName+'</label>';
 				strLabel+='<div class="col-lg-5">';
-				strLabel+='<'+	viewLabel.label +' type="number" name="' +viewLabel.name+'" value="' +viewLabel.value +'" placeholder="只能为大于0数字" data-bv-notempty="true" data-bv-notempty-message="不能为空" class="form-control name" />';
+				strLabel+='<input type="number" name="' +viewLabel.name+'" value="' +viewLabel.value +'" placeholder="只能为大于0数字"    data-bv-notempty="true" data-bv-notempty-message="不能为空"   class="form-control '+viewLabel.viewClazz+' name" />';
 				strLabel+='</div></div>';
 				
 				return strLabel;
@@ -113,11 +113,18 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		return "";
 	}
 	$('form', $page).submit(function(e){
+		
 		e.stopDefault();
 		return false;
 	});
 	
 	 $($page).on("click", "#btn-save", function (e) {
+		 
+		 if ($(".required").val().length <=0) {
+			 Dialog.notice("字段不能为空！！", "warning");
+			 return false;
+		 }
+		 
 		 //这里获取属性的值
 		 var formdom = $page.find(".modelItemForm")[0];
 	     var fData = new FormData(formdom);
