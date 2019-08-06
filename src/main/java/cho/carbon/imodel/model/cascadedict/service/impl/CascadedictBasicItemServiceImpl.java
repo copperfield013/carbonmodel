@@ -33,7 +33,7 @@ public class CascadedictBasicItemServiceImpl implements CascadedictBasicItemServ
 
 	@Override
 	public void create(CascadedictBasicItem dictParentItem) throws Exception{
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		dictParentItem.setUpdateTime(df.format(new Date()));
 		
 		CascadedictBasicItem one = dictionaryBasicItemDao.get(CascadedictBasicItem.class, dictParentItem.getParentId());

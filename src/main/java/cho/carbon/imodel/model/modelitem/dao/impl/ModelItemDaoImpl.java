@@ -144,6 +144,8 @@ public class ModelItemDaoImpl implements ModelItemDao {
 			}
 			str = str.substring(0,str.length()-1);
 			sb.append(" AND a.type in ("+str+") ");
+		} else {
+			sb.append(" AND a.type not in (5, 6) ");
 		}
 		
 		if (!needCorrelation) {
