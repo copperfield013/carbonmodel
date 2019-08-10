@@ -61,40 +61,48 @@ public class MiTableDBServiceImpl implements MiTableDBService {
 	
 	@Override
 	public void createDBTable() {
-		//获取数据库名称
-		String dataBaseName = commService.getDataBaseName();
 		
-		//初始化表结构
-		intiTable(dataBaseName);
-		
-		//初始化表字段
-		initTableColumn(dataBaseName);
-		
-		//创建关系表
-		initRelationTab(dataBaseName);
-		
-		//关系表函数
-		initRelationFun(dataBaseName);
-		
-		//创建实体文件表
-		initFileTab(dataBaseName);
-		
-		//创建实体历史表
-		initHistoryTab(dataBaseName);
-		
-		//创建删除表
-		initDelTab(dataBaseName);
-		
-		//创建实体C表
-		initTabC(dataBaseName);
-		
-		//给多行属性添加索引
-		initMoreLingTabIndex(dataBaseName);
-		
-		
-		//以上程序执行完比， 应确保只有状态为1  和-1， 下面程序把所有状态为0的改为1
-		commService.excuteBySql("UPDATE t_cc_model_item SET using_state=1 WHERE using_state=0");
-		commService.excuteBySql("UPDATE t_cc_mi_value SET using_state=1 WHERE using_state=0");
+		try{
+			commService.excuteBySql("SET FOREIGN_KEY_CHECKS=0;");
+			
+			//获取数据库名称
+			String dataBaseName = commService.getDataBaseName();
+			
+			//初始化表结构
+			intiTable(dataBaseName);
+			
+			//初始化表字段
+			initTableColumn(dataBaseName);
+			
+			//创建关系表
+			initRelationTab(dataBaseName);
+			
+			//关系表函数
+			initRelationFun(dataBaseName);
+			
+			//创建实体文件表
+			initFileTab(dataBaseName);
+			
+			//创建实体历史表
+			initHistoryTab(dataBaseName);
+			
+			//创建删除表
+			initDelTab(dataBaseName);
+			
+			//创建实体C表
+			initTabC(dataBaseName);
+			
+			//给多行属性添加索引
+			initMoreLingTabIndex(dataBaseName);
+			
+			
+			//以上程序执行完比， 应确保只有状态为1  和-1， 下面程序把所有状态为0的改为1
+			commService.excuteBySql("UPDATE t_cc_model_item SET using_state=1 WHERE using_state=0");
+			commService.excuteBySql("UPDATE t_cc_mi_value SET using_state=1 WHERE using_state=0");
+			
+		} finally {
+			commService.excuteBySql("SET FOREIGN_KEY_CHECKS=1;");
+		}
 	}
 	//给多行属性添加索引
 	private void initMoreLingTabIndex(String dataBaseName) {

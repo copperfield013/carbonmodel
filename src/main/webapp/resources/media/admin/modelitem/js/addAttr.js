@@ -154,6 +154,43 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	 });
 	 
 	 
+	 //数据类型改变的时候， 数据长度也需要改变
+	 $($page).on("change", ".miValueDataType", function() {  
+		 var dataType = $(this).val();
+		var $dataLength =  $page.find(".miValueDataLength");
+		 
+		$dataLength.closest(".form-group").show();
+		 switch (dataType) {
+			case "101":
+				$dataLength.val("11");
+				break;
+			case "102":
+				$dataLength.val("10,2");
+				break;
+			case "103":
+				$dataLength.val("20");
+				break;
+			case "104":
+				$dataLength.val("10,2");
+				break;
+			case "105":
+				$dataLength.val("32");
+				break;
+			case "106":
+				$dataLength.val("");
+				$dataLength.closest(".form-group").hide();
+				break;
+			case "107":
+				$dataLength.val("3");
+				$dataLength.closest(".form-group").hide();
+				break;
+			case "108":
+				$dataLength.val("3");
+				$dataLength.closest(".form-group").hide();
+				break;
+		 }
+	 })
+	 
 	  //引用属性   中  引用实体改变的时候   识别属性和展示属性需要动态改变
 	    $($page).on("change", ".miReferenceModelCode", function() {  
 	    	

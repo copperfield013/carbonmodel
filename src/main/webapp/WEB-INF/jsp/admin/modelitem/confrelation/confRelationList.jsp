@@ -23,10 +23,11 @@
 				<tr>
 					<th>序号</th>
 					<th>关系编码</th>
-					<th>左模型编码</th>
+					<th>左模型名称</th>
 					<th>关系名称</th>
-					<th>右模型编码</th>
+					<th>右模型名称</th>
 					<th>逆关系编码</th>
+					<th>逆关系名称</th>
 					<th>状态</th>
 					<th>操作</th>
 				</tr>
@@ -40,8 +41,11 @@
 						<td>${item[1] }</td>
 						<td>${item[9] }</td>
 						<td>${item[4] }</td>
-						
-						<td>${item[6] }</td>
+						<td>${item[10] }</td>
+						<td>
+							<c:if test="${item[6]  eq 2}">弃用</c:if>
+							<c:if test="${item[6]  ne 2}">正常</c:if>
+						</td>
 						<td>
 							  <a id="update" typeCode="${item[0] }"href="javascript:;"  title="修改">修改</a>
 							<c:if test="${item[6]  eq 2}">

@@ -35,9 +35,10 @@ public class ModelRelationTypeDaoImpl implements ModelRelationTypeDao {
 	public List<ModelRelationType> queryList(ModelRelationType criteria, PageInfo pageInfo) {
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append(" SELECT a.*, b.name leftModelName, c.name rightModelName FROM t_cc_model_relation_type a")
+		sb.append(" SELECT a.*, b.name leftModelName, c.name rightModelName, d.name reverseName FROM t_cc_model_relation_type a")
 		.append(" left join t_cc_model_item b on a.left_model_code=b.code")
 		.append(" left join t_cc_model_item c on a.right_model_code=c.code")
+		.append(" LEFT JOIN t_cc_model_relation_type d on a.reverse_code=d.type_code")
 		.append(" WHERE A.left_model_code=:leftModelCode");
 		
 		DeferedParamQuery dQuery = new DeferedParamQuery(sb.toString());

@@ -218,6 +218,8 @@ public class ModelItemServiceImpl implements ModelItemService {
 	private void getViewLabelToMiValue(MiValue miValue, List<ViewLabel> viewLabelList) {
 		viewLabelList.add(new ViewLabel("input", "hidden", "miValue.code", miValue.getCode(), null));
 		ViewLabel dataType = new ViewLabel("select", "text", "miValue.dataType", miValue.getDataType(), "数据类型", 19);
+		dataType.setViewClazz("miValueDataType");
+		
 		// 获取值域
 		Map<String, String> valueDomain = new HashMap<String, String>();
 		ItemValueType[] itemValueTypes = ItemValueType.values();
@@ -226,8 +228,9 @@ public class ModelItemServiceImpl implements ModelItemService {
 		}
 		dataType.setValueDomain(valueDomain);
 		viewLabelList.add(dataType);
-
-		viewLabelList.add(new ViewLabel("input", "text", "miValue.dataLength", miValue.getDataLength(), "数据长度"));
+		ViewLabel dataLength = new ViewLabel("input", "text", "miValue.dataLength", miValue.getDataLength(), "数据长度");
+		dataLength.setViewClazz("miValueDataLength");
+		viewLabelList.add(dataLength);
 		viewLabelList.add(new ViewLabel("input", "hidden", "miValue.usingState", miValue.getUsingState() + "", null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "miValue.belongTable", miValue.getBelongTable() + "", null));
 	}
