@@ -178,6 +178,11 @@ body {
     margin-left: 98px;
     background-color: #f0f1f1;
 }
+
+#structBaseEdit .icon_i{
+ padding: 5px;
+}
+
 #structBaseEdit .icon {
     display: inline-block;
     vertical-align: middle;
@@ -395,7 +400,7 @@ body {
 #structBaseEdit .icon-add-abc.group,
  #structBaseEdit .icon-add-filterGroup.group,
  #structBaseEdit .icon-add-filter.group{
-	margin-right: 40px;
+/*  margin-right: 20px; */
 }
 #structBaseEdit .edit .icon.icon-trash-sm, 
 #structBaseEdit .edit .icon.icon-save {

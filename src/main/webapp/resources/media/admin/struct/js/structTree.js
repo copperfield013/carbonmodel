@@ -111,10 +111,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='icon fa fa-edit icon-edit'></i>"+
-            "<i class='icon icon-add-sm group'></i>" +
+	         "<i class='icon icon_i  fa fa-edit icon-edit'></i>"+
+            "<i class='icon icon_i icon-add-sm group'></i>" +
             
-            	"<i class='icon glyphicon glyphicon-trash delStruct'></i>" +
+            	"<i class='icon icon_i glyphicon glyphicon-trash delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -159,11 +159,11 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanCode' class='span-title'>"+strucBase.id+"</span>"+
             "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
-	         "<i class='icon glyphicon glyphicon-filter strucGroup2DFilterView'></i>"+
-	         "<i class=' icon fa fa-edit icon-edit'></i>"+
-            "<i class='icon icon-add-sm group'></i>" +
+	         "<i class='icon icon_i glyphicon glyphicon-filter strucGroup2DFilterView'></i>"+
+	         "<i class=' icon icon_i fa fa-edit icon-edit'></i>"+
+            "<i class='icon icon_i icon-add-sm group'></i>" +
             
-            	"<i class='icon glyphicon glyphicon-trash delStruct'></i>" +
+            	"<i class='icon icon_i glyphicon glyphicon-trash delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -209,11 +209,11 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='icon glyphicon glyphicon-filter strucFilterView'></i>"+
-	         "<i class='icon fa fa-edit icon-edit'></i>"+
-            "<i class='icon icon-add'></i>" +
+	         "<i class='icon icon_i glyphicon glyphicon-filter strucFilterView'></i>"+
+	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+            "<i class='icon icon_i icon-add'></i>" +
             
-            	"<i class='icon glyphicon glyphicon-trash delStruct'></i>" +
+            	"<i class='icon icon_i glyphicon glyphicon-trash delStruct'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -259,8 +259,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+strucBase.title+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='icon fa fa-edit icon-edit'></i>"+
-	         "<i class='icon glyphicon glyphicon-trash delStruct'></i>" +
+	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+	         "<i class='icon icon_i glyphicon glyphicon-trash delStruct'></i>" +
            /* "<i class='icon icon-add-sm group'></i>" +*/
            /* "<i class='icon delStruct'></i>" +*/
             /*"<i class='icon icon-arrow-sm active'></i>" +*/
@@ -3029,7 +3029,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 
     //双击编辑
     $("#structBaseEdit").on("dblclick", ".label-bar", function(){
-    	if(!$(this).hasClass("attr-relative")){
+    	/*if(!$(this).hasClass("attr-relative")){
     		$(this).find(".edit-input").removeAttr("disabled");
         	$(this).find("select").removeAttr("disabled");
     	}else {
@@ -3042,7 +3042,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	        	 $(this).find(".icon-arrow-sm").trigger("click");	
 			 }
     	}    	
-        $(this).addClass("edit");
+        $(this).addClass("edit");*/
         
     })
     

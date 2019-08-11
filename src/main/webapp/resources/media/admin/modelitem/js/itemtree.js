@@ -99,9 +99,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class=' icon fa fa-edit icon-edit'></i>"+
-            "<i class='icon icon-add-sm group'></i>" +
-            "<i class='icon glyphicon glyphicon-trash delModelItem'></i>" +
+	         "<i class=' icon icon_i fa fa-edit icon-edit'></i>"+
+            "<i class='icon icon_i icon-add-sm group'></i>" +
+            "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -149,10 +149,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='icon fa fa-pagelines confTwoLeverAttr'></i>"+
-	         "<i class='icon fa fa-edit icon-edit'></i>"+
-            "<i class='icon icon-add-sm group'></i>" +
-            "<i class='icon glyphicon glyphicon-trash delModelItem'></i>" +
+	         "<i class='icon icon_i fa fa-pagelines confTwoLeverAttr'></i>"+
+	         "<i class='icon  icon_i fa fa-edit icon-edit'></i>"+
+            "<i class='icon icon_i icon-add-sm group'></i>" +
+            "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
             "</div>" +
             "</div>" +
@@ -198,10 +198,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
-	         "<i class='icon glyphicon glyphicon-filter calculatedFilterView'></i>"+
-	         "<i class='icon fa fa-keyboard-o expressionView'></i>"+
-	         "<i class='icon fa fa-edit icon-edit'></i>"+
-	         "<i class='icon glyphicon glyphicon-trash delModelItem'></i>" +
+	         "<i class='icon icon_i glyphicon glyphicon-filter calculatedFilterView'></i>"+
+	         "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>"+
+	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+	         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
             "</div>" +
             "</div>" +
             "</div>" +
@@ -247,8 +247,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='icon fa fa-edit icon-edit'></i>"+
-	         "<i class='icon glyphicon glyphicon-trash delModelItem'></i>" +
+	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+	         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
            /* "<i class='icon icon-add-sm group'></i>" +*/
            /* "<i class='icon delModelItem'></i>" +*/
             /*"<i class='icon icon-arrow-sm active'></i>" +*/
@@ -298,9 +298,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='icon fa fa-keyboard-o expressionView'></i>"+
-	         "<i class='icon fa fa-edit icon-edit'></i>"+
-	         "<i class='icon glyphicon glyphicon-trash delModelItem'></i>" +
+	         "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>"+
+	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+	         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
            /* "<i class='icon icon-add-sm group'></i>" +*/
            /* "<i class='icon delModelItem'></i>" +*/
             /*"<i class='icon icon-arrow-sm active'></i>" +*/
@@ -354,11 +354,11 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         
 	         
 	        /* fa-filter*/
-	         "<i class='icon glyphicon glyphicon-filter factFilterView'></i>"+
-	         "<i class='icon fa fa-keyboard-o expressionView'></i>"+
+	         "<i class='icon icon_i glyphicon glyphicon-filter factFilterView'></i>"+
+	         "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>"+
 	        
-	         "<i class='icon fa fa-edit icon-edit'></i>"+
-	         "<i class='icon glyphicon glyphicon-trash delModelItem'></i>" +
+	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+	         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
            /* "<i class='icon icon-add-sm group'></i>" +*/
            /* "<i class='icon delModelItem'></i>" +*/
             /*"<i class='icon icon-arrow-sm active'></i>" +*/
@@ -408,9 +408,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
-	         "<i class=' icon fa fa-pagelines confCascadeEnumChild'></i>"+
-            "<i class='icon fa fa-edit icon-edit'></i>"+
-            "<i class='icon glyphicon glyphicon-trash delModelItem'></i>" +
+	         "<i class=' icon icon_i fa fa-pagelines confCascadeEnumChild'></i>"+
+            "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+            "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
             "</div>" +
             "</div>" +
             "</div>" +

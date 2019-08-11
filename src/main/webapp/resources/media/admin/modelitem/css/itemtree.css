@@ -28,6 +28,9 @@ body {
 #modelItemEdit .entity_list {
 	padding-top: 2em;
 }
+#modelItemEdit .icon_i{
+ padding: 5px;
+}
 #modelItemEdit .select2-container.select2-container-disabled .select2-choice,
 #modelItemEdit .select2-container.select2-container-disabled .select2-choice .select2-arrow {
 	background-color: inherit;
@@ -396,7 +399,7 @@ body {
 #modelItemEdit .icon-add-abc.group,
  #modelItemEdit .icon-add-filterGroup.group,
  #modelItemEdit .icon-add-filter.group{
-	margin-right: 40px;
+	/* margin-right: 40px; */
 }
 #modelItemEdit .edit .icon.icon-trash-sm, 
 #modelItemEdit .edit .icon.icon-save {
