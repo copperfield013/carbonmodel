@@ -2886,7 +2886,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         }else if ($("#structBaseEdit").find(".icon-add-filter.active").length > 0) {
             var el = $("#structBaseEdit").find(".icon-add-filter.active")[0];
         }
-        
+        addUnfold(el);
      if ($(this).hasClass("add-GROUP1D") || $(this).hasClass("add-GROUP2D")) { // 添加字段组和二维组
     	 var sbPid = $(el).closest(".collapse-header").attr("data-sbid");
     	 //这个暂时没用到

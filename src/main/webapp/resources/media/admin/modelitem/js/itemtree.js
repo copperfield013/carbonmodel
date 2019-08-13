@@ -4080,6 +4080,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             var el = $("#modelItemEdit").find(".icon-add-filter.active")[0];
         }
         
+        addUnfold(el);
+        
      if ($(this).hasClass("add-attr-group")) { // 添加单行组
             var mipCode = $(el).closest(".collapse-header").attr("data-code");
             var modelItemType = $(this).attr("modelItemType");
