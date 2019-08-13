@@ -25,10 +25,20 @@ public class FactMiStrategy extends ValueItemMiStrategy {
 		miValue.setCode(modelItem.getCode());
 		miValue.setBelongTable("t_" + modelItem.getBelongModel()+ "_STAT");
 		
+		
+		
 		if ("add".equals(flag)) {
+			MiStatFact miStatFact = modelItemContainer.getMiStatFact();
+			miStatFact.setCode(modelItem.getCode());
+			
 			commService.insert(miValue);
+			commService.insert(miStatFact);
 		} else {
 			commService.update(miValue);
+			
+			MiStatFact miStatFact = commService.get(MiStatFact.class, modelItem.getCode());
+			miStatFact.setUpdrillFuncType(modelItemContainer.getMiStatFact().getUpdrillFuncType());
+			commService.update(miStatFact);
 		}
 	}
 

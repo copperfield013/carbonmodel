@@ -18,7 +18,7 @@ public class MiStatFact {
 	
 	  @Id
 	  @Column(name="code")
-	  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+	  @GenericGenerator(name = "system-uuid", strategy = "q")
 	  private String code;//单独生成规则
 	
 	  /**

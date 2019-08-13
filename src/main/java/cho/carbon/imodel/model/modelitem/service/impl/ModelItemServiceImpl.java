@@ -34,6 +34,7 @@ import cho.carbon.imodel.model.modelitem.strategy.MiStrategyContext;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.modelitem.vo.ViewLabel;
 import cho.carbon.imodel.model.struct.pojo.StrucFilter;
+import cho.carbon.meta.enun.AggregateFunctionType;
 import cho.carbon.meta.enun.ItemValueType;
 import cho.carbon.meta.enun.ModelItemType;
 import cn.sowell.copframe.dto.page.PageInfo;
@@ -104,15 +105,18 @@ public class ModelItemServiceImpl implements ModelItemService {
 		MiValue miValue = null;
 		MiEnum miEnum = null;
 		MiReference miReference = null;
+		MiStatFact miStatFact = null;
 		if (modelItem == null) {
 			modelItem = new ModelItem("", "", modelItemType.getIndex(), "", "", 0, "");
 			miValue = new MiValue("", ItemValueType.STRING.getIndex() + "", "32", "", 0);
 			miEnum = new MiEnum("", null);
 			miReference = new MiReference("", "", "", "", "0");
+			miStatFact = new MiStatFact("", null, null, null, 0);
 		} else {
 			miValue = commService.get(MiValue.class, modelItem.getCode());
 			miEnum = commService.get(MiEnum.class, modelItem.getCode());
 			miReference = commService.get(MiReference.class, modelItem.getCode());
+			miStatFact = commService.get(MiStatFact.class, modelItem.getCode());
 		}
 		List<ViewLabel> viewLabelList = new ArrayList();
 		// 这里设置通用属性
@@ -137,8 +141,23 @@ public class ModelItemServiceImpl implements ModelItemService {
 		case GIANT_LINE_GROUP:
 		case MULTI_LINE_GROUP:
 			break;
-		case VALUE_ITEM:
 		case FACT_ITEM:
+			getViewLabelToMiValue(miValue, viewLabelList);
+			
+			//MiStatFact 事实属性
+			ViewLabel updrillFuncType = new ViewLabel("select", "text", "miStatFact.updrillFuncType",miStatFact==null?"": miStatFact.getUpdrillFuncType()+"", "上钻类型", 0);
+			
+			// 获取值域
+			Map<String, String> valueMap2 = new HashMap<String, String>();
+			AggregateFunctionType[] aggrs = AggregateFunctionType.values();
+			for (AggregateFunctionType aggr : aggrs) {
+				valueMap2.put(aggr.getIndex() + "", aggr.getName());
+			}
+			updrillFuncType.setValueDomain(valueMap2);
+			viewLabelList.add(updrillFuncType);
+			
+			break;
+		case VALUE_ITEM:
 		case DIMENSION_ITEM:
 		case CASCADE_REFERENCE_ITEM:
 		case CALCULATED_ITEM:

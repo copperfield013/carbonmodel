@@ -19,7 +19,7 @@ public class ViewLabel implements Comparable{
 	private String viewClazz;//页面class标记
 	
 	//排序字段
-	private Integer corder=0;
+	private Integer corder=6;
 	
 	//值域为多的时候
 	//private  Map<String, String> multValue;
