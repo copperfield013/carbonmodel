@@ -600,7 +600,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	 //拖拽排序方法
     function drag(length) {
     	
-    	var dragWrap = document.getElementById("dragEdit-"+length); 
+    	/*var dragWrap = document.getElementById("dragEdit-"+length); 
 		var name = "dragEdit-"+length;		
     	Sortable.create(dragWrap, {
 	        group: {
@@ -653,7 +653,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    			 $CPF.closeLoading();
 	    	    });	        	
 	        }
-	    });     
+	    });     */
     };
     
     //abc初始化方法
