@@ -58,7 +58,9 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 		commService.delete(criteria);
 		if (!criteria.getTypeCode().equals(criteria.getReverseCode())) {
 			ModelRelationType reverseObj = commService.get(ModelRelationType.class, criteria.getReverseCode());
-			commService.delete(reverseObj);
+			if (reverseObj != null) {
+				commService.delete(reverseObj);
+			}
 		}
 	}
 
