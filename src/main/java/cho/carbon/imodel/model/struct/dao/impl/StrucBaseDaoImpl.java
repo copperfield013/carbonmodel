@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -54,9 +55,24 @@ public class StrucBaseDaoImpl implements StrucBaseDao {
 	}
 
 	@Override
-	public List<StrucBase> getAllStruc() {
+	public List<StrucBase> getAllStruc(String modelCode) {
 		String hql = "from StrucBase b WHERE type=1 ";
-		return sFactory.getCurrentSession().createQuery(hql).list();
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(" SELECT a.* FROM `t_cc_struc_base` a")
+		.append(" left join t_cc_struc_micode b on a.id=b.sb_id")
+		.append(" WHERE type='1' ");
+		
+		if (modelCode != null && modelCode !="") {
+			sb.append(" AND B.item_code=:modelCode ");
+		}
+		
+		SQLQuery sqlQuery = sFactory.getCurrentSession().createSQLQuery(sb.toString());
+		if (modelCode != null && modelCode !="") {
+			sqlQuery.setString("modelCode", modelCode);
+		}
+				
+		return sqlQuery.addEntity(StrucBase.class).list();
 	}
 
 	@Override

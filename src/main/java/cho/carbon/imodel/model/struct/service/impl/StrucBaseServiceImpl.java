@@ -67,8 +67,8 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 	}
 	
 	@Override
-	public List<StrucBase> getAllStruc() {
-		return strucBaseDao.getAllStruc();
+	public List<StrucBase> getAllStruc(String modelCode) {
+		return strucBaseDao.getAllStruc(modelCode);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 	 */
 	private List<ViewLabel> getDAByMType(StrucBase strucBase, StrucElementType strucElementType, Integer sbPid) throws Exception {
 		//获取所有结构体
-		List<StrucBase> allStruc = this.getAllStruc();	
+		List<StrucBase> allStruc = this.getAllStruc(null);	
 		
 		
 		StrucBase pStrucBase = commService.get(StrucBase.class, sbPid);
@@ -383,7 +383,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 			  valueDomain.put(strucBase.getId() + "", strucBase.getTitle()); 
 		  }
 		  itemCodeVb.setValueDomain(valueDomain);
-		
+		  itemCodeVb.setViewClazz("strucPointer");
 		viewLabelList.add(itemCodeVb);
 	}
 

@@ -25,9 +25,10 @@ public interface StrucBaseDao {
 
 	/**
 	 * 获取所有结构体
-	 * @return
+	 * @param modelCode 获取item， 对应的结构体， 若为null , 则获取所有结构体
+	 * @return StrucBase
 	 */
-	List<StrucBase> getAllStruc();
+	List<StrucBase> getAllStruc(String modelCode);
 
 	/**
 	 * 获取结构体下， 所有Group1D的孩子

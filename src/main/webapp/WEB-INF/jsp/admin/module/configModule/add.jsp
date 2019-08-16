@@ -25,7 +25,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-2 control-label" for="mappingName">配置名称<font color="red">*</font></label>
+						<label class="col-lg-2 control-label" for="mappingName">结构体名称<font color="red">*</font></label>
 						<div class="col-lg-5">
 							<select data-bv-notempty="true" data-bv-notempty-message="配置名称必填"  style="width: 30%;" id="mappingId" class="ser-list" name="mappingId">
 								<c:forEach items="${strucList }" var="item">

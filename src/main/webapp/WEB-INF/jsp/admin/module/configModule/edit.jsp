@@ -29,7 +29,7 @@
 					</div>
 					
 					<div class="form-group">
-						<label class="col-lg-2 control-label" for="mappingId">配置名称<font color="red">*</font></label>
+						<label class="col-lg-2 control-label" for="mappingId">结构体名称<font color="red">*</font></label>
 						<div class="col-lg-5">
 							${strucBase.title }
 						</div>

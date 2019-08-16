@@ -174,7 +174,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    				 miCode:modelRela.rightModelCode
 	    	    	 }, function(data) {
 	    	    		 var modelItemList = data.modelItemList;
-	    	    		 var str = "";  
+	    	    		 var str = "<option value=''>---请选择---</option>"; 
 	    	    		 
 	    	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
 	    	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 
@@ -208,7 +208,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		    		 miCode:miCode
 		    	 }, function(data) {
 		    		 var valueTypeMap = data.valueTypeMap;
-		    		 var str = "";  
+		    		 var str = "<option value=''>---请选择---</option>"; 
 		    		 
 	            	for (var key in valueTypeMap) { //遍历json数组时，这么写p为索引，0,1
 	                   str = str + "<option value=\"" + key + "\">" + valueTypeMap[key] + "</option>"; 
@@ -224,9 +224,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    	 if ($multStrucRela.length>=1) {
 	    		 // 获取左实体code
 	    		var sbPid =  $("#structTreeFieldAdd").attr("sbPid");
+	    		
 	    		Ajax.ajax('admin/structBase/getStrucMiCode', {
 	    			sbId:sbPid
 		    	 }, function(data) {
+		    		 debugger;
+		    		 
 		    		 var strucMiCode = data.strucMiCode;
 		    		// 获取多选关系值域
 		    		 Ajax.ajax('admin/modelRelationType/getModelRela', {
@@ -234,7 +237,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		    			rightModelCode:miCode
 			    	 }, function(data) {
 			    		 var modelRelaList = data.modelRelaList;
-			    		 var str = "";  
+			    		 var str = " "; 
 		            	for (var key in modelRelaList) { //遍历json数组时，这么写p为索引，0,1
 		                   str = str + "<option value=\"" + modelRelaList[key].typeCode + "\">" + modelRelaList[key].name + "</option>"; 
 		                }
@@ -243,7 +246,26 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			            }); 
 		    		 
 		         }); 
-	    		 
+	    		// 更改指向结构体
+	    		 var $strucPointer = $(".strucPointer");
+	    		Ajax.ajax('admin/structBase/getAppointStruct', {
+	    			modelCode:miCode
+		    	 }, function(data) {
+		    		 debugger;
+		    		 var strucBaseList = data.strucBaseList;
+		    		// 为志向结构体赋值
+		    		 	var str = "<option value=''>---请选择---</option>"; 
+		            	for (var key in strucBaseList) { //遍历json数组时，这么写p为索引，0,1
+		                   str = str + "<option value=\"" + strucBaseList[key].id + "\">" + strucBaseList[key].title + "</option>"; 
+		                }
+		                	
+		            	$strucPointer.empty().append(str);
+		    		 
+		         }); 
+	    		
+	    		
+	    		
+	    		
 	    	 }
 	    	 
 	    	 //更改子集
@@ -261,7 +283,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					    		 debugger;
 					    		 var childList = data.childList;
 					    		
-					    		 var str = "";  
+					    		 var str = "<option value=''>---请选择---</option>"; 
 				            	for (var key in childList) { //遍历json数组时，这么写p为索引，0,1
 				                   str = str + "<option value=\"" + childList[key].id + "\">" + childList[key].name + "</option>"; 
 				                }
@@ -285,7 +307,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     				 miCode:miReference.modelCode
     	    	 }, function(data) {
     	    		 var modelItemList = data.modelItemList;
-    	    		 var str = "";  
+    	    		 var str = "<option value=''>---请选择---</option>"; 
     	    		 debugger;
     	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
     	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 

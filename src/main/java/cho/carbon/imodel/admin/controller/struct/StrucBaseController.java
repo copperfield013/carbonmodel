@@ -354,6 +354,33 @@ public class StrucBaseController {
 			}
 		}
 	    
+	    /**
+	     * 	获取指定的结构体
+	     * @param sbId
+	     * @return
+	     */
+	    @ResponseBody
+		@RequestMapping("/getAppointStruct")
+		public String getAppointStruct(String modelCode){
+			Map<String, Object> map = new HashMap<String, Object>();
+			JSONObject jobj = new JSONObject(map);
+			try {
+				
+				List<StrucBase> strucBaseList = strucBaseService.getAllStruc(modelCode);
+				
+				map.put("strucBaseList", strucBaseList);
+				map.put("code", 200);
+				map.put("msg", "成功！");
+				return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+			} catch (Exception e) {
+				logger.error("添加失败", e);
+				e.printStackTrace();
+				map.put("code", 400);
+				map.put("msg", "操作失败！");
+				return jobj.toString();
+			}
+		}
+	    
 	    
 	    /**
 	     * 快速生成结构体

@@ -54,7 +54,7 @@ public class ConfigModuleController {
 	
 	  @RequestMapping(value = "/add", method = RequestMethod.POST) 
 	  public  ModelAndView add(){ // 获取所有的配置文件 
-		   List<StrucBase> strucList = strucBaseService.getAllStruc();
+		   List<StrucBase> strucList = strucBaseService.getAllStruc(null);
 		   List<StrucBase> strucChildList = strucBaseService.getGroup1DChild(strucList.get(0).getId());
 		  ModelAndView mv = new ModelAndView(); 
 		  mv.addObject("strucList", strucList);

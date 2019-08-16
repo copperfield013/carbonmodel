@@ -21,9 +21,10 @@ public interface StrucBaseService {
 	
 	/**
 	 * 获取所有结构体
-	 * @return
+	 * @param modelCode 获取item， 对应的结构体， 若为null , 则获取所有结构体
+	 * @return StrucBase
 	 */
-	List<StrucBase> getAllStruc();
+	List<StrucBase> getAllStruc(String modelCode);
 
 	/**
 	 * 	保存结构体
