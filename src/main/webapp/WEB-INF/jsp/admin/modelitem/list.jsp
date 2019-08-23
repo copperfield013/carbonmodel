@@ -40,7 +40,7 @@
 						<td><font color="${item.type eq '1'? '': '#00bcd4'}">${item.showType }</font></td>
 						<td>${item.showUsingState }</td>
 						<td>
-							<a id="update" itemCode="${item.code }" href="javascript:;"  title="修改">修改</a>
+							<a id="edit" itemCode="${item.code }" href="javascript:;"  title="修改">修改</a>
 							<a class="tab" href="admin/modelItem/itemtree?itemCode=${item.code }" title="管理子节点" target="modelItem_tree" >管理子节点</a>
 							<a class="tab"  href="admin/modelRelationType/list?leftModelCode=${item.code }" title="配置<${item.name }>关系" target="modelItem_confRelationList" >配置关系</a>
 							
@@ -64,9 +64,9 @@
             });
         });
 
-		$("tbody", $page).on("click", "#update", function() {
+		$("tbody", $page).on("click", "#edit", function() {
 			var itemCode = $(this).attr("itemCode");
-            Dialog.openDialog("admin/modelItem/update?itemCode=" + itemCode, "修改", "", {
+            Dialog.openDialog("admin/modelItem/update?itemCode=" + itemCode, "修改模型", "", {
                 width :1000,
                 height : 500
             });
@@ -74,7 +74,7 @@
 
 		$("tbody", $page).on("click", "#confRelation", function() {
 			var itemCode = $(this).attr("itemCode");
-            Dialog.openDialog("admin/modelItem/update?itemCode=" + itemCode, "修改", "", {
+            Dialog.openDialog("admin/modelItem/update?itemCode=" + itemCode, "配置关系", "", {
                 width :1000,
                 height : 500
             });

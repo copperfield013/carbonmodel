@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/common/base_empty.jsp"%>
+<script src="media/admin/plugins/beyond/js/select2/select2.js"></script>
 <div id="modelItem-update">
 	<div class="page-header">
 		<div class="header-title">
