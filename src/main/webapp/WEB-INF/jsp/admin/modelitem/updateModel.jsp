@@ -54,6 +54,16 @@
 					</div>
 					
 					<div class="form-group">
+						<label class="col-lg-2 control-label" for="miModel.needRunningLogger">运行日志</label>
+						<div class="col-lg-5">
+							<select class="" name="miModel.needRunningLogger">
+								<option value="0" <c:if test="${miModel.needRunningLogger eq 0 }">selected</c:if>>否</option>
+								<option value="1" <c:if test="${miModel.needRunningLogger eq 1 }">selected</c:if>>是</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
 						<label class="col-lg-2 control-label" for="modelItem.description">描述</label>
 						<div class="col-lg-5">
 							<textarea  class="form-control" name="modelItem.description">${modelItem.description }</textarea>

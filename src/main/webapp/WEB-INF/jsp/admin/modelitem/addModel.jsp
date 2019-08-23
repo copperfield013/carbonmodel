@@ -58,6 +58,16 @@
 						</div>
 					</div>
 					
+					<div class="form-group">
+						<label class="col-lg-2 control-label" for="miModel.needRunningLogger">运行日志</label>
+						<div class="col-lg-5">
+							<select class="" name="miModel.needRunningLogger">
+								<option selected value="0">否</option>
+								<option value="1">是</option>
+							</select>
+						</div>
+					</div>
+					
 					
 					<div class="form-group">
 						<label class="col-lg-2 control-label" for="modelItem.description">描述</label>

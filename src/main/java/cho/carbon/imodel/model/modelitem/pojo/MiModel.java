@@ -31,13 +31,22 @@ public class MiModel {
 	@Column(name = "need_cache")
 	private Integer needCache;
 	
+	/**
+	 * 是否记录运行日志
+	 * 0.否
+	 * 1.是
+	 */
+	@Column(name="need_running_logger")
+	private Integer needRunningLogger;
+	
 	public MiModel() {}
 	
-	public MiModel(String code, Integer needHistory, Integer needCache) {
+	public MiModel(String code, Integer needHistory, Integer needCache, Integer needRunningLogger) {
 		super();
 		this.code = code;
 		this.needHistory = needHistory;
 		this.needCache = needCache;
+		this.needRunningLogger = needRunningLogger;
 	}
 
 	public String getCode() {
@@ -63,4 +72,13 @@ public class MiModel {
 	public void setNeedCache(Integer needCache) {
 		this.needCache = needCache;
 	}
+
+	public Integer getNeedRunningLogger() {
+		return needRunningLogger;
+	}
+
+	public void setNeedRunningLogger(Integer needRunningLogger) {
+		this.needRunningLogger = needRunningLogger;
+	}
+	
 }
