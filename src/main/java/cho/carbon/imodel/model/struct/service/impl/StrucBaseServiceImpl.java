@@ -1,9 +1,11 @@
 package cho.carbon.imodel.model.struct.service.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -541,8 +543,11 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		ModelItem modelItem = commService.get(ModelItem.class, belongModel);
 		
 		//创建结构体根节点
+		
+		String stucTitle = modelItem.getName() + LocalDate.now().toString();
+		
 		StrucBaseContainer sbc = new StrucBaseContainer();
-		StrucBase strucBase = new StrucBase(null, StrucElementType.STRUC.getCode(), modelItem.getName(), StrucOptType.WRITE.getIndex(), 1, null);
+		StrucBase strucBase = new StrucBase(null, StrucElementType.STRUC.getCode(), stucTitle, StrucOptType.WRITE.getIndex(), 1, null);
 		StrucMiCode strucMiCode = new StrucMiCode(null, modelItem.getCode());
 		sbc.setStrucBase(strucBase);
 		sbc.setStrucMiCode(strucMiCode);
