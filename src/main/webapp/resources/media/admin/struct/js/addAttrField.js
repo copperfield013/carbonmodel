@@ -87,7 +87,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			var strLabel = '<div class="form-group">';
 			strLabel+= '<label class="col-lg-2 control-label " for="'+viewLabel.name+'">'+viewLabel.showName+'</label>';
 			strLabel+= '<div class="col-lg-5">';
-			strLabel+= '<select data-allow-clear="true" class=" '+viewLabel.viewClazz+'" name="'+viewLabel.name+'">';
+			strLabel+= '<select allowClear="true" data-allow-clear="true" class=" '+viewLabel.viewClazz+'" name="'+viewLabel.name+'">';
 			strLabel+='<option value="">- -请选择- -</option>';
 			//这里存放optiong
 			var vDomainMap = viewLabel.valueDomain;
@@ -208,13 +208,14 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		    		 miCode:miCode
 		    	 }, function(data) {
 		    		 var valueTypeMap = data.valueTypeMap;
-		    		 var str = "<option value=''>---请选择---</option>"; 
+		    		 var str = "<option value='' selected>---请选择---</option>"; 
 		    		 
 	            	for (var key in valueTypeMap) { //遍历json数组时，这么写p为索引，0,1
 	                   str = str + "<option value=\"" + key + "\">" + valueTypeMap[key] + "</option>"; 
 	                }
 	                	
 	                	$strucFieldValueType.empty().append(str);
+	                	$strucFieldValueType.trigger("change");
 		            }); 
 	    	 }
 	    	
