@@ -9,6 +9,7 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.meta.constant.ModelItemValueParter;
 
 /**
  * ModelItemType.
@@ -26,10 +27,18 @@ public class FactMiStrategy extends ValueItemMiStrategy {
 		miValue.setBelongTable("t_" + modelItem.getBelongModel()+ "_STAT");
 		
 		
-		
 		if ("add".equals(flag)) {
+			//事实属性的父亲
+			String parent = modelItem.getParent();
+			//事实属性父亲的半生属性code
+			String code_cnt = ModelItemValueParter.getStatCountName(parent);
+			// 半生属性的事实属性
+			MiStatFact pfact = commService.get(MiStatFact.class, code_cnt);
+			Integer filterId = pfact.getFilterId();
+			
 			MiStatFact miStatFact = modelItemContainer.getMiStatFact();
 			miStatFact.setCode(modelItem.getCode());
+			miStatFact.setFilterId(filterId);
 			
 			commService.insert(miValue);
 			commService.insert(miStatFact);

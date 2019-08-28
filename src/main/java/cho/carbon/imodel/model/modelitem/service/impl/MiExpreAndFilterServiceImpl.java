@@ -202,11 +202,19 @@ public class MiExpreAndFilterServiceImpl implements MiExpreAndFilterService {
 		case 5:
 			// 结构体， 过滤条件保存
 			saveStrucFilter(Integer.parseInt(miCode), filterId);
+		case 6:
+			// 事实组的保存
+			saveFactGroupFilter(miCode, filterId);
 			break;
 		}
 		
 	}
 	
+	private void saveFactGroupFilter(String miCode, Integer filterId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * 保存计算属性的过滤条件
 	 * @param miCode

@@ -32,8 +32,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				for ( var key in modelItemList) {
 					var modelItem = modelItemList[key];
 					
-					if (modelItem.type == 5 || modelItem.type == 501 || modelItem.type == 502) {//单行属性分组
+					if (modelItem.type == 5 || modelItem.type == 501) {//单行属性分组
 						initGroup(modelItem, $parent);
+					}else if (modelItem.type == 502){
+						initFactGroup(modelItem, $parent);
 					} else if (modelItem.type == 6 || modelItem.type == 7) { //多行属性组 or  巨多行属性
 						initMoreGroup(modelItem, $parent);
 					} else if (modelItem.type == 206) {
@@ -163,6 +165,60 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         
 	  return attrGroupHtml;
     }
+    
+    //事实组start
+    
+    //事实组初始化方法
+    function initFactGroup(modelItem, $parent) {
+    	var attrGroupHtml = getFactGroupNode(modelItem);
+	    var $html = $(attrGroupHtml).prependTo($($parent));
+	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
+        drag($(".dragEdit-wrap").length);
+    }
+    
+    /**
+     * 事实组
+      */
+    function addFactGroup(el, modelItem) {// 这个有用
+        var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
+        var attrGroupHtml = getFactGroupNode(modelItem);
+        var $html = $(attrGroupHtml).prependTo($content);  
+	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
+	    addUnfold(el)
+        drag($(".dragEdit-wrap").length);
+    };
+    
+    //事实组
+    function getFactGroupNode(modelItem) {
+    	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
+        var attrGroupHtml = "<li class='attr-group'>" +
+            "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
+            "<div class='icon-label attr-group'>" +
+            "<i class='icon icon-attr-group'></i>" +
+            "<span class='text'>"+modelItem.showType+"</span>" +
+            "</div>" +
+            "<div class='label-bar al-save attr-group'>" +
+            "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
+            "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
+            "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
+        
+	         attrGroupHtml += "<div class='btn-wrap'>" +
+	         "<i class='icon icon_i glyphicon glyphicon-filter factGroupFilterView'></i>"+
+	         "<i class=' icon icon_i fa fa-edit icon-edit'></i>"+
+            "<i class='icon icon_i icon-add-sm group'></i>" +
+            "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
+            "<i class='icon icon-arrow-sm active'></i>" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
+            "</ul>" +
+            "</li>";
+	         
+	  return attrGroupHtml;
+    }
+    
+    // 事实组end
     
     /**
      * 添加计算属性方法
@@ -354,7 +410,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         
 	         
 	        /* fa-filter*/
-	         "<i class='icon icon_i glyphicon glyphicon-filter factFilterView'></i>"+
+	         /*"<i class='icon icon_i glyphicon glyphicon-filter factFilterView'></i>"+*/
 	         "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>"+
 	        
 	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
@@ -452,6 +508,20 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
         
         Dialog.openDialog("admin/expressionAndFilter/skipFilter?type=1&miCode=" + modelItemCode, "过滤条件页面", "", {
+            width :1000,
+            height : 500
+        });
+        
+    });
+    
+   //事实组属性， 跳转到过滤条件定义页面
+    $("#modelItemEdit").on("click", ".factGroupFilterView", function() {   
+    	
+       // 事实组过滤
+    	var $labelBar = $(this).closest(".label-bar");
+        var modelItemCode = $labelBar.closest(".collapse-header").attr("data-code");
+        
+        Dialog.openDialog("admin/expressionAndFilter/skipFilter?type=6&miCode=" + modelItemCode, "过滤条件页面", "", {
             width :1000,
             height : 500
         });
@@ -4094,7 +4164,13 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             	   afterSave	: function(modelItem){
    					if(modelItem){
    						console.log(modelItem.code);
-   						addGroup(el, modelItem);
+   						
+   						if (modelItem.type == 502) { // 事实组
+   							addFactGroup(el, modelItem);
+   						} else {
+   							addGroup(el, modelItem);
+   						}
+   						
    					}
    				}
    			}

@@ -4,6 +4,7 @@ package cho.carbon.imodel.model.modelitem.strategy;
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.MiCalExpress;
+import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatFact;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
@@ -45,13 +46,19 @@ public class FactGroupMiStrategy implements MiStrategy {
 		MiValue miValue1 = new MiValue(code_cnt, ItemValueType.STRING.getIndex() +"", "11", tableName, 0);
 		commService.insert(miValue1);
 		
-		// 创建事实和表达式id
+		// 表达式id
 		MiCalExpress miCalExpress = new MiCalExpress(null, "count(*)", "count(*)");
 		commService.insert(miCalExpress);
-		//创建事实
-		MiStatFact miStatFact = new MiStatFact(code_cnt, miCalExpress.getId() , null, AggregateFunctionType.SUM.getIndex(), 1);
-		commService.insert(miStatFact);
 		
+		// 创建过滤条件
+		MiFilterGroup miFilterGroup = new MiFilterGroup();
+		miFilterGroup.setType(1);
+		miFilterGroup.setName("默认组名");
+		miFilterGroup.setLogicalOperator(2);
+		commService.insert(miFilterGroup);
+		//创建事实
+		MiStatFact miStatFact = new MiStatFact(code_cnt, miCalExpress.getId() , miFilterGroup.getId(), AggregateFunctionType.SUM.getIndex(), 1);
+		commService.insert(miStatFact);
 	}
 
 	@Override

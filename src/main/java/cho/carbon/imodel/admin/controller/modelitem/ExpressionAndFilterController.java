@@ -43,6 +43,7 @@ import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
 import cho.carbon.imodel.model.struct.pojo.StrucFilter;
 import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
+import cho.carbon.meta.constant.ModelItemValueParter;
 import cho.carbon.meta.enun.ModelItemType;
 import cho.carbon.meta.enun.RelationType;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
@@ -67,6 +68,9 @@ public class ExpressionAndFilterController {
 	@Resource
 	CommService commService;
 	
+	@Resource
+	ModelItemService miService;
+	
 	Logger logger = Logger.getLogger(ExpressionAndFilterController.class);
 	@org.springframework.web.bind.annotation.InitBinder
 	public void InitBinder(ServletRequestDataBinder binder) {
@@ -77,7 +81,7 @@ public class ExpressionAndFilterController {
 	}
 	
 	/**
-	 * 跳转到添加关系组页面
+	 * 	跳转到添加关系组页面
 	 * @param model
 	 * @param belongmodel    这里看做左实体code
 	 * @return
@@ -198,9 +202,11 @@ public class ExpressionAndFilterController {
 	}
     
    /**
-    * 跳转到过滤条件页面
+    * 	跳转到过滤条件页面
     * @param miCode  
-    * @param type 0.统计实体   1.事实属性 2. 计算属性 3. 配置文件 结构体和 关系结构 5. 二维组结构
+    * @param type 0.统计实体   1.事实属性 2. 计算属性 
+    * 		3. 配置文件 结构体和 关系结构 5. 二维组结构	
+    * 		6.事实组
     * @return
     */
     @RequestMapping(value = "/skipFilter")
@@ -245,6 +251,18 @@ public class ExpressionAndFilterController {
 				StrucBase strucBase = commService.get(StrucBase.class, Integer.parseInt(miCode));
 				StrucMiCode strucMiCode = commService.get(StrucMiCode.class, strucBase.getParentId());
 				belongModel = strucMiCode.getItemCode();
+			} else if (type == 6) {
+				//TODO............
+				//根据事实组miCode, 获取事实组的孩子
+				// 事实组必须有一个孩子， 且孩子的filedId 不为空
+				String code_cnt = ModelItemValueParter.getStatCountName(miCode);
+				MiStatFact miStatFact = commService.get(MiStatFact.class, code_cnt);
+				filterId = miStatFact == null? null : miStatFact.getFilterId();
+				
+				//获取事实组， 对应的实体
+				ModelItem modelItem = commService.get(ModelItem.class, miCode);
+				MiModelStat miModelStat = commService.get(MiModelStat.class, modelItem.getBelongModel());
+				belongModel = miModelStat.getSourceCode();
 			}
 			
 			modelAndView.addObject("miCode", miCode);
@@ -260,7 +278,7 @@ public class ExpressionAndFilterController {
 	}
     
     /**
-     * 保存过滤条件
+     * 	保存过滤条件
      * @param miFilterGroup
      * @return
      */
@@ -285,7 +303,7 @@ public class ExpressionAndFilterController {
    	}
     
     /**
-     * 关系组保存方法
+     * 	关系组保存方法
      * @param miFilterContainer
      * @return
      */
