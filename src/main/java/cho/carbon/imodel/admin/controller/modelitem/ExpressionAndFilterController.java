@@ -145,7 +145,13 @@ public class ExpressionAndFilterController {
 			case FACT_ITEM:
 				 MiStatFact miStatFact = commService.get(MiStatFact.class, miCode);
 				 if (miStatFact != null) {
-						MiCalExpress miCalExpress = commService.get(MiCalExpress.class, miStatFact.getExpressId());
+						MiCalExpress miCalExpress = null;
+						Integer expressId = miStatFact.getExpressId();
+						
+						if (expressId !=null) {
+							miCalExpress = commService.get(MiCalExpress.class, expressId);
+						}
+								
 						codeTxt = miCalExpress == null ?"":miCalExpress.getCodeTxt();
 					}
 				break;

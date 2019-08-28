@@ -106,11 +106,21 @@ public class MiExpreAndFilterServiceImpl implements MiExpreAndFilterService {
 			commService.insert(miStatFact);
 		} else {
 			Integer expressId = miStatFact.getExpressId();
+			if (expressId == null) {
+				//构建表达式
+				MiCalExpress miCalExpress = new MiCalExpress();
+				miCalExpress.setCodeTxt(codeTxt);
+				commService.insert(miCalExpress);
+				
+				miStatFact.setExpressId(miCalExpress.getId());
+				commService.update(miStatFact);
+			} else {
+				//构建表达式， 
+				MiCalExpress miCalExpress = commService.get(MiCalExpress.class, expressId);
+				miCalExpress.setCodeTxt(codeTxt);
+				commService.update(miCalExpress);
+			}
 			
-			//构建表达式， 
-			MiCalExpress miCalExpress = commService.get(MiCalExpress.class, expressId);
-			miCalExpress.setCodeTxt(codeTxt);
-			commService.update(miCalExpress);
 		}
 		
 	}
