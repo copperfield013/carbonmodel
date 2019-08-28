@@ -158,7 +158,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 						StrucMiCode p1 = commService.get(StrucMiCode.class, pStrucBase.getParentId());
 						ModelItem modelItem = commService.get(ModelItem.class, p1.getItemCode());
 						//获取实体下， 所有普通分组下的孩子
-						ModelItemType[] pTypes = {ModelItemType.ONE_LINE_GROUP, ModelItemType.DIMENSION_GROUP};
+						ModelItemType[] pTypes = {ModelItemType.ONE_LINE_GROUP, ModelItemType.DIMENSION_GROUP, ModelItemType.FACT_GROUP};
 						ModelItemType[] chilTypes = {ModelItemType.VALUE_ITEM,
 								ModelItemType.FILE_ITEM,
 								ModelItemType.ENCRYPTION_ITEM,
