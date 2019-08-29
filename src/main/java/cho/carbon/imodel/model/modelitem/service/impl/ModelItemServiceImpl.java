@@ -142,7 +142,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 		case MULTI_LINE_GROUP:
 			break;
 		case FACT_ITEM:
-			getViewLabelToMiValue(miValue, viewLabelList);
+			getViewLabelToMiValue(miValue, viewLabelList, modelItemType);
 			
 			//MiStatFact 事实属性
 			ViewLabel updrillFuncType = new ViewLabel("select", "text", "miStatFact.updrillFuncType",miStatFact==null?"": miStatFact.getUpdrillFuncType()+"", "上钻类型", 0);
@@ -161,19 +161,19 @@ public class ModelItemServiceImpl implements ModelItemService {
 		case DIMENSION_ITEM:
 		case CASCADE_REFERENCE_ITEM:
 		case CALCULATED_ITEM:
-			getViewLabelToMiValue(miValue, viewLabelList);
+			getViewLabelToMiValue(miValue, viewLabelList, modelItemType);
 			break;
 		case ENUM_ITEM:
 		case DIMENSION_ENUM_ITEM:
 		case PREENUM_STRING_ITEM:
 			//miValue
-			getViewLabelToMiValue(miValue, viewLabelList);
+			getViewLabelToMiValue(miValue, viewLabelList, modelItemType);
 			//miEnum
 			getViewLabelToMiEnum(miEnum, viewLabelList);
 			break;
 		case CASCADE_ENUM_ITEM:
 			//miValue
-			getViewLabelToMiValue(miValue, viewLabelList);
+			getViewLabelToMiValue(miValue, viewLabelList, modelItemType);
 			//miEnum
 			ViewLabel viewEnum = new ViewLabel("select", "text", "miEnum.pid", miEnum.getPid() == null?"":miEnum.getPid()+"", "枚举字典");	
 			//获取值域
@@ -188,7 +188,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 			viewLabelList.add(new ViewLabel("input", "hidden", "miEnum.code", miEnum.getCode(), null));
 			
 			//级联枚举孩子数量
-			viewLabelList.add(new ViewLabel("input", "number", "modelItem.casEnumChildCount", "", "级联枚举孩子数量"));
+			viewLabelList.add(new ViewLabel("input", "number", "modelItem.casEnumChildCount", "", "级联级数"));
 			break;
 		case MULTI_ENUM_ITEM:
 			//miEnum
@@ -196,7 +196,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 			break;
 		case REFERENCE_ITEM:
 			//miValue
-			getViewLabelToMiValue(miValue, viewLabelList);
+			getViewLabelToMiValue(miValue, viewLabelList, modelItemType);
 			//miReference
 			getViewLabelToMiReference(miReference, viewLabelList);
 			
@@ -234,7 +234,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 	/*
 	 * 获取MiValue 需要在页面显示的值
 	 */
-	private void getViewLabelToMiValue(MiValue miValue, List<ViewLabel> viewLabelList) {
+	private void getViewLabelToMiValue(MiValue miValue, List<ViewLabel> viewLabelList, ModelItemType modelItemType) {
 		viewLabelList.add(new ViewLabel("input", "hidden", "miValue.code", miValue.getCode(), null));
 		ViewLabel dataType = new ViewLabel("select", "text", "miValue.dataType", miValue.getDataType(), "数据类型", 19);
 		dataType.setViewClazz("miValueDataType");
@@ -247,9 +247,12 @@ public class ModelItemServiceImpl implements ModelItemService {
 		}
 		dataType.setValueDomain(valueDomain);
 		viewLabelList.add(dataType);
-		ViewLabel dataLength = new ViewLabel("input", "text", "miValue.dataLength", miValue.getDataLength(), "数据长度");
-		dataLength.setViewClazz("miValueDataLength");
-		viewLabelList.add(dataLength);
+		
+		if (!ModelItemType.CASCADE_ENUM_ITEM.equals(modelItemType)) {
+			ViewLabel dataLength = new ViewLabel("input", "text", "miValue.dataLength", miValue.getDataLength(), "数据长度");
+			dataLength.setViewClazz("miValueDataLength");
+			viewLabelList.add(dataLength);
+		}
 		viewLabelList.add(new ViewLabel("input", "hidden", "miValue.usingState", miValue.getUsingState() + "", null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "miValue.belongTable", miValue.getBelongTable() + "", null));
 	}

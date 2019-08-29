@@ -1476,14 +1476,17 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
                 "<li class='card-list add_PREENUM_STRING_ITEM' modelItemType='202' modelItemShowName='预设枚举字符属性'>" +
                 "<i class='icon icon-card-attr'></i>" +
                 "<span class='text'>添加预设枚举字符</span>" +
-                "</li>" +
-                "<li class='card-list add_FILE_ITEM' modelItemType='203' modelItemShowName='添加文件属性'>" +
+                "</li>";
+            
+	            if(modelType == 5) {
+	           	 html += "<li class='card-list add_MULTI_ENUM_ITEM' modelItemType='204' modelItemShowName='添加多选枚举属性'>" +
+	                "<i class='icon icon-card-attr'></i>" +
+	                "<span class='text'>添加多选枚举</span>" +
+	                "</li>";
+	            }
+	            html +="<li class='card-list add_FILE_ITEM' modelItemType='203' modelItemShowName='添加文件属性'>" +
                 "<i class='icon icon-card-attr'></i>" +
                 "<span class='text'>添加文件属性</span>" +
-                "</li>" +
-                "<li class='card-list add_MULTI_ENUM_ITEM' modelItemType='204' modelItemShowName='添加多选枚举属性'>" +
-                "<i class='icon icon-card-attr'></i>" +
-                "<span class='text'>添加多选枚举</span>" +
                 "</li>" +
                 "<li class='card-list add_REFERENCE_ITEM' modelItemType='205' modelItemShowName='添加引用属性'>" +
                 "<i class='icon icon-card-attr'></i>" +
@@ -1497,14 +1500,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
                 "<i class='icon icon-card-attr'></i>" +
                 "<span class='text'>添加级联引用属性</span>" +
                 "</li>" +
-                
                 "<li class='card-list add_CALCULATED_ITEM' modelItemType='209' modelItemShowName='添加计算属性'>" +
                 "<i class='icon icon-card-attr'></i>" +
                 "<span class='text'>添加计算属性</span>" +
-                "</li>" +
+                "</li>";
                 
-                
-                "</ul>";
+                html += "</ul>";
         }
 
         var wrap = $("#modelItemEdit");
