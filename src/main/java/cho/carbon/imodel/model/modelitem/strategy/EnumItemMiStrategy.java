@@ -8,6 +8,8 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.meta.enun.ItemValueType;
+import cho.carbon.meta.enun.ModelItemType;
 
 /**
  * ModelItemType
@@ -25,6 +27,14 @@ public class EnumItemMiStrategy implements MiStrategy {
 		ModelItem modelItem = modelItemContainer.getModelItem();
 		MiValue miValue = modelItemContainer.getMiValue();
 		MiEnum miEnum = modelItemContainer.getMiEnum();
+		
+		if (ModelItemType.PREENUM_STRING_ITEM.getIndex() == modelItem.getType() || ModelItemType.ENUM_ITEM.getIndex() == modelItem.getType() ) {
+			miValue.setDataType(ItemValueType.STRING.getIndex()+"");
+		}
+		
+		if (ModelItemType.ENUM_ITEM.getIndex() == modelItem.getType()) {
+			miValue.setDataLength("32");
+		}
 		
 		miValue.setCode(modelItem.getCode());
 		miValue.setBelongTable("t_" + modelItem.getBelongModel()+ "_" + modelItem.getParent());

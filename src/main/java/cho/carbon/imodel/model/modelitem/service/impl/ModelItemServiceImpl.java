@@ -242,7 +242,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 	 */
 	private void getViewLabelToMiValue(MiValue miValue, List<ViewLabel> viewLabelList, ModelItemType modelItemType) {
 		viewLabelList.add(new ViewLabel("input", "hidden", "miValue.code", miValue.getCode(), null));
-		if (!ModelItemType.REFERENCE_ITEM.equals(modelItemType)) {
+		if (!(ModelItemType.CASCADE_ENUM_ITEM.equals(modelItemType) || ModelItemType.PREENUM_STRING_ITEM.equals(modelItemType) || ModelItemType.ENUM_ITEM.equals(modelItemType) || ModelItemType.REFERENCE_ITEM.equals(modelItemType))) {
 			ViewLabel dataType = new ViewLabel("select", "text", "miValue.dataType", miValue.getDataType(), "数据类型", 19);
 			dataType.setViewClazz("miValueDataType");
 			
@@ -256,7 +256,7 @@ public class ModelItemServiceImpl implements ModelItemService {
 			viewLabelList.add(dataType);
 		}
 		
-		if (!(ModelItemType.CASCADE_ENUM_ITEM.equals(modelItemType) || ModelItemType.REFERENCE_ITEM.equals(modelItemType) || ModelItemType.CASCADE_REFERENCE_ITEM.equals(modelItemType))) {
+		if (!(ModelItemType.ENUM_ITEM.equals(modelItemType) || ModelItemType.CASCADE_ENUM_ITEM.equals(modelItemType) || ModelItemType.REFERENCE_ITEM.equals(modelItemType) || ModelItemType.CASCADE_REFERENCE_ITEM.equals(modelItemType))) {
 			ViewLabel dataLength = new ViewLabel("input", "text", "miValue.dataLength", miValue.getDataLength(), "数据长度");
 			dataLength.setViewClazz("miValueDataLength");
 			viewLabelList.add(dataLength);

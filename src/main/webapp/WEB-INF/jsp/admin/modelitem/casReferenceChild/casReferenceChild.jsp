@@ -62,34 +62,6 @@
                 height : 500
             });
         });
-
-
-		
-		
-	$("tbody", $page).on("click", "#download", function (e) {
-		var nodeId = $(this).attr("nodeId");
-		
-		Dialog.confirm('确认下载配置文件？', function(yes){
-        	/* if(yes){
-        		var url="admin/node/basicItemNode/download?nodeId=" + nodeId;
-        		Ajax.download(url);
-        	} */
-		});
-		
-  	 });  
-	
-	//预览弹出框
-	/* $("tbody", $page).on("click", "#preview", function (e) {
-		var h = $(window).height(); 
-		var w = $(window).width();
-		var width = w - 200;
-		var height = h - 100;
-		var nodeId = $(this).attr("nodeId");
-		Dialog.openDialog("admin/node/basicItemNode/preview?nodeId="+nodeId,"预览", "basicItemNode_preview",{
-			width:width,
-			height:height
-		});
-  	 });   */
 	
 	});
 </script>

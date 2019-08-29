@@ -448,7 +448,8 @@ public class ModelItemController {
 				miCascade.setLevel(level+1);
 				commService.insert(miCascade);
 
-				return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("添加成功", "modelitem_list");
+				return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("添加成功", "casReferenceChild_list");
+//				return AjaxPageResponse.REFRESH_LOCAL("添加成功");
 			} catch (Exception e) {
 				logger.error("添加失败", e);
 				return AjaxPageResponse.FAILD("添加失败");
@@ -461,7 +462,8 @@ public class ModelItemController {
 		public AjaxPageResponse delCasRefChild(MiCascade miCascade) {
 			try {
 				commService.delete(miCascade);
-				return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("删除成功", "modelitem_list");
+//				return AjaxPageResponse.CLOSE_AND_REFRESH_PAGE("删除成功", "casReferenceChild_list");
+				return AjaxPageResponse.REFRESH_LOCAL("删除成功！");
 			} catch (Exception e) {
 				logger.error("删除失败", e);
 				return AjaxPageResponse.FAILD("删除失败");

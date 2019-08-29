@@ -30,6 +30,9 @@ public class CascadeEnumItemMiStrategy implements MiStrategy {
 		MiValue miValue = modelItemContainer.getMiValue();
 		MiEnum miEnum = modelItemContainer.getMiEnum();
 		
+		if(ModelItemType.CASCADE_ENUM_ITEM.getIndex() == modelItem.getType()) {
+			miValue.setDataType(ItemValueType.STRING.getIndex()+"");
+		}
 		
 		String tableName = "t_" + modelItem.getBelongModel()+ "_" + modelItem.getCode();
 		miValue.setCode(modelItem.getCode());
