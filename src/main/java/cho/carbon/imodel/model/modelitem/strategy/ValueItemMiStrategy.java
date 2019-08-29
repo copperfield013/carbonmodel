@@ -7,6 +7,7 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.meta.enun.ModelItemType;
 
 /**
  * ModelItemType.VALUE_ITEM 
@@ -20,6 +21,12 @@ public class ValueItemMiStrategy implements MiStrategy {
 	public void saveOrUpdate(ModelItemContainer modelItemContainer, CommService commService, String flag, CascadedictBasicItemService casenumItemService, ModelItemService modelItemService, ModelItemCodeGeneratorService modelItemCodeGeneratorService) throws Exception {
 		ModelItem modelItem = modelItemContainer.getModelItem();
 		MiValue miValue = modelItemContainer.getMiValue();
+		
+		if (ModelItemType.CASCADE_REFERENCE_ITEM.getIndex() == modelItem.getType()) {
+			//级联引用属性需要单独处理
+			miValue.setDataLength("32");
+		}
+		
 		miValue.setCode(modelItem.getCode());
 		miValue.setBelongTable("t_" + modelItem.getBelongModel()+ "_" + modelItem.getParent());
 		

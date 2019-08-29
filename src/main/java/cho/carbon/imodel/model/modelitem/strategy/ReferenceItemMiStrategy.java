@@ -8,6 +8,7 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.meta.enun.ItemValueType;
 
 /**
  * ModelItemType. 
@@ -23,6 +24,8 @@ public class ReferenceItemMiStrategy implements MiStrategy {
 		MiValue miValue = modelItemContainer.getMiValue();
 		miValue.setCode(modelItem.getCode());
 		miValue.setBelongTable("t_" + modelItem.getBelongModel()+ "_" + modelItem.getParent());
+		miValue.setDataLength("32");
+		miValue.setDataType(ItemValueType.STRING.getIndex() + "");
 		
 		MiReference miReference = modelItemContainer.getMiReference();
 		miReference.setCode(modelItem.getCode());

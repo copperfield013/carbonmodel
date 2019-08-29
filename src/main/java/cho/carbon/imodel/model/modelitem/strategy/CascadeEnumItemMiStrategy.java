@@ -34,12 +34,11 @@ public class CascadeEnumItemMiStrategy implements MiStrategy {
 		String tableName = "t_" + modelItem.getBelongModel()+ "_" + modelItem.getCode();
 		miValue.setCode(modelItem.getCode());
 		miValue.setBelongTable("t_" + modelItem.getBelongModel()+ "_" + modelItem.getCode());
-		
+		miValue.setDataLength("32");
 		miEnum.setCode(modelItem.getCode());
 
 		// 这里要生成级联枚举的孩子， 存放在表 MiValue和MiCascade中
 		createMiValueCas(modelItem, miEnum,tableName, commService, casenumItemService, modelItemService, modelItemCodeGeneratorService);
-		
 		
 		if ("add".equals(flag)) {
 			commService.insert(miValue);

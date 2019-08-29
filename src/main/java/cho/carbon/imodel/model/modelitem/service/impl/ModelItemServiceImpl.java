@@ -188,7 +188,13 @@ public class ModelItemServiceImpl implements ModelItemService {
 			viewLabelList.add(new ViewLabel("input", "hidden", "miEnum.code", miEnum.getCode(), null));
 			
 			//级联枚举孩子数量
-			viewLabelList.add(new ViewLabel("input", "number", "modelItem.casEnumChildCount", "", "级联级数"));
+			List<MiCascade> miCascadeList = null;
+			if (modelItem.getCode() != null) {
+				miCascadeList = this.getMiCascadeList(modelItem.getCode());
+			}
+			viewLabelList.add(new ViewLabel("input", "number", "modelItem.casEnumChildCount", miCascadeList==null?"0":miCascadeList.size() +"", "级联级数"));
+			
+			
 			break;
 		case MULTI_ENUM_ITEM:
 			//miEnum
@@ -236,19 +242,21 @@ public class ModelItemServiceImpl implements ModelItemService {
 	 */
 	private void getViewLabelToMiValue(MiValue miValue, List<ViewLabel> viewLabelList, ModelItemType modelItemType) {
 		viewLabelList.add(new ViewLabel("input", "hidden", "miValue.code", miValue.getCode(), null));
-		ViewLabel dataType = new ViewLabel("select", "text", "miValue.dataType", miValue.getDataType(), "数据类型", 19);
-		dataType.setViewClazz("miValueDataType");
-		
-		// 获取值域
-		Map<String, String> valueDomain = new HashMap<String, String>();
-		ItemValueType[] itemValueTypes = ItemValueType.values();
-		for (ItemValueType itemValueType : itemValueTypes) {
-			valueDomain.put(itemValueType.getIndex() + "", itemValueType.getName());
+		if (!ModelItemType.REFERENCE_ITEM.equals(modelItemType)) {
+			ViewLabel dataType = new ViewLabel("select", "text", "miValue.dataType", miValue.getDataType(), "数据类型", 19);
+			dataType.setViewClazz("miValueDataType");
+			
+			// 获取值域
+			Map<String, String> valueDomain = new HashMap<String, String>();
+			ItemValueType[] itemValueTypes = ItemValueType.values();
+			for (ItemValueType itemValueType : itemValueTypes) {
+				valueDomain.put(itemValueType.getIndex() + "", itemValueType.getName());
+			}
+			dataType.setValueDomain(valueDomain);
+			viewLabelList.add(dataType);
 		}
-		dataType.setValueDomain(valueDomain);
-		viewLabelList.add(dataType);
 		
-		if (!ModelItemType.CASCADE_ENUM_ITEM.equals(modelItemType)) {
+		if (!(ModelItemType.CASCADE_ENUM_ITEM.equals(modelItemType) || ModelItemType.REFERENCE_ITEM.equals(modelItemType) || ModelItemType.CASCADE_REFERENCE_ITEM.equals(modelItemType))) {
 			ViewLabel dataLength = new ViewLabel("input", "text", "miValue.dataLength", miValue.getDataLength(), "数据长度");
 			dataLength.setViewClazz("miValueDataLength");
 			viewLabelList.add(dataLength);
