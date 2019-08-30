@@ -6,6 +6,7 @@ import cho.carbon.imodel.model.struct.pojo.StrucFieldValue;
 import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
 import cho.carbon.imodel.model.struct.service.StrucBaseService;
 import cho.carbon.imodel.model.struct.vo.StrucBaseContainer;
+import cho.carbon.meta.enun.AttributeValueType;
 
 /**
  * 	枚举字段策略
@@ -29,7 +30,7 @@ public class EnumFieldStrategy  implements StructBaseStrategy {
 		
 		StrucFieldValue strucFieldValue = strucBaseContainer.getStrucFieldValue();
 		strucFieldValue.setSbId(sbId);
-		
+		strucFieldValue.setValueType(AttributeValueType.STRING.getIndex());
 		if ("add".contentEquals(flag)) {
 			commService.insert(strucMiCode);
 			commService.insert(strucFieldSubenum);

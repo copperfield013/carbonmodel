@@ -226,7 +226,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 						"</div>" + 
 						"<div class='label-bar attr-relative-dict attr-relative attr-relative-save al-save'>"
 								nodeHtml = nodeHtml + "<span style='color: #363636;padding-right: 1em;' title='编号'>"+nodeValue.id+"</span><input type='text' disabled class='edit-input text name' name='name' title='名称' value='"+nodeValue.name+"'>" +
-								"<input type='text' disabled class='edit-input text enName' name='enName' title='英文名称' value='"+nodeValue.enName+"'>" +
+								/*"<input type='text' disabled class='edit-input text enName' name='enName' title='英文名称' value='"+nodeValue.enName+"'>" +*/
 								"<select disabled name='status' class='abc-attr status'>";
 								 if(nodeValue.status == "1") {            		
 									 nodeHtml = nodeHtml +  "<option value='1' selected>启用</option><option value='0'>废弃</option>";			    			
@@ -267,7 +267,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	 var html = "<ul class='card'>";        
          html += "<li class='card-list add-dict'>" +
              "<i class='icon icon-card-tag'></i>" +
-             "<span class='text'>添加字典</span>" +
+             "<span class='text'>添加子项</span>" +
              "</li>" +
              "<li class='card-list add-subselection'>" +
              "<i class='icon icon-card-attr'></i>" +
@@ -420,7 +420,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     }
 	
     /**
-     * 添加字典
+     * 添加子项
      * @param el
      * @returns
      */
@@ -434,9 +434,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					"<i class='icon icon-attr-relative'></i><span class='text'>字典</span>" +
 				"</div>" + 
 				"<div class='label-bar attr-relative attr-relative-save al-save edit'>"+
-						"<span id='bianhaospan' style='color: #363636;padding-right: 1em;' title='编号'></span>"+
+						"<span id='bianhaospan' style='color: #363636;padding-right: 1em;' title='字典值'></span>"+
 						"<input type='text'  class='edit-input text name' name='name' title='名称' placeholder='名称' value=''>" +
-						"<input type='text'  class='edit-input text enName' name='enName' title='英文名称' placeholder='英文名称' value=''>" +
+						/*"<input type='text'  class='edit-input text enName' name='enName' title='英文名称' placeholder='英文名称' value=''>" +*/
 						"<select name='status' class='abc-attr status'>"+
 							"<option value='1' selected>启用</option><option value='0'>废弃</option>"+			    			
 		            	"</select>"+

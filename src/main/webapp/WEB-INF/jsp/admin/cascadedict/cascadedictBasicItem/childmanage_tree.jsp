@@ -11,11 +11,11 @@
 				<h1>父节点列表</h1>
 				<c:forEach items="${parentList }" var="item" varStatus="status">
 					<c:if test="${!status.last}">
-						<a class="tab" href="admin/cascadedict/cascadedictBasicItem/getOne?id=${item.id }" target="cascadedictBasicItem_child" title="管理子数据">${item.name }</a>
+						<a class="tab" href="admin/cascadedict/cascadedictBasicItem/getOne?id=${item.id }" target="cascadedictBasicItem_child" title="管理子节点">${item.name }</a>
 						->
 					</c:if>
 					<c:if test="${status.last}">
-						<a class="tab" href="admin/cascadedict/cascadedictBasicItem/getOne?id=${item.id }" target="cascadedictBasicItem_child" title="管理子数据">${item.name }</a>
+						<a class="tab" href="admin/cascadedict/cascadedictBasicItem/getOne?id=${item.id }" target="cascadedictBasicItem_child" title="管理子节点">${item.name }</a>
 					</c:if>
 				</c:forEach>
 			</div>
@@ -27,10 +27,10 @@
 	                <i class="icon-root icon"></i>
 	                <span class="text">级联字典</span>
 	            </div>
-	            <span class="entity-only-title"  style="padding:20px;" title="编号">${basicItem.id}</span>
+	            <span class="entity-only-title"  style="padding:20px;" title="字典值">${basicItem.id}</span>
                 <span class="entity-only-title"  style="padding:20px;" title="名称">${basicItem.name}</span>
-	            <span class="entity-only-title"  style="padding:20px;" title="英文名称">${basicItem.enName}</span>
-	            <span class="entity-only-title"  style="padding:20px;" title="状态">${basicItem.status}</span>
+	          <%--   <span class="entity-only-title"  style="padding:20px;" title="英文名称">${basicItem.enName}</span> --%>
+	            <span class="entity-only-title"  style="padding:20px;" title="状态">${basicItem.status eq '1'?"启用":"废弃" }</span>
 	            <span class="entity-only-title"  style="padding:20px;" title="排序">${basicItem.order}</span>
                
                <%--  <span class="entity-only-title"  style="padding:77px;" title="父亲编号">

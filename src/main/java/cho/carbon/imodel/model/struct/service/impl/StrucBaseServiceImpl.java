@@ -147,7 +147,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					ModelItemType[] existMiTypes = {ModelItemType.MULTI_LINE_GROUP};
 					List<ModelItem> modelItemByType = modelItemService.getModelItemByType(pStrucMiCode.getItemCode(), existMiTypes, null, Constants.USING_STATE_USING);
 				 	
-					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemByType);
+					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemByType, strucElementType);
 					break;
 				case FIELD:
 					List<ModelItem> modelItemList = null;
@@ -175,8 +175,8 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 						modelItemList = modelItemService.getModelItemByType(p2.getItemCode(), null, null, Constants.USING_STATE_USING);
 					}
 					
-				getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList );
-				getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue);
+				getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList, strucElementType);
+				getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue, strucElementType);
 				break;
 				case ENUMFIELD:
 					
@@ -222,7 +222,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 				List<CascadedictSubsection> subSelectByParentId = casSubsectionService.getSubSelectByParentId(miEnum == null? null:miEnum.getPid());
 				//枚举对应的子集
 				viewLabelList.add(new ViewLabel("input", "hidden", "strucFieldSubenum.sbId", strucFieldSubenum.getSbId()==null?"":strucFieldSubenum.getSbId()+"", null));
-				ViewLabel subViewLabel = new ViewLabel("select", "text", "strucFieldSubenum.subenumId",strucFieldSubenum.getSubenumId() == null?"":strucFieldSubenum.getSubenumId()+"" , "选择子集");
+				ViewLabel subViewLabel = new ViewLabel("select", "text", "strucFieldSubenum.subenumId",strucFieldSubenum.getSubenumId() == null?"":strucFieldSubenum.getSubenumId()+"" , "字典子集");
 				// 获取值域
 				Map<String, String> valueDomain = new HashMap<String, String>();
 				  for (CascadedictSubsection casCade : subSelectByParentId) {
@@ -232,8 +232,8 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 				 subViewLabel.setValueDomain(valueDomain);
 				 subViewLabel.setViewClazz("subsetStrucFileldEnum");
 				viewLabelList.add(subViewLabel);
-				getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList2);
-				getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue);
+				getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList2, strucElementType);
+				getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue, strucElementType);
 				break;
 				case RFIELD:
 					// 关系属性， 
@@ -250,8 +250,8 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					ModelItemType[] pTypes = {ModelItemType.ONE_LINE_GROUP};
 					List<ModelItem> modelItemList3 = modelItemService.getModelItemByBelongMode(relationOne.isEmpty()?null:relationOne.get(0).getRightModelCode(), pTypes , null, false);
 					
-					getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue);
-					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList3);
+					getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue, strucElementType);
+					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList3, strucElementType);
 					getVbRfieldStrucRelation(viewLabelList, strucRelation.isEmpty()? null:strucRelation.get(0), relationOne);
 					break;
 				case RREFFIELD:
@@ -276,7 +276,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					List<ModelItem> modelItemByBelongMode = modelItemService.getModelItemByBelongMode(miReference == null? null:miReference.getModelCode(), pTypes1 , null, false);
 					
 					// 
-					ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucRRef.refItemCode",strucRRef.getRefItemCode(), "引用关联", 15);
+					ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucRRef.refItemCode",strucRRef.getRefItemCode(), "关联属性", 13);
 					// 获取值域
 					Map<String, String> valueDomain4 = new HashMap<String, String>();
 					  for (ModelItem modelItem : modelItemByBelongMode) {
@@ -291,8 +291,8 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 				
 					getViewLabelToStrucPointer(viewLabelList, strucPointer, allStruc);
 						
-					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList4);
-					getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue);
+					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList4, strucElementType);
+					getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue, strucElementType);
 					break;
 					
 				case RSTRUC:
@@ -301,7 +301,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					String leftModelCode = p3.getItemCode();
 					List<ModelItem> exRelaRightMi = modelRelaService.getExistRelaRightMi(leftModelCode);
 						
-					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, exRelaRightMi);
+					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, exRelaRightMi, strucElementType);
 					// 多选 和右实体存在的关系
 					ModelItem rightModel= exRelaRightMi.isEmpty()?null:exRelaRightMi.get(0);
 					String rightModelCode = null;
@@ -405,7 +405,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucRelation.id", strucRelation.getId()==null?"":"" +strucRelation.getId(), null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucRelation.sbId", strucRelation.getSbId()==null?"":strucRelation.getSbId()+"", null));
 		
-		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucRelation.modelRelationType",strucRelation.getModelRelationType()==null?"":strucRelation.getModelRelationType() , "选择关系", 16);
+		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucRelation.modelRelationType",strucRelation.getModelRelationType()==null?"":strucRelation.getModelRelationType() , "对一关系", 16);
 		// 获取值域
 		Map<String, String> valueDomain = new LinkedHashMap<String, String>();
 		  for (ModelRelationType modelRelation : relationOne) {
@@ -452,7 +452,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucBase.id", strucBase.getId() ==null?"":strucBase.getId()+"", null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucBase.type", "" + strucBase.getType(), null));
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucBase.parentId", strucBase.getParentId()+"", null));
-		ViewLabel titleVb = new ViewLabel("input", "text", "strucBase.title", strucBase.getTitle(), "字段名称", 20);
+		ViewLabel titleVb = new ViewLabel("input", "text", "strucBase.title", strucBase.getTitle(), "名称", 20);
 		
 		titleVb.setViewClazz("strucBaseTitle");
 		viewLabelList.add(titleVb);
@@ -469,7 +469,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 	}
 
 	//获取  StrucMiCode 的必填字段
-	private void getViewLabelToStrucMiCode(List<ViewLabel> viewLabelList, StrucMiCode strucMiCode, List<ModelItem> modelItemList) {
+	private void getViewLabelToStrucMiCode(List<ViewLabel> viewLabelList, StrucMiCode strucMiCode, List<ModelItem> modelItemList, StrucElementType strucElementType) {
 		String sbId =  "";
 		String itemCode = "";
 		
@@ -480,8 +480,19 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		  }
 		
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucMiCode.id", sbId, null));
+		
+		String itemName = "模型属性";
+		if (StrucElementType.RSTRUC.equals(strucElementType)) {
+			itemName = "选择右模型";
+		} else if (StrucElementType.GROUP2D.equals(strucElementType)) {
+			itemName = "多行分组";
+		} else if (StrucElementType.RREFFIELD.equals(strucElementType)) {
+			itemName = "引用属性";
+		}else if (StrucElementType.REFFIELD.equals(strucElementType)) {
+			itemName = "引用属性";
+		}
 
-		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucMiCode.itemCode",itemCode , "选择模型", 15);
+		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucMiCode.itemCode",itemCode , itemName, 15);
 		// 获取值域
 		Map<String, String> valueDomain = new HashMap<String, String>();
 		  for (ModelItem modelItem : modelItemList) {
@@ -494,24 +505,26 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 	}
 	
 		//获取  StrucFieldValue 的必填字段
-		private void getViewLabelToStrucFieldValue(List<ViewLabel> viewLabelList, StrucMiCode strucMiCode,StrucFieldValue strucFieldValue) {			String sbId =  "";
+		private void getViewLabelToStrucFieldValue(List<ViewLabel> viewLabelList, StrucMiCode strucMiCode,StrucFieldValue strucFieldValue, StrucElementType strucElementType) {			
+			String sbId =  "";
+			viewLabelList.add(new ViewLabel("input", "hidden", "strucFieldValue.sbId", sbId, null));
+			
 			String valueType = "";
 			
 			  if (strucFieldValue !=null) { 
 				  sbId = strucFieldValue.getSbId() ==  null?"":strucFieldValue.getSbId()+""; 
 				  valueType = strucFieldValue.getValueType() ==  null?"":strucFieldValue.getValueType()+""; 
-			  
 			  }
-			
-			viewLabelList.add(new ViewLabel("input", "hidden", "strucFieldValue.sbId", sbId, null));
-			ViewLabel valueTypeVb = new ViewLabel("select", "text", "strucFieldValue.valueType",valueType , "类型", 18);
+			  
+			  if (!StrucElementType.ENUMFIELD.equals(strucElementType)) {
+				  
+				  ViewLabel valueTypeVb = new ViewLabel("select", "text", "strucFieldValue.valueType",valueType , "值类型", 14);
 			
 			MiValue miValue = commService.get(MiValue.class, strucMiCode.getItemCode());
 				ItemValueType itemType = ItemValueType.STRING;
 				if (miValue != null) {
 					itemType = ItemValueType.getValueType(Integer.parseInt(miValue.getDataType()));
 				}
-				
 				
 				ModelItem modelItem = commService.get(ModelItem.class, strucMiCode.getItemCode());
 				
@@ -527,7 +540,8 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 			  }
 			  valueTypeVb.setValueDomain(valueDomain);
 			  valueTypeVb.setViewClazz("strucFieldValueType");
-			viewLabelList.add(valueTypeVb);
+			  viewLabelList.add(valueTypeVb);
+			}
 		}
 
 	@Override
@@ -544,7 +558,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		
 		//创建结构体根节点
 		
-		String stucTitle = modelItem.getName() + LocalDate.now().toString();
+		String stucTitle = modelItem.getName() + System.currentTimeMillis();
 		
 		StrucBaseContainer sbc = new StrucBaseContainer();
 		StrucBase strucBase = new StrucBase(null, StrucElementType.STRUC.getCode(), stucTitle, StrucOptType.WRITE.getIndex(), 1, null);

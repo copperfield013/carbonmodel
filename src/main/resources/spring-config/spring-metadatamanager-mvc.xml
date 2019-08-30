@@ -14,7 +14,6 @@
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
 
-
 	<!-- controller自动扫描(自动注入) -->
 	<context:component-scan base-package="cho.carbon.imodel.*.controller.*" />
 	

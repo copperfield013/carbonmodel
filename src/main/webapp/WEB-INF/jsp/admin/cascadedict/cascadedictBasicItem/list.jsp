@@ -5,7 +5,7 @@
 		<form class="form-inline" action="admin/cascadedict/cascadedictBasicItem/list">
 			<input type="hidden" class="form-control" name="parentId" value="${criteria.parentId }" />
 			<div class="form-group">
-				<label for="name">编号</label>
+				<label for="name">字典值</label>
 				<input type="number" class="form-control" name="id" value="${criteria.id }" />
 			</div>
 			<div class="form-group">
@@ -22,9 +22,8 @@
 			<thead>
 				<tr>
 					<th>序号</th>
-					<th>编号</th>
+					<th>字典值</th>
 					<th>名称</th>
-					<th>英文名称</th>
 					<th>状态</th>
 					<th>排序</th>
 					<th>操作</th>
@@ -36,11 +35,10 @@
 						<td>${i.index + 1 }</td>
 						<td>${item.id }</td>
 						<td>${item.name }</td>
-						<td>${item.enName }</td>
 						<td>${item.status eq '1'?"启用":"废弃" }</td>
 						<td>${item.order }</td>
 						<td>
-							<a class="tab" href="admin/cascadedict/cascadedictBasicItem/getOne?id=${item.id }" target="cascadedictBasicItem_child" title="管理子数据">管理子数据</a>
+							<a class="tab" href="admin/cascadedict/cascadedictBasicItem/getOne?id=${item.id }" target="cascadedictBasicItem_child" title="管理子节点">管理子节点</a>
 							<%-- <a class="tab" href="admin/cascadedict/cascadedictSubsection/getOne?id=${item.id }" target="cascadedictSubsection_tree" title="字典再分">字典再分</a> --%>
 							<a href="javascript:;" itemId="${item.id }" title="修改" id="edit">修改</a>
 							<a href="admin/cascadedict/cascadedictBasicItem/do_delete/${item.id }" confirm="确认删除？">删除</a>
