@@ -47,18 +47,17 @@ public class MiFilterRgroup {
 
 	public MiFilterRgroup() {}
 
-	public MiFilterRgroup(Integer groupId, String inRelationType, String exRelationType, String inLeftCode,
-			String exLeftCode, String inRightCode, String exRightCode) {
-		super();
-		this.groupId = groupId;
-		this.inRelationType = inRelationType;
-		this.exRelationType = exRelationType;
-		this.inLeftCode = inLeftCode;
-		this.exLeftCode = exLeftCode;
-		this.inRightCode = inRightCode;
-		this.exRightCode = exRightCode;
-	}
-
+//	public MiFilterRgroup(Integer groupId, String inRelationType, String exRelationType, String inLeftCode,
+//			String exLeftCode, String inRightCode, String exRightCode) {
+//		super();
+//		this.groupId = groupId;
+//		this.inRelationType = inRelationType;
+//		this.exRelationType = exRelationType;
+//		this.inLeftCode = inLeftCode;
+//		this.exLeftCode = exLeftCode;
+//		this.inRightCode = inRightCode;
+//		this.exRightCode = exRightCode;
+//	}
 
 
 	public Integer getGroupId() {
@@ -106,6 +105,11 @@ public class MiFilterRgroup {
 	}
 
 	public void setInRightCode(String inRightCode) {
+		
+		if ("".equals(inRightCode)) {
+			inRightCode = null;
+		}
+		
 		this.inRightCode = inRightCode;
 	}
 
@@ -114,6 +118,11 @@ public class MiFilterRgroup {
 	}
 
 	public void setExRightCode(String exRightCode) {
+		
+		if ("".equals(exRightCode)) {
+			exRightCode = null;
+		}
+		
 		this.exRightCode = exRightCode;
 	}
 
