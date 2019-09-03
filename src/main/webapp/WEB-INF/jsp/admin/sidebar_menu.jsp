@@ -66,13 +66,13 @@
 <li>
     <a href="#" class="menu-dropdown">
         <i class="menu-icon fa fa-bookmark"></i>
-        <span class="menu-text">数据服务器</span>
+        <span class="menu-text">HC管理</span>
         <i></i>
     </a>
     <ul class="submenu">
         <li>
-            <a class="tab" href="admin/dataservice/serviceBizzData/list" target="serviceBizzData_list" title="数据服务">
-                <span class="menu-text">数据服务</span>
+            <a class="tab" href="admin/dataservice/serviceBizzData/list" target="serviceBizzData_list" title="HC服务">
+                <span class="menu-text">HC服务</span>
             </a>
         </li>
     </ul>
@@ -80,13 +80,13 @@
 <li>
     <a href="#" class="menu-dropdown">
         <i class="menu-icon fa fa-bookmark"></i>
-        <span class="menu-text">建立项目</span>
+        <span class="menu-text">BNB构件</span>
         <i></i>
     </a>
     <ul class="submenu">
         <li>
-            <a class="tab" href="admin/buildproject/list" target="buildproject_list" title="建立项目">
-                <span class="menu-text">建立项目</span>
+            <a class="tab" href="admin/buildproject/list" target="buildproject_list" title="BNB构件">
+                <span class="menu-text">BNB构件</span>
             </a>
         </li>
     </ul>
