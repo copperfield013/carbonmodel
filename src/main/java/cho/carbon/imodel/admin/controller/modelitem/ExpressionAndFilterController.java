@@ -29,6 +29,7 @@ import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterRgroup;
+import cho.carbon.imodel.model.modelitem.pojo.MiModelSql;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiReference;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatDimension;
@@ -527,5 +528,36 @@ public class ExpressionAndFilterController {
 		}
 	}
     
-	
+    
+    /**
+     *	 跳转到全sql统计实体， 定义sql语句页面
+     * @param pmiCode
+     * @return
+     */
+    @RequestMapping(value = "/skipSqlModelSql")
+	public ModelAndView skipSqlModelSql(String miCode) {
+    	ModelAndView modelAndView = new ModelAndView();
+    	
+    	MiModelSql miModelSql = commService.get(MiModelSql.class, miCode);
+    	
+    	modelAndView.addObject("miCode", miCode);
+    	modelAndView.addObject("miModelSql", miModelSql);
+		modelAndView.setViewName(AdminConstants.JSP_BASE + "/modelitem/sqlModelsql.jsp");
+		return modelAndView;
+    	
+    }
+    
+    @ResponseBody
+   	@RequestMapping("/saveSqlModelSql")
+   	public AjaxPageResponse saveSqlModelSql(String sqlTxt, String modelItemCode){ 
+    	try {
+   			miExpreAndFilterService.saveSqlModelSql(sqlTxt, modelItemCode);
+   			
+   			return AjaxPageResponse.REFRESH_LOCAL("操作成功");
+		} catch (Exception e) {
+			logger.error("操作失败", e);
+			return AjaxPageResponse.FAILD("操作失败");
+		}
+    }
+    
 }

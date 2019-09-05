@@ -14,6 +14,7 @@ public class MiStrategyFactory {
 		
 		switch (modelItemType) {
 		case MODEL:
+		case SQL_MODEL:
 			return new ModelItemMiStrategy();
 		case STAT_MODEL:
 			return new StatModelItemMiStrategy();

@@ -13,8 +13,8 @@ import cho.carbon.meta.constant.ModelItemValueParter;
 import cho.carbon.meta.enun.ItemValueType;
 
 /**
- * ModelItemType.MODEL
- * 	实体策略
+ * ModelItemType.STAT_MODEL
+ * 	片段统计实体策略
  * @author so-well
  *
  */
@@ -35,7 +35,6 @@ public class StatModelItemMiStrategy extends ModelItemMiStrategy {
 		
 	}
 	
-
 
 	@Override
 	public void delModelItem(ModelItem modelItem, CommService commService,ModelItemService modelItemService) {

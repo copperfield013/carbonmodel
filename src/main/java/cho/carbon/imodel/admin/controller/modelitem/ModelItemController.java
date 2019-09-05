@@ -125,7 +125,7 @@ public class ModelItemController {
 		ModelItem modelItem = commService.get(ModelItem.class, itemCode);
 		
 		ModelItemType itemType = ModelItemType.getItemType(modelItem.getType());
-		if (ModelItemType.STAT_MODEL.equals(itemType) || ModelItemType.SQL_MODEL.equals(itemType) ) {
+		if (ModelItemType.STAT_MODEL.equals(itemType)) {
 			MiModelStat miModelStat = commService.get(MiModelStat.class, itemCode);
 			ModelItem sourceModelItem = commService.get(ModelItem.class, miModelStat.getSourceCode());
 			model.addAttribute("sourceModelItem", sourceModelItem);

@@ -13,6 +13,7 @@ import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterRgroup;
+import cho.carbon.imodel.model.modelitem.pojo.MiModelSql;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatDimension;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatFact;
@@ -296,6 +297,20 @@ public class MiExpreAndFilterServiceImpl implements MiExpreAndFilterService {
 			miFilterRgroup.setGroupId(miFilterGroup.getId());
 			commService.update(miFilterRgroup);
 		}
+	}
+
+	@Override
+	public void saveSqlModelSql(String sqlTxt, String modelItemCode) {
+		MiModelSql miModelSql = commService.get(MiModelSql.class, modelItemCode);
+		
+		if (miModelSql == null) {
+			miModelSql = new MiModelSql(modelItemCode, sqlTxt);
+			commService.insert(miModelSql);
+		} else {
+			miModelSql.setSqlTxt(sqlTxt);
+			commService.update(miModelSql);
+		}
+		
 	}
 	
 }

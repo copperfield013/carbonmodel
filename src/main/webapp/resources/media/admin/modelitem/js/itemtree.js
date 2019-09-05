@@ -488,6 +488,17 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
         
     });
     
+    //跳转到全sql统计实体页面
+    $("#modelItemEdit").on("click", ".sqlModelsql", function() {        
+        var modelItemCode = $(this).closest(".collapse-header").attr("data-code");
+        
+        Dialog.openDialog("admin/expressionAndFilter/skipSqlModelSql?miCode=" + modelItemCode, "sql定义页面", "", {
+            width :1000,
+            height : 500
+        });
+        
+    });
+    
     //跳转到表达式定义页面
     $("#modelItemEdit").on("click", ".expressionView", function() {        
        

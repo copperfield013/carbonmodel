@@ -30,6 +30,13 @@ public interface MiExpreAndFilterService {
 	 * @param miFilterCriterion
 	 */
 	void saveMiFilterCriterion(MiFilterCriterion miFilterCriterion);
+	
+	/**
+	 * 保存sql统计实体的函数定义
+	 * @param sql
+	 * @param modelItemCode
+	 */
+	void saveSqlModelSql(String sqlTxt, String modelItemCode);
 
 	/**
 	 * 获取分组的孩子， 表达式

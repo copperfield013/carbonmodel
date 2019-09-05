@@ -23,7 +23,8 @@
 						<div class="col-lg-5">
 							<select class=" modelItemType" name="modelItem.type">
 								<option value="1">普通实体</option>
-								<option value="101">sql片段统计实体</option>
+								<option value="101">统计实体</option>
+								<option value="102">sql统计实体</option>
 							</select>
 						</div>
 					</div>
