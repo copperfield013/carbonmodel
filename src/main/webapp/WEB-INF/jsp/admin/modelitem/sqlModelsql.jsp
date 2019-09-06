@@ -105,6 +105,9 @@
 			<a class="export btn-toggle" title="保存" id="btn-save" href="javascript:;">
 				<i class="glyphicon glyphicon-check"></i>
 			</a>
+			 <a id="btn-operation" title="运行" href="javascript:;">
+                   <i class="glyphicon glyphicon-play"></i>
+             </a>
 		</div>
 	</div>
 	<div class="page-body">
@@ -194,6 +197,25 @@
        			
        			
             });
+       		
+       		// 测试运行
+       		var submitOperation = document.querySelector('#btn-operation');
+       		submitOperation.addEventListener('click', function() {
+
+       			var sqlValue = editor2.getValue();
+       			var modelItemCode = $page.attr("modelItemCode");
+
+       		 Ajax.ajax('admin/expressionAndFilter/executeSql',{
+       			sqlTxt:sqlValue
+           		 }, function(data) {			
+           			editor1.setValue(data.msg);
+     			$CPF.closeLoading();
+     		}); 
+       			
+       			
+            });
+       		
+       		
 	    })()
 
 

@@ -560,4 +560,26 @@ public class ExpressionAndFilterController {
 		}
     }
     
+    @ResponseBody
+	@RequestMapping("/executeSql")
+	public String executeSql(String sqlTxt){
+		Map<String, Object> map = new HashMap<String, Object>();
+		JSONObject jobj = new JSONObject(map);
+		try {
+			
+			List list = (List)commService.excuteBySqlSelect(sqlTxt);
+			
+			map.put("code", 200);
+			map.put("msg", "执行成功！ 查询出： " + list.size() + " 条数据");
+			return jobj.toJSONString();
+		} catch (Exception e) {
+			logger.error("执行失败", e);
+			e.printStackTrace();
+			map.put("code", 400);
+			map.put("msg", "执行失败！请检查sql语句");
+			return jobj.toString();
+		}
+	}
+    
+    
 }

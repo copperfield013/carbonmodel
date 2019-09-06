@@ -12,7 +12,12 @@
 					 data-cnName=""  
 					 data-code="" class="entity_attr active">				
 						${modelItem.name}		
-				</div>			
+				</div>	
+				<div class="header-buttons">
+					 <a class="refresh" id="refresh-toggler" href="#">
+		                   <i class="glyphicon glyphicon-refresh"></i>
+		              </a>
+				</div>
 		</div>
 		
         <div class="entity-edit-wrap active">

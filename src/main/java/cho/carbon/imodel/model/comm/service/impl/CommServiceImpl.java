@@ -48,10 +48,16 @@ public class CommServiceImpl implements CommService{
 		commDao.excuteBySql(sql);
 	}
 	
+	@Override
+	public Object excuteBySqlSelect(String sql) {
+		return commDao.excuteBySqlSelect(sql);
+	}
+	
 	/**
 	 * 获取当前链接的数据库名字
 	 */
 	public String getDataBaseName() {
 		return commDao.getDataBaseName();
 	}
+
 }

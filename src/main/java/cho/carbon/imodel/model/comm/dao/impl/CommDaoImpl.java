@@ -51,6 +51,11 @@ public class CommDaoImpl implements CommDao{
 		sFactory.getCurrentSession().createSQLQuery(sql).executeUpdate();
 	}
 	
+	@Override
+	public Object excuteBySqlSelect(String sql) {
+		return sFactory.getCurrentSession().createSQLQuery(sql).list();
+	}
+	
 	/**
 	 * 获取当前链接的数据库名字
 	 */
@@ -68,4 +73,5 @@ public class CommDaoImpl implements CommDao{
 		
 		return dataBaseName;
 	}
+
 }

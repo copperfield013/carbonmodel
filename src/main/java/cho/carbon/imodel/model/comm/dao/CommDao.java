@@ -36,10 +36,15 @@ public interface CommDao {
 	void delete(Object pojo);
 
 	/**
-	 * 执行sql语句
+	 * 执行更改sql语句
 	 * @param sql
 	 */
 	public void excuteBySql(String sql);
+	/**
+	 * 执行查询sql
+	 * @param sql
+	 */
+	public Object excuteBySqlSelect(String sql);
 	
 	/**
 	 * 获取当前链接的数据库名字

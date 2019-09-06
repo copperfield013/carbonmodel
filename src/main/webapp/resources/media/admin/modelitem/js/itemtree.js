@@ -4,7 +4,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	
 	//获取本页面belongModel code
 	var belongModel = $page.attr("data-belongModel");
-	debugger;
 	// 本页面的实体类型
 	var belongModelType =  $page.attr("data-type");
 	
@@ -347,8 +346,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
     //维度属性节点
     function getDimensionNode(modelItem, belongModelType) {
-    	
-    	debugger;
     	
     	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         var attrGroupHtml = "<li class='add-attr clear-fix'>" +
