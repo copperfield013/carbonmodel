@@ -576,10 +576,10 @@ public class ExpressionAndFilterController {
 			logger.error("执行失败", e);
 			
 			e.printStackTrace();
-			String message = e.getCause().getMessage();
 			String messageTwo = e.getMessage();
+			String message = e.getCause().getMessage();
 			map.put("code", 400);
-			map.put("msg", "执行失败！" + messageTwo + "    "+ message);
+			map.put("msg", "执行失败！" + messageTwo + "\n"+ message);
 			return jobj.toString();
 		}
 	}
