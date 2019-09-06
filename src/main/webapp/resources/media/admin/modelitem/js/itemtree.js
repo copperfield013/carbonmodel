@@ -4,20 +4,23 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	
 	//获取本页面belongModel code
 	var belongModel = $page.attr("data-belongModel");
+	debugger;
+	// 本页面的实体类型
+	var belongModelType =  $page.attr("data-type");
 	
     $(function(){
 	    $CPF.showLoading();
 	    drag($(".dragEdit-wrap", $page).length);       
 	    //初始化  本模型的group 即 本模型的孩子
 	    //belongModel 指的事父code
-	    initModelItemChild(belongModel);
+	    initModelItemChild(belongModel, belongModelType);
 	    
 	    $(".label-bar", $page).addClass("al-save");
 	    $CPF.closeLoading();
     })
     
      //初始化  本模型的group 即 本模型的孩子
-    function initModelItemChild(pmiCode) {
+    function initModelItemChild(pmiCode, belongModelType) {
 		//获取本模型有哪些组
     	Ajax.ajax('admin/modelItem/getModelItemStairChild', {
     		pmiCode: pmiCode
@@ -35,7 +38,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					if (modelItem.type == 5 || modelItem.type == 501) {//单行属性分组
 						initGroup(modelItem, $parent);
 					}else if (modelItem.type == 502){
-						initFactGroup(modelItem, $parent);
+						initFactGroup(modelItem, $parent, belongModelType);
 					} else if (modelItem.type == 6 || modelItem.type == 7) { //多行属性组 or  巨多行属性
 						initMoreGroup(modelItem, $parent);
 					} else if (modelItem.type == 206) {
@@ -46,10 +49,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 						initCascadeReferenceAttr(modelItem, $parent);
 					} else if (modelItem.type == 211 || modelItem.type == 214) {
 						//维度属性
-						initDimensionAttr(modelItem, $parent);
+						initDimensionAttr(modelItem, $parent, belongModelType);
 					} else if (modelItem.type == 212) {
 						//事实属性
-						initFactAttr(modelItem, $parent);
+						initFactAttr(modelItem, $parent, belongModelType);
 					}else if (modelItem.type == 209) {
 						//计算属性
 						initaddCalculatedAttr(modelItem, $parent);
@@ -169,8 +172,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     //事实组start
     
     //事实组初始化方法
-    function initFactGroup(modelItem, $parent) {
-    	var attrGroupHtml = getFactGroupNode(modelItem);
+    function initFactGroup(modelItem, $parent, belongModelType) {
+    	var attrGroupHtml = getFactGroupNode(modelItem, belongModelType);
 	    var $html = $(attrGroupHtml).prependTo($($parent));
 	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
         drag($(".dragEdit-wrap").length);
@@ -179,9 +182,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     /**
      * 事实组
       */
-    function addFactGroup(el, modelItem) {// 这个有用
+    function addFactGroup(el, modelItem, belongModelType) {// 这个有用
         var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var attrGroupHtml = getFactGroupNode(modelItem);
+        var attrGroupHtml = getFactGroupNode(modelItem, belongModelType);
         var $html = $(attrGroupHtml).prependTo($content);  
 	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
 	    addUnfold(el)
@@ -189,7 +192,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     };
     
     //事实组
-    function getFactGroupNode(modelItem) {
+    function getFactGroupNode(modelItem, belongModelType) {
     	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         var attrGroupHtml = "<li class='attr-group'>" +
             "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
@@ -202,9 +205,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
         
-	         attrGroupHtml += "<div class='btn-wrap'>" +
-	         "<i class='icon icon_i glyphicon glyphicon-filter factGroupFilterView'></i>"+
-	         "<i class=' icon icon_i fa fa-edit icon-edit'></i>"+
+	         attrGroupHtml += "<div class='btn-wrap'>";
+	         
+	         if (belongModelType !="102") {
+	        	 attrGroupHtml += "<i class='icon icon_i glyphicon glyphicon-filter factGroupFilterView'></i>";
+	         }
+	         attrGroupHtml += "<i class=' icon icon_i fa fa-edit icon-edit'></i>"+
             "<i class='icon icon_i icon-add-sm group'></i>" +
             "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
             "<i class='icon icon-arrow-sm active'></i>" +
@@ -322,9 +328,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     /**
      * 添加维度属性方法
       */
-    function addDimensionAttr(el, modelItem) {// 这个有用
+    function addDimensionAttr(el, modelItem, belongModelType) {// 这个有用
         var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var attrGroupHtml = getDimensionNode(modelItem);
+        var attrGroupHtml = getDimensionNode(modelItem, belongModelType);
         var $html = $(attrGroupHtml).prependTo($content);  
 	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
 	    addUnfold(el)
@@ -332,15 +338,18 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     };
     
     //维度属性初始化方法
-    function initDimensionAttr(modelItem, $parent) {
-    	var attrGroupHtml = getDimensionNode(modelItem);
+    function initDimensionAttr(modelItem, $parent, belongModelType) {
+    	var attrGroupHtml = getDimensionNode(modelItem, belongModelType);
 	    var $html = $(attrGroupHtml).prependTo($($parent));
 	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
         drag($(".dragEdit-wrap").length);
     }
     
     //维度属性节点
-    function getDimensionNode(modelItem) {
+    function getDimensionNode(modelItem, belongModelType) {
+    	
+    	debugger;
+    	
     	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         var attrGroupHtml = "<li class='add-attr clear-fix'>" +
             "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
@@ -352,10 +361,13 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
             "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
-	         attrGroupHtml += "<div class='btn-wrap'>" +
+	         attrGroupHtml += "<div class='btn-wrap'>";
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>"+
-	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+	         if (belongModelType != 102) {
+	        	 attrGroupHtml += "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>";
+	         }
+	         
+	         attrGroupHtml +="<i class='icon icon_i fa fa-edit icon-edit'></i>"+
 	         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
            /* "<i class='icon icon-add-sm group'></i>" +*/
            /* "<i class='icon delModelItem'></i>" +*/
@@ -375,9 +387,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     /**
      * 添加事实属性方法
       */
-    function addFactAttr(el, modelItem) {// 这个有用
+    function addFactAttr(el, modelItem, belongModelType) {// 这个有用
         var $content = $(el).closest(".collapse-header").siblings(".collapse-content");
-        var attrGroupHtml = getFactAttrNode(modelItem);
+        var attrGroupHtml = getFactAttrNode(modelItem, belongModelType);
         var $html = $(attrGroupHtml).prependTo($content);  
 	    $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();
 	    addUnfold(el)
@@ -385,15 +397,15 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     };
     
     //事实属性初始化方法
-    function initFactAttr(modelItem, $parent) {
-    	var attrGroupHtml = getFactAttrNode(modelItem);
+    function initFactAttr(modelItem, $parent, belongModelType) {
+    	var attrGroupHtml = getFactAttrNode(modelItem, belongModelType);
 	    var $html = $(attrGroupHtml).prependTo($($parent));
 	   /* $html.find("select").css({"width":"7%","marginLeft":"2"}).select2();*/
         drag($(".dragEdit-wrap").length);
     }
     
     //事实属性节点
-    function getFactAttrNode(modelItem) {
+    function getFactAttrNode(modelItem, belongModelType) {
     	var dragWrapLen = $(".dragEdit-wrap").length + 1 ;
         var attrGroupHtml = "<li class='add-attr clear-fix'>" +
             "<div class='attr-group-title collapse-header'  data-code='"+modelItem.code+"'  data-type='"+modelItem.type+"' data-pCode='"+modelItem.parent+"'>" +
@@ -405,15 +417,16 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanCode' class='span-title'>"+modelItem.code+"</span>"+
             "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
-	         attrGroupHtml += "<div class='btn-wrap'>" +
+	         attrGroupHtml += "<div class='btn-wrap'>";
 	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
-	         
 	         
 	        /* fa-filter*/
 	         /*"<i class='icon icon_i glyphicon glyphicon-filter factFilterView'></i>"+*/
-	         "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>"+
+	         if (belongModelType !="102") {
+	        	 attrGroupHtml += "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>";
+	         }
 	        
-	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+	         attrGroupHtml += "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
 	         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
            /* "<i class='icon icon-add-sm group'></i>" +*/
            /* "<i class='icon delModelItem'></i>" +*/
@@ -4061,8 +4074,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
                 .addClass("collapse-content-active");
         }              
        if(needAjax) {
+    	   var belongModelType =  $page.attr("data-type");
+    	   
     	   $content.removeClass("need-ajax");  
-    	   initModelItemChild(pmiCode);
+    	   initModelItemChild(pmiCode, belongModelType);
         }
     })
 
@@ -4168,6 +4183,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             var mipCode = $(el).closest(".collapse-header").attr("data-code");
             var modelItemType = $(this).attr("modelItemType");
             var modelItemShowName = $(this).attr("modelItemShowName");
+            
+            // 本页面的实体类型
+        	var belongModelType =  $page.attr("data-type");
+            
       	//这里要弹出框， 保存并回显
       Dialog.openDialog("admin/modelItem/addAttr?modelItemType="+modelItemType+"&mipCode=" +mipCode, modelItemShowName, "", {
                width :920,
@@ -4178,7 +4197,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
    						console.log(modelItem.code);
    						
    						if (modelItem.type == 502) { // 事实组
-   							addFactGroup(el, modelItem);
+   							addFactGroup(el, modelItem, belongModelType);
    						} else {
    							addGroup(el, modelItem);
    						}
@@ -4191,6 +4210,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
           var mipCode = $(el).closest(".collapse-header").attr("data-code");
           var modelItemType = $(this).attr("modelItemType");
           var modelItemShowName = $(this).attr("modelItemShowName");
+          // 本页面的实体类型
+      	var belongModelType =  $page.attr("data-type");
     	//这里要弹出框， 保存并回显
     	 Dialog.openDialog("admin/modelItem/addAttr?modelItemType="+modelItemType+"&mipCode=" +mipCode, modelItemShowName, undefined, {
              width :920,
@@ -4209,6 +4230,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	  var mipCode = $(el).closest(".collapse-header").attr("data-code");
           var modelItemType = $(this).attr("modelItemType");
           var modelItemShowName = $(this).attr("modelItemShowName");
+          // 本页面的实体类型
+      	var belongModelType =  $page.attr("data-type");
        	//这里要弹出框， 保存并回显
        	 Dialog.openDialog("admin/modelItem/addAttr?modelItemType="+modelItemType+"&mipCode=" +mipCode, modelItemShowName, undefined, {
                 width :920,
@@ -4223,11 +4246,11 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     							addCascadeReferenceAttr(el, modelItem);
     						} else if (modelItem.type == 211 || modelItem.type == 214) {
     							//添加维度属性
-    							addDimensionAttr(el, modelItem);
+    							addDimensionAttr(el, modelItem, belongModelType);
     							
     						} else if (modelItem.type == 212) {
     							//添加事实属性
-    							addFactAttr(el, modelItem);
+    							addFactAttr(el, modelItem, belongModelType);
     							
     						} else if (modelItem.type == 209) {
     							addCalculatedAttr(el, modelItem);
@@ -4288,30 +4311,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
               });*/
         	
         	//addCascadeAttr(el);//添加级联属性方法
-        } else if ($(this).hasClass("add-more-cascade-attr")) {
-        	//addMoreCascadeAttr(el);//添加多值级联属性方法
-        } else if ($(this).hasClass("add-rattr-attr")) {
-        	//addRattr(el);//添加关系属性
-        } else if ($(this).hasClass("add-filters")) {
-        	 /*var filtersBar = $(el).closest(".label-bar").closest(".collapse-header").parent().find(".label-bar.filters");
-        	 if(filtersBar.length > 0) {
-                 Dialog.notice("只能添加一个filters", "warning");
-                 return true;
-             }
-        	 
-        	var source =  $(this).attr("source");
-        	addFilters(el, source);*/
-        } else if ($(this).hasClass("add-filterGroup")) {
-        	//addFilterGroup(el);
-        } else if ($(this).hasClass("add-filter")) {
-        	//addFilter(el);
-        } else if ($(this).hasClass("add-rFilter")) {
-        	//addrFilter(el);
-        }  else if ($(this).hasClass("add-refattribute-attr")) {
-        	//addRefattributeAttr(el);//添加引用属性方法
-        } else if ($(this).hasClass("add-rRefattribute-attr")) {
-        	//addrRefattributeAttr(el);//添加引用->引用属性方法
-        }  
+        } 
         
         removePop();
         $(el).removeClass("active");
