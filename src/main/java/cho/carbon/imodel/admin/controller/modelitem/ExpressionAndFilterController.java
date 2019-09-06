@@ -574,9 +574,12 @@ public class ExpressionAndFilterController {
 			return jobj.toJSONString();
 		} catch (Exception e) {
 			logger.error("执行失败", e);
+			
 			e.printStackTrace();
+			String message = e.getCause().getMessage();
+			String messageTwo = e.getMessage();
 			map.put("code", 400);
-			map.put("msg", "执行失败！请检查sql语句");
+			map.put("msg", "执行失败！" + messageTwo + "    "+ message);
 			return jobj.toString();
 		}
 	}
