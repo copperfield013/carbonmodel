@@ -32,8 +32,9 @@
                 	<c:if test="${modelItem.type eq 101}">
                 		<i class="icon glyphicon glyphicon-filter statModelFilterView"></i>
                 	</c:if>
-                	
+                	<c:if test="${modelItem.type eq 102}">
                 	<i class="icon icon_i glyphicon glyphicon-fire sqlModelsql"></i>
+                	</c:if>
                     <i class="icon icon-add"></i>
                     <i class="icon icon-trash"></i>
                     <%-- <a title="预览" style="font-size: 14px;position:absolute;right:98px;" nodeId="${item.id }" id="preview" href="javascript:;">预览</a> --%>
