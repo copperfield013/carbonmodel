@@ -188,6 +188,7 @@ body {
     background-repeat: no-repeat;
     cursor: pointer;
     margin: 6px;
+    font-size: 16px;
 }
 #modelItemEdit .icon-simulate-trashsm {
     display: inline-block;
@@ -207,6 +208,15 @@ body {
     transition: all .4s linear;
     transform: rotate(0);   
 }
+
+#modelItemEdit .icon-sqlpng {
+    width: 20px;
+    height: 20px;
+    background-image: url("../images/sqlpng.png"); 
+    transition: all .4s linear;
+    transform: rotate(0);   
+}
+
 #modelItemEdit .icon-arrow.active {
     transform: rotate(180deg);
 }

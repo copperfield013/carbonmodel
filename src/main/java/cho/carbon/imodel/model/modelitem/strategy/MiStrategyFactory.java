@@ -17,7 +17,6 @@ public class MiStrategyFactory {
 	 * @return
 	 */
 	public static MiStrategy getMiStrategy(ModelItemType modelItemType, ModelItemType belongModelType) {
-		
 		// 这里需要根据， belongModelType 和modelItemType 选择具体的策略
 		
 		switch (modelItemType) {

@@ -29,7 +29,7 @@ import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterRgroup;
-import cho.carbon.imodel.model.modelitem.pojo.MiModelSql;
+import cho.carbon.imodel.model.modelitem.pojo.MiStatFactGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiReference;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatDimension;
@@ -538,7 +538,7 @@ public class ExpressionAndFilterController {
 	public ModelAndView skipSqlModelSql(String miCode) {
     	ModelAndView modelAndView = new ModelAndView();
     	
-    	MiModelSql miModelSql = commService.get(MiModelSql.class, miCode);
+    	MiStatFactGroup miModelSql = commService.get(MiStatFactGroup.class, miCode);
     	
     	modelAndView.addObject("miCode", miCode);
     	modelAndView.addObject("miModelSql", miModelSql);

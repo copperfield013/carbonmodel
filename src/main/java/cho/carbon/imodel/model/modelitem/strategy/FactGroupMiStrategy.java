@@ -56,6 +56,7 @@ public class FactGroupMiStrategy implements MiStrategy {
 		miFilterGroup.setName("默认组名");
 		miFilterGroup.setLogicalOperator(2);
 		commService.insert(miFilterGroup);
+		
 		//创建事实
 		MiStatFact miStatFact = new MiStatFact(code_cnt, miCalExpress.getId() , miFilterGroup.getId(), AggregateFunctionType.SUM.getIndex(), 1);
 		commService.insert(miStatFact);

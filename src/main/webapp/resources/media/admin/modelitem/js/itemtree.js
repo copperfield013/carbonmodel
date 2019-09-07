@@ -36,7 +36,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					
 					if (modelItem.type == 5 || modelItem.type == 501) {//单行属性分组
 						initGroup(modelItem, $parent);
-					}else if (modelItem.type == 502){
+					}else if (modelItem.type == 502){// 事实组初始化
 						initFactGroup(modelItem, $parent, belongModelType);
 					} else if (modelItem.type == 6 || modelItem.type == 7) { //多行属性组 or  巨多行属性
 						initMoreGroup(modelItem, $parent);
@@ -209,6 +209,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	         if (belongModelType !="102") {
 	        	 attrGroupHtml += "<i class='icon icon_i glyphicon glyphicon-filter factGroupFilterView'></i>";
 	         }
+	         
+	         if (belongModelType =="102") {
+	        	/* attrGroupHtml += "<i class='icon icon_i glyphicon glyphicon-fire sqlModelsql'></i>";*/
+	        	 attrGroupHtml += "<i class='icon icon_i icon-sqlpng sqlModelsql'></i>";
+	         }
+	         
 	         attrGroupHtml += "<i class=' icon icon_i fa fa-edit icon-edit'></i>"+
             "<i class='icon icon_i icon-add-sm group'></i>" +
             "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +

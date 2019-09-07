@@ -11,14 +11,15 @@ import org.hibernate.annotations.GenericGenerator;
 import cho.carbon.meta.enun.ModelItemType;
 
 /**
- * 全sql统计实体， 存储sql语句
+ * 全sql统计实体 , 放在事实组上，
+ * 每个事实组对应一个sql语句
  * @author chuyin
  *
  */
 
 @Entity
-@Table(name = "t_cc_mi_model_sql")
-public class MiModelSql {
+@Table(name = "t_cc_mi_stat_factgroup")
+public class MiStatFactGroup {
 	
 	 @Id
 	  @Column(name="code")
@@ -28,9 +29,9 @@ public class MiModelSql {
 	  @Column(name="sql_txt")
 	  private String sqlTxt;
 	  
-	  public MiModelSql() {}
+	  public MiStatFactGroup() {}
 
-	public MiModelSql(String code, String sqlTxt) {
+	public MiStatFactGroup(String code, String sqlTxt) {
 		this.code = code;
 		this.sqlTxt = sqlTxt;
 	}
