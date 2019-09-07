@@ -7,7 +7,7 @@
     </a>
     <ul class="submenu">
         <li>
-            <a class="tab" href="admin/cascadedict/cascadedictBasicItem/list?parentId=0" target="cascadedictBasicItem_list" title="字典列表">
+            <a class="tab" href="admin/cascadedict/cascadedictBasicItem/list?parentId=1" target="cascadedictBasicItem_list" title="字典列表">
                 <span class="menu-text">字典管理</span>
             </a>
         </li>

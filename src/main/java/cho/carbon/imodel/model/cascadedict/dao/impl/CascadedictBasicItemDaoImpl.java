@@ -30,7 +30,7 @@ public class CascadedictBasicItemDaoImpl implements CascadedictBasicItemDao {
 
 	@Override
 	public List<CascadedictBasicItem> queryList(CascadedictBasicItemCriteria criteria, PageInfo pageInfo) throws Exception{
-		String hql = "from CascadedictBasicItem b WHERE 1=1 and b.id != 0";
+		String hql = "from CascadedictBasicItem b WHERE 1=1 and b.id != 1";
 		DeferedParamQuery dQuery = new DeferedParamQuery(hql);
 		
 		if(criteria.getId() != null){
@@ -90,7 +90,7 @@ public class CascadedictBasicItemDaoImpl implements CascadedictBasicItemDao {
 	@Override
 	public List<CascadedictBasicItem> getParentAll() {
 		String sql = "SELECT DISTINCT * FROM `t_cc_casenum_item` b "
-				+ "WHERE b.id !=0 AND b.id in(SELECT DISTINCT parent_id FROM `t_cc_casenum_item` WHERE parent_id is not null) ";
+				+ "WHERE b.id !=1 AND b.id in(SELECT DISTINCT parent_id FROM `t_cc_casenum_item` WHERE parent_id is not null) ";
 		return sFactory.getCurrentSession().createSQLQuery(sql).addEntity(CascadedictBasicItem.class).list();
 	}
 
@@ -99,7 +99,7 @@ public class CascadedictBasicItemDaoImpl implements CascadedictBasicItemDao {
 		String sql = "SELECT DISTINCT  a.* FROM `t_cc_casenum_item` a "
 				+ " inner join t_cc_casenum_item b on a.id=b.parent_id "
 				+ " inner join t_cc_casenum_item c on b.id=c.parent_id "
-				+ " WHERE a.parent_id is not null AND a.id !=0 ";
+				+ " WHERE a.parent_id is not null AND a.id !=1 ";
 		return sFactory.getCurrentSession().createSQLQuery(sql).addEntity(CascadedictBasicItem.class).list();
 	}
 

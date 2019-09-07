@@ -148,8 +148,10 @@ public class ModelItemDaoImpl implements ModelItemDao {
 			sb.append(" AND a.type not in (5, 6) ");
 		}
 		
+		
+		
 		if (!needCorrelation) {
-			sb.append(" AND a.code not like '%\\_%'");
+			sb.append(" AND (a.code not like '%\\_%' or a.code like '%_cnt')");
 		}
 		
 		return sFactory.getCurrentSession().createSQLQuery(sb.toString())
@@ -187,7 +189,7 @@ public class ModelItemDaoImpl implements ModelItemDao {
 
 	@Override
 	public List<ModelItem> getModelList() {
-		String hql = "from ModelItem b WHERE type in (1, 101, 102)";
+		String hql = "from ModelItem b WHERE type in (1, 101, 102, 103)";
 		return sFactory.getCurrentSession().createQuery(hql).list();
 	}
 

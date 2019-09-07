@@ -36,6 +36,11 @@ public class FactGroupMiStrategy implements MiStrategy {
 	}
 	
 	private void createCorrelationAttr(ModelItem modelItem, CommService commService) {
+		
+		//获取belongModel 的类型
+		ModelItem belongModel = commService.get(ModelItem.class, modelItem.getBelongModel());
+		ModelItemType belongModelType = ModelItemType.getItemType(belongModel.getType());
+		
 		String tableName = "t_" + modelItem.getBelongModel()+ "_STAT";
 		String code_cnt = ModelItemValueParter.getStatCountName(modelItem.getCode());
 		
@@ -47,31 +52,46 @@ public class FactGroupMiStrategy implements MiStrategy {
 		commService.insert(miValue1);
 		
 		// 表达式id
-		MiCalExpress miCalExpress = new MiCalExpress(null, "count(*)", "count(*)");
-		commService.insert(miCalExpress);
-		
+		MiCalExpress miCalExpress = null;
 		// 创建过滤条件
-		MiFilterGroup miFilterGroup = new MiFilterGroup();
-		miFilterGroup.setType(1);
-		miFilterGroup.setName("默认组名");
-		miFilterGroup.setLogicalOperator(2);
-		commService.insert(miFilterGroup);
+		MiFilterGroup miFilterGroup =null;
+		if (ModelItemType.STAT_MODEL.equals(belongModelType)) {
+			// 表达式id
+			miCalExpress = new MiCalExpress(null, "count(*)", "count(*)");
+			commService.insert(miCalExpress);
+			
+			// 创建过滤条件
+			miFilterGroup = new MiFilterGroup();
+			miFilterGroup.setType(1);
+			miFilterGroup.setName("默认组名");
+			miFilterGroup.setLogicalOperator(2);
+			commService.insert(miFilterGroup);
+		}
 		
 		//创建事实
-		MiStatFact miStatFact = new MiStatFact(code_cnt, miCalExpress.getId() , miFilterGroup.getId(), AggregateFunctionType.SUM.getIndex(), 1);
+		MiStatFact miStatFact = new MiStatFact(code_cnt, miCalExpress==null? null:miCalExpress.getId() , miFilterGroup==null?null:miFilterGroup.getId(), AggregateFunctionType.SUM.getIndex(), 1);
 		commService.insert(miStatFact);
 	}
 
 	@Override
 	public void delModelItem(ModelItem modelItem, CommService commService, ModelItemService modelItemService) {
+		//获取belongModel 的类型
+		ModelItem belongModel = commService.get(ModelItem.class, modelItem.getBelongModel());
+		ModelItemType belongModelType = ModelItemType.getItemType(belongModel.getType());
 		
 		String code_cnt = ModelItemValueParter.getStatCountName(modelItem.getCode());
-		
 		MiStatFact miStatFact = commService.get(MiStatFact.class, code_cnt);
-		//删除表达式
-		MiCalExpress miCalExpress = new MiCalExpress();
-		miCalExpress.setId(miStatFact.getExpressId());
-		commService.delete(miCalExpress);
+		
+		// 统计实体， 需要删除表达式和过滤条件
+		if (ModelItemType.STAT_MODEL.equals(belongModelType)) { 
+			//删除表达式
+			MiCalExpress miCalExpress = new MiCalExpress();
+			miCalExpress.setId(miStatFact.getExpressId());
+			commService.delete(miCalExpress);
+			
+			// 删除过滤条件
+		}
+		
 		// 删除事实
 		commService.delete(miStatFact);
 		
