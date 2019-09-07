@@ -37,6 +37,8 @@ public class MiStrategyContext {
 		ModelItem modelItem = modelItemContainer.getModelItem();
 		ModelItemType itemType = ModelItemType.getItemType(modelItem.getType());
 		
+		ModelItem belongModelItem = commService.get(ModelItem.class, modelItem.getBelongModel());
+		ModelItemType belongModelType = ModelItemType.getItemType(belongModelItem.getType());
 		
 		// 这里没什么问题， 先保存为敬
 		if ("add".equals(flag)) {
@@ -45,7 +47,7 @@ public class MiStrategyContext {
 			commService.update(modelItem);
 		}
 		
-		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType);
+		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType, belongModelType);
 		if (miStrategy!=null) {
 			miStrategy.saveOrUpdate(modelItemContainer, commService, flag, casenumItemService, modelItemService, modelItemCodeGeneratorService);
 		}
@@ -53,15 +55,18 @@ public class MiStrategyContext {
 	}
 	
 	/**
-	 * 删除ModelItem
+	 *	 删除ModelItem
 	 * @param miCode
 	 */
 	public void delModelItem(String miCode) {
 		ModelItem modelItem = commService.get(ModelItem.class, miCode);
 		ModelItemType itemType = ModelItemType.getItemType(modelItem.getType());
 		
+		ModelItem belongModelItem = commService.get(ModelItem.class, modelItem.getBelongModel());
+		ModelItemType belongModelType = ModelItemType.getItemType(belongModelItem.getType());
+		
 		//处理衍生数据
-		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType);
+		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType, belongModelType);
 		if (miStrategy!=null) {
 			miStrategy.delModelItem(modelItem, commService, modelItemService);
 		}

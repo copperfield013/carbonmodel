@@ -260,10 +260,11 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>" +
 	         "<i class='icon icon_i glyphicon glyphicon-filter calculatedFilterView'></i>"+
-	         "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>"+
-	         "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
-	         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
-            "</div>" +
+	         "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>";
+	         
+        	 attrGroupHtml += "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+	         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>";
+	         attrGroupHtml +="</div>" +
             "</div>" +
             "</div>" +
             "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +
@@ -415,20 +416,27 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
             "<span id='spanName' class='span-title'>"+modelItem.name+"</span>"+
             "<span id='' class='span-title'>"+modelItem.showUsingState+"</span>";
 	         attrGroupHtml += "<div class='btn-wrap'>";
-	        /* "<i class='glyphicon glyphicon-pencil'></i>"+*/
+
+	         //事实分组的半生事实属性， 不能编辑和删除
+	         var codeStr = modelItem.code.toLowerCase();
+	         var patt =/_cnt$/;
+	         var istrue = patt.test(codeStr)
 	         
-	        /* fa-filter*/
-	         /*"<i class='icon icon_i glyphicon glyphicon-filter factFilterView'></i>"+*/
 	         if (belongModelType !="102") {
-	        	 attrGroupHtml += "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>";
+	        	 if (!istrue) {
+	        		 attrGroupHtml += "<i class='icon icon_i fa fa-keyboard-o expressionView'></i>"; 
+	        	 }
 	         }
-	        
-	         attrGroupHtml += "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
-	         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>" +
+	      
+	         if (!istrue) {
+	        	 attrGroupHtml += "<i class='icon icon_i fa fa-edit icon-edit'></i>"+
+		         "<i class='icon icon_i glyphicon glyphicon-trash delModelItem'></i>";
+	         }
+	         
            /* "<i class='icon icon-add-sm group'></i>" +*/
            /* "<i class='icon delModelItem'></i>" +*/
             /*"<i class='icon icon-arrow-sm active'></i>" +*/
-            "</div>" +
+	         attrGroupHtml += "</div>" +
             "</div>" +
             "</div>" +
             "<ul class='attr-group-drag-wrap dragEdit-wrap collapse-content collapse-content-inactive need-ajax' id='dragEdit-"+dragWrapLen+"'>" +

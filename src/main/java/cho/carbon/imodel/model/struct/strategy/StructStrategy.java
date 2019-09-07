@@ -44,4 +44,6 @@ public class StructStrategy  implements StructBaseStrategy {
 		commService.insert(cloneStrucMiCode);
 	}
 	
+	
+	
 }

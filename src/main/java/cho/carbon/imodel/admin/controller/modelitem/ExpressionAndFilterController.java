@@ -579,7 +579,7 @@ public class ExpressionAndFilterController {
 			String messageTwo = e.getMessage();
 			String message = e.getCause().getMessage();
 			map.put("code", 400);
-			map.put("msg", "执行失败！" + messageTwo + "\n"+ message);
+			map.put("msg", "执行失败!\n" + messageTwo + "\n"+ message);
 			return jobj.toString();
 		}
 	}
