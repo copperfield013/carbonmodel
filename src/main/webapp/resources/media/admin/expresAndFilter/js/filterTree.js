@@ -35,6 +35,8 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			 Dialog.notice("请添加过滤组！", "warning");
 			return;
 		}
+		
+		debugger;
 		 
 		 Ajax.ajax('admin/expressionAndFilter/saveFilter',{
 			 miCode:miCode,
@@ -1026,6 +1028,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
  // 过滤普通组保存方法(暂时没用
     function filterSave(el) {
+    	debugger;
     	var $attrBar = $(el).closest(".label-bar");
     	var  $header = $attrBar.closest(".collapse-header");
     	
@@ -1035,7 +1038,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	var logicalOperator = $attrBar.children(".logicalOperator").find("option:selected").val();
     	var pid = $header.attr("data-pid");
     	
-    	if (pid == "undefined") {
+    	if (pid == "undefined" || pid==undefined) {
     		pid="";
     	}
     	
@@ -1065,6 +1068,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     
     // 过滤普通组保存方法
     function commGroupSave(el) {
+    	
+    	debugger;
+    	
     	var $attrBar = $(el).closest(".label-bar");
     	var  $header = $attrBar.closest(".collapse-header");
     	
@@ -1074,7 +1080,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
     	var logicalOperator = $attrBar.children(".logicalOperator").find("option:selected").val();
     	var pid = $header.attr("data-pid");
     	
-    	if (pid == "undefined") {
+    	if (pid == "undefined"|| pid==undefined) {
     		pid="";
     	}
     	

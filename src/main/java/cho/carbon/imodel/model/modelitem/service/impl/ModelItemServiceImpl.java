@@ -17,6 +17,7 @@ import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.Constants;
 import cho.carbon.imodel.model.modelitem.dao.ModelItemDao;
 import cho.carbon.imodel.model.modelitem.pojo.MiCalExpress;
+import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
@@ -35,6 +36,7 @@ import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.modelitem.vo.ViewLabel;
 import cho.carbon.imodel.model.struct.pojo.StrucFilter;
 import cho.carbon.meta.enun.AggregateFunctionType;
+import cho.carbon.meta.enun.CalculatedItemType;
 import cho.carbon.meta.enun.ItemValueType;
 import cho.carbon.meta.enun.ModelItemType;
 import cn.sowell.copframe.dto.page.PageInfo;
@@ -106,17 +108,20 @@ public class ModelItemServiceImpl implements ModelItemService {
 		MiEnum miEnum = null;
 		MiReference miReference = null;
 		MiStatFact miStatFact = null;
+		MiCalculated miCalculated = null;
 		if (modelItem == null) {
 			modelItem = new ModelItem("", "", modelItemType.getIndex(), "", "", 0, "");
 			miValue = new MiValue("", ItemValueType.STRING.getIndex() + "", "32", "", 0);
 			miEnum = new MiEnum("", null);
 			miReference = new MiReference("", "", "", "", "0");
 			miStatFact = new MiStatFact("", null, null, null, 0);
+			miCalculated = new MiCalculated();
 		} else {
 			miValue = commService.get(MiValue.class, modelItem.getCode());
 			miEnum = commService.get(MiEnum.class, modelItem.getCode());
 			miReference = commService.get(MiReference.class, modelItem.getCode());
 			miStatFact = commService.get(MiStatFact.class, modelItem.getCode());
+			miCalculated = commService.get(MiCalculated.class, modelItem.getCode());
 		}
 		List<ViewLabel> viewLabelList = new ArrayList();
 		// 这里设置通用属性
@@ -162,6 +167,17 @@ public class ModelItemServiceImpl implements ModelItemService {
 		case CASCADE_REFERENCE_ITEM:
 		case CALCULATED_ITEM:
 			getViewLabelToMiValue(miValue, viewLabelList, modelItemType);
+			// miCalculated
+			
+			ViewLabel viewLabel2 = new ViewLabel("select", "text", "miCalculated.type", "" +miCalculated.getType(), "计算类型", 10);
+			
+			Map<String, String> valueDomain10 = new HashMap<String, String>();
+			valueDomain10.put(CalculatedItemType.PRESERVE.getIndex()+"", CalculatedItemType.PRESERVE.getName());
+			valueDomain10.put(CalculatedItemType.FETCH.getIndex()+"", CalculatedItemType.FETCH.getName());
+			viewLabel2.setValueDomain(valueDomain10);
+			
+			viewLabelList.add(viewLabel2);
+			
 			break;
 		case ENUM_ITEM:
 		case DIMENSION_ENUM_ITEM:

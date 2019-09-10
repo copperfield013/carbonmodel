@@ -164,7 +164,11 @@ public class ExpressionAndFilterController {
 				// 计算属性对应的表达式
 				 MiCalculated miCalculated = commService.get(MiCalculated.class, miCode);
 				 if (miCalculated != null) {
-						MiCalExpress miCalExpress = commService.get(MiCalExpress.class, miCalculated.getExpressId());
+					 Integer expressId = miCalculated.getExpressId();
+					 MiCalExpress miCalExpress = null;
+					 if (expressId!=null) {
+						 miCalExpress =  commService.get(MiCalExpress.class, miCalculated.getExpressId());
+					 }
 						codeTxt = miCalExpress == null ?"":miCalExpress.getCodeTxt();
 					}
 				break;

@@ -2,6 +2,7 @@ package cho.carbon.imodel.model.modelitem.strategy;
 
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.comm.service.CommService;
+import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
@@ -27,6 +28,20 @@ public class ValueItemMiStrategy implements MiStrategy {
 			miValue.setDataLength("32");
 		}
 		
+		if (ModelItemType.CALCULATED_ITEM.getIndex() == modelItem.getType()) {
+			//计算属性需要单独处理
+			MiCalculated miCalculated = modelItemContainer.getMiCalculated();
+
+			if ("add".equals(flag)) {
+				miCalculated.setCode(modelItem.getCode());
+				commService.insert(miCalculated);
+			} else {
+				MiCalculated miCalculated2 = commService.get(MiCalculated.class, modelItem.getCode());
+				miCalculated2.setType(modelItemContainer.getMiCalculated().getType());
+				commService.update(miCalculated2);
+			}
+		}
+		
 		miValue.setCode(modelItem.getCode());
 		miValue.setBelongTable("t_" + modelItem.getBelongModel()+ "_" + modelItem.getParent());
 		
@@ -43,7 +58,5 @@ public class ValueItemMiStrategy implements MiStrategy {
 		miValue.setCode(modelItem.getCode());
 		commService.delete(miValue);
 	}
-
-	
 	
 }

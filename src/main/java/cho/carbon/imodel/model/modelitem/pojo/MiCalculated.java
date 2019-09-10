@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * 计算属性对应的表达式和过滤条件
+ * 	计算属性对应的表达式和过滤条件
  * @author so-well
  *
  */
@@ -21,7 +21,7 @@ public class MiCalculated {
 	  @GenericGenerator(name = "system-uuid", strategy = "uuid")
 	  private String code;//单独生成规则
 
-	@Column(name="express_id")
+	 @Column(name="express_id")
 	  private Integer expressId;
 	 
 	 /**
@@ -33,6 +33,13 @@ public class MiCalculated {
 	 @Column(name="corder")
 	 private Integer corder;
 	 
+	 /**
+	  * 值域： CalculatedItemType.PRESERVE
+	 		CalculatedItemType.FETCH
+	  */
+	 @Column(name="type")
+	 private Integer type;
+	 
 	 public MiCalculated() {}
 	 
 	public MiCalculated(String code, Integer expressId, Integer filterId, Integer corder) {
@@ -41,6 +48,15 @@ public class MiCalculated {
 		this.expressId = expressId;
 		this.filterId = filterId;
 		this.corder = corder;
+	}
+
+	public MiCalculated(String code, Integer expressId, Integer filterId, Integer corder, Integer type) {
+		super();
+		this.code = code;
+		this.expressId = expressId;
+		this.filterId = filterId;
+		this.corder = corder;
+		this.type = type;
 	}
 
 	public String getCode() {
@@ -73,6 +89,14 @@ public class MiCalculated {
 
 	public void setCorder(Integer corder) {
 		this.corder = corder;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 	 
 }

@@ -1,5 +1,6 @@
 package cho.carbon.imodel.model.modelitem.vo;
 
+import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
 import cho.carbon.imodel.model.modelitem.pojo.MiModel;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
@@ -23,6 +24,7 @@ public class ModelItemContainer {
 	private MiTowlevel miTowlevel;
 	private MiModel miModel;
 	private MiStatFact miStatFact;
+	private MiCalculated miCalculated;
 	
 	//统计实体
 	private MiModelStat miModelStat;
@@ -89,6 +91,14 @@ public class ModelItemContainer {
 
 	public void setMiStatFact(MiStatFact miStatFact) {
 		this.miStatFact = miStatFact;
+	}
+
+	public MiCalculated getMiCalculated() {
+		return miCalculated;
+	}
+
+	public void setMiCalculated(MiCalculated miCalculated) {
+		this.miCalculated = miCalculated;
 	}
 	
 }
