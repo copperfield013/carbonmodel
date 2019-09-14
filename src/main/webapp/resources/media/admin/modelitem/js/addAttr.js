@@ -16,8 +16,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				 $CPF.closeLoading();
 			} else{
 				
-				debugger;
-				
 				var viewLabelList = data.viewLabelList;
 				if (viewLabelList.length>0) {
 					initAttrLabel(viewLabelList, $modelItemForm);
@@ -141,7 +139,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 
 				var page = $page.getLocatePage();
 				if(page.getPageObj() instanceof Dialog){
-					debugger;
 					var afterSave = page.getPageObj().getEventCallbacks('afterSave');
 					if(typeof afterSave == 'function'){
 						afterSave.apply(page, [modelItem]);

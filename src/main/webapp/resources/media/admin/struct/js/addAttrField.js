@@ -160,14 +160,12 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	 // 关系属性 改变的时候 ， 改变miCode
 	 $($page).on("change", ".radioStrucRela", function() {
 		 var relaCode = $(this).val();
-		 debugger;
 		 var $strucMiCodeItemCode = $(".strucMiCodeItemCode");
 		 var $strucPointer  = $(".strucPointer ");
 		 if ($strucMiCodeItemCode.length>=1) {
 			 Ajax.ajax('admin/modelRelationType/getModelRelation', {
 				 typeCode:relaCode
 	    	 }, function(data) {
-	    		 debugger;
 	    		 if (data.code==200) {
 	    			 var modelRela = data.modelRelationType;
 	    			 
@@ -222,7 +220,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		Ajax.ajax('admin/structBase/getAppointStruct', {
 			modelCode:miCode
     	 }, function(data) {
-    		 debugger;
     		 var strucBaseList = data.strucBaseList;
     		// 为志向结构体赋值
     		 	var str = "<option value=''>---请选择---</option>"; 
@@ -245,7 +242,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    	 }, function(data) {
 	    		 var modelItemList = data.modelItemList;
 	    		 var str = "<option value=''>---请选择---</option>"; 
-	    		 debugger;
 	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
 	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 
 	            }
@@ -267,7 +263,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		Ajax.ajax('admin/structBase/getAppointStruct', {
 			modelCode:miCode
     	 }, function(data) {
-    		 debugger;
     		 var strucBaseList = data.strucBaseList;
     		// 为志向结构体赋值
     		 	var str = "<option value=''>---请选择---</option>"; 
@@ -316,7 +311,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    		Ajax.ajax('admin/structBase/getStrucMiCode', {
 	    			sbId:sbPid
 		    	 }, function(data) {
-		    		 debugger;
 		    		 
 		    		 var strucMiCode = data.strucMiCode;
 		    		// 获取多选关系值域
@@ -339,7 +333,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    		Ajax.ajax('admin/structBase/getAppointStruct', {
 	    			modelCode:miCode
 		    	 }, function(data) {
-		    		 debugger;
 		    		 var strucBaseList = data.strucBaseList;
 		    		// 为志向结构体赋值
 		    		 	var str = "<option value=''>---请选择---</option>"; 
@@ -368,7 +361,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			    		 Ajax.ajax('admin/cascadedict/cascadedictSubsection/getSubSelectByParentId', {
 			    			 parentId:miEnum.pid
 					    	 }, function(data) {
-					    		 debugger;
 					    		 var childList = data.childList;
 					    		
 					    		 var str = "<option value=''>---请选择---</option>"; 
