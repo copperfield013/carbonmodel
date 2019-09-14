@@ -160,19 +160,22 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	 // 关系属性 改变的时候 ， 改变miCode
 	 $($page).on("change", ".radioStrucRela", function() {
 		 var relaCode = $(this).val();
-		 
+		 debugger;
 		 var $strucMiCodeItemCode = $(".strucMiCodeItemCode");
-		 
+		 var $strucPointer  = $(".strucPointer ");
 		 if ($strucMiCodeItemCode.length>=1) {
 			 Ajax.ajax('admin/modelRelationType/getModelRelation', {
 				 typeCode:relaCode
 	    	 }, function(data) {
-	    		 
+	    		 debugger;
 	    		 if (data.code==200) {
 	    			 var modelRela = data.modelRelationType;
+	    			 
+	    			 //获取右实体的字段
 	    			 Ajax.ajax('admin//modelItem/getShowCode', {
 	    				 miCode:modelRela.rightModelCode
 	    	    	 }, function(data) {
+	    	    		 
 	    	    		 var modelItemList = data.modelItemList;
 	    	    		 var str = "<option value=''>---请选择---</option>"; 
 	    	    		 
@@ -184,6 +187,21 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    	            }); 
 	    			 
 	    			 
+	    			 // 获取右实体的结构体
+	    			 Ajax.ajax('admin/structBase/getAppointStruct', {
+	    				 modelCode:modelRela.rightModelCode
+	    	    	 }, function(data) {
+	    	    		
+	    	    		 var strucBaseList = data.strucBaseList;
+	    	    		 var str = "<option value=''>---请选择---</option>"; 
+	    	    		 
+	    	        	for (var key in strucBaseList) { //遍历json数组时，这么写p为索引，0,1
+	    	               str = str + "<option value=\"" + strucBaseList[key].id + "\">" + strucBaseList[key].title + "</option>"; 
+	    	            }
+	    	    		 $strucPointer.empty().append(str);
+	    	    		 $strucPointer.trigger("change");
+	    	    		 
+	    	    	 });
 	    		 } else {
 	    			 
 	    			 //这里报错
@@ -194,8 +212,78 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		 
 	 });
 	 
+	 
+	 // 引用关联属性-》引用属性改变的时候， 更改指向结构体
+	 $($page).on("change", ".rRefFieldClazz", function() {  
+		// 更改指向结构体
+		 var $strucPointer = $(".strucPointer");
+		 var miCode = $(this).val();
+		 
+		Ajax.ajax('admin/structBase/getAppointStruct', {
+			modelCode:miCode
+    	 }, function(data) {
+    		 debugger;
+    		 var strucBaseList = data.strucBaseList;
+    		// 为志向结构体赋值
+    		 	var str = "<option value=''>---请选择---</option>"; 
+            	for (var key in strucBaseList) { //遍历json数组时，这么写p为索引，0,1
+                   str = str + "<option value=\"" + strucBaseList[key].id + "\">" + strucBaseList[key].title + "</option>"; 
+                }
+                	
+            	$strucPointer.empty().append(str);
+    		 
+         }); 
+		
+		 var $strucRRef = $(".strucRRef");
+    	 if ($strucRRef.length>=1) {
+    		 Ajax.ajax('admin/modelItem/getMiReference', {
+				 miCode:miCode
+	    	 }, function(data) {
+    		 var miReference = data.miReference;
+    		 Ajax.ajax('admin/modelItem/getShowCode', {
+				 miCode:miReference.modelCode
+	    	 }, function(data) {
+	    		 var modelItemList = data.modelItemList;
+	    		 var str = "<option value=''>---请选择---</option>"; 
+	    		 debugger;
+	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
+	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 
+	            }
+	            	
+	        		$strucRRef.empty().append(str);
+	            }); 
+	    	 });  
+    	 }
+		 
+	 });
+	 
+	 
+	 // 引用属性， 引用属性改变的时候， 更改指向结构体
+	 $($page).on("change", ".refFieldClazz", function() {  
+		// 更改指向结构体
+		 var $strucPointer = $(".strucPointer");
+		 var miCode = $(this).val();
+		 
+		Ajax.ajax('admin/structBase/getAppointStruct', {
+			modelCode:miCode
+    	 }, function(data) {
+    		 debugger;
+    		 var strucBaseList = data.strucBaseList;
+    		// 为志向结构体赋值
+    		 	var str = "<option value=''>---请选择---</option>"; 
+            	for (var key in strucBaseList) { //遍历json数组时，这么写p为索引，0,1
+                   str = str + "<option value=\"" + strucBaseList[key].id + "\">" + strucBaseList[key].title + "</option>"; 
+                }
+                	
+            	$strucPointer.empty().append(str);
+    		 
+         }); 
+		 
+	 });
+	 
 	  	//
 	    $($page).on("change", ".strucMiCodeItemCode", function() {  
+	    	
 	    	var miCode = $(this).val();
 	    	 var cnName = $(this).find("option:selected").text();
 	    	$(".strucBaseTitle").val(cnName);
@@ -220,7 +308,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    	 }
 	    	
 	    	 // 实体code， 改变的时候， 改变多选关系值域
-	    	 
 	    	 var $multStrucRela = $(".multStrucRela");
 	    	 if ($multStrucRela.length>=1) {
 	    		 // 获取左实体code
@@ -293,30 +380,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 					    		 
 					    	 })
 			    	 })
-	    	 }
-	    	 
-	    	 //更改引用关联
-	    	 var $strucRRef = $(".strucRRef");
-	    	 if ($strucRRef.length>=1) {
-	    	 
-	    		 Ajax.ajax('admin/modelItem/getMiReference', {
-    				 miCode:miCode
-    	    	 }, function(data) {
-	    		 var miReference = data.miReference;
-	    		 debugger;
-	    		 Ajax.ajax('admin/modelItem/getShowCode', {
-    				 miCode:miReference.modelCode
-    	    	 }, function(data) {
-    	    		 var modelItemList = data.modelItemList;
-    	    		 var str = "<option value=''>---请选择---</option>"; 
-    	    		 debugger;
-    	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
-    	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 
-    	            }
-    	            	
-    	        		$strucRRef.empty().append(str);
-    	            }); 
-    	    	 });  
 	    	 }
 	    	 
 	    });

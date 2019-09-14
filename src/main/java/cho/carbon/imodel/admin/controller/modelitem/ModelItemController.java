@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
@@ -219,7 +220,9 @@ public class ModelItemController {
 	    	map.put("viewLabelList", viewLabelList);
 			map.put("code", 200);
 			map.put("msg", "成功！");
-			return jobj.toJSONString(map, SerializerFeature.WriteMapNullValue);
+			
+			String jsonString = JSON.toJSONString(map, SerializerFeature.WriteMapNullValue, SerializerFeature.DisableCircularReferenceDetect);
+			return jsonString;
 		} catch (Exception e) {
 			logger.error("添加失败", e);
 			e.printStackTrace();

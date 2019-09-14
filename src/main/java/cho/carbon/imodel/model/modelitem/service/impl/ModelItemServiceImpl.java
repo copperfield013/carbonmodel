@@ -301,22 +301,6 @@ public class ModelItemServiceImpl implements ModelItemService {
 		}
 		modelItemRef.setValueDomain(valueDomain);
 		
-		// 引用的识别属性
-		ViewLabel recognitionCode = new ViewLabel("select", "text", "miReference.recognitionCode", miReference.getRecognitionCode(), "识别属性");
-		recognitionCode.setViewClazz("miReferenceRecognitionCode");
-		// 获取值域
-		Map<String, String> valueDomain2 = new LinkedHashMap<String, String>();
-		ModelItemType[] types = {ModelItemType.ONE_LINE_GROUP, ModelItemType.MULTI_LINE_GROUP, ModelItemType.GIANT_LINE_GROUP};
-		//获取所有模型下的属性， 包括多行和单行下的孩子
-		 List<ModelItem> modelItemStairChild = this.getModelItemByBelongMode(modelItemList.get(0).getBelongModel(), types ,null,  false);
-		for (ModelItem modelItem : modelItemStairChild) {
-			valueDomain2.put(modelItem.getCode(), modelItem.getName());
-		}
-		recognitionCode.setValueDomain(valueDomain2);
-		
-		//引用的展示属性
-		ViewLabel showCode = new ViewLabel("select", "text", "miReference.showCode", miReference.getShowCode(), "展示属性");
-		showCode.setViewClazz("miReferenceShowCode");
 		// 获取值域
 		Map<String, String> valueDomain3= new LinkedHashMap<String, String>();
 		//获取所有实体模型
@@ -327,6 +311,14 @@ public class ModelItemServiceImpl implements ModelItemService {
 		for (ModelItem modelItem : modelItemStairChild2) {
 			valueDomain3.put(modelItem.getCode(), modelItem.getName());
 		}
+		// 引用的识别属性
+		ViewLabel recognitionCode = new ViewLabel("select", "text", "miReference.recognitionCode", miReference.getRecognitionCode(), "识别属性");
+		recognitionCode.setViewClazz("miReferenceRecognitionCode");
+		recognitionCode.setValueDomain(valueDomain3);
+		
+		//引用的展示属性
+		ViewLabel showCode = new ViewLabel("select", "text", "miReference.showCode", miReference.getShowCode(), "展示属性");
+		showCode.setViewClazz("miReferenceShowCode");
 		showCode.setValueDomain(valueDomain3);
 		
 		viewLabelList.add(new ViewLabel("input", "radio", "miReference.addNewRef", miReference.getAddNewRef(), "创建吗"));

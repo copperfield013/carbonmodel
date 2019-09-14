@@ -15,6 +15,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				 Dialog.notice("属性初始化失败", "error");
 				 $CPF.closeLoading();
 			} else{
+				
+				debugger;
+				
 				var viewLabelList = data.viewLabelList;
 				if (viewLabelList.length>0) {
 					initAttrLabel(viewLabelList, $modelItemForm);
@@ -35,11 +38,10 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	//$modelItemForm  往这个内部插入这些标签
 	function initAttrLabel(viewLabelList, $modelItemForm) {
 		for ( var key in viewLabelList) {
+			
 			var htmLabel = DedeTagParse(viewLabelList[key]);
 			$modelItemForm.prepend(htmLabel);
 		}
-		
-		
 		
 	}
 	
@@ -92,7 +94,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			strLabel+='</textarea></div></div>';
 			return strLabel;
 		} else if (viewLabel.label =="select") {
-			
 			var strLabel = '<div class="form-group">';
 			strLabel+= '<label class="col-lg-2 control-label " for="'+viewLabel.name+'">'+viewLabel.showName+'</label>';
 			strLabel+= '<div class="col-lg-5">';
@@ -202,25 +203,31 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    		 miCode:miCode
 	    	 }, function(data) {
 	    		 var modelItemList = data.modelItemList;
-	    		 var str = "";  
+	    		 var str = "<option value=''>---请选择---</option>"; 
                 	for (var p in modelItemList) { //遍历json数组时，这么写p为索引，0,1
                        str = str + "<option value=\"" + modelItemList[p].code + "\">" + modelItemList[p].name + "</option>"; 
                     }
-                	
+                	//识别属性
                 	$selectShow.empty().append(str);
+                	$selectShow.trigger("change");
+                	
+                	//展示属性
+                	$selectRecogn.empty().append(str);
+                	$selectRecogn.trigger("change");
 	            }); 
 	    	 
-	    	 Ajax.ajax('admin/modelItem/getRecognitionCode', {
+	    	/* Ajax.ajax('admin/modelItem/getShowCode', {
 	    		 miCode:miCode
 	    	 }, function(data) {
 	    		 var modelItemList = data.modelItemList;
-	    		 var str1 = "";  
+	    		 var str1 = "<option value=''>---请选择---</option>"; 
                 	for (var p in modelItemList) { //遍历json数组时，这么写p为索引，0,1
                        str1 = str1 + "<option value=\"" + modelItemList[p].code + "\">" + modelItemList[p].name + "</option>"; 
                     }
                 	
                 	$selectRecogn.empty().append(str1);
-	            }); 
+                	$selectRecogn.trigger("change");
+	            }); */
 	    });
 	
 });

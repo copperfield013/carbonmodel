@@ -253,6 +253,8 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					getViewLabelToStrucFieldValue(viewLabelList, strucMiCode, strucFieldValue, strucElementType);
 					getViewLabelToStrucMiCode(viewLabelList, strucMiCode, modelItemList3, strucElementType);
 					getVbRfieldStrucRelation(viewLabelList, strucRelation.isEmpty()? null:strucRelation.get(0), relationOne);
+					
+					getViewLabelToStrucPointer(viewLabelList, strucPointer, allStruc);
 					break;
 				case RREFFIELD:
 					
@@ -482,14 +484,17 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		viewLabelList.add(new ViewLabel("input", "hidden", "strucMiCode.id", sbId, null));
 		
 		String itemName = "模型属性";
+		String viewClazz = "strucMiCodeItemCode";
 		if (StrucElementType.RSTRUC.equals(strucElementType)) {
 			itemName = "选择右模型";
 		} else if (StrucElementType.GROUP2D.equals(strucElementType)) {
 			itemName = "多行分组";
 		} else if (StrucElementType.RREFFIELD.equals(strucElementType)) {
 			itemName = "引用属性";
+			viewClazz = "rRefFieldClazz";
 		}else if (StrucElementType.REFFIELD.equals(strucElementType)) {
 			itemName = "引用属性";
+			viewClazz = "refFieldClazz";
 		}
 
 		ViewLabel itemCodeVb = new ViewLabel("select", "text", "strucMiCode.itemCode",itemCode , itemName, 15);
@@ -500,7 +505,7 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 		  }
 		  itemCodeVb.setValueDomain(valueDomain);
 		
-		itemCodeVb.setViewClazz("strucMiCodeItemCode");
+		itemCodeVb.setViewClazz(viewClazz);
 		viewLabelList.add(itemCodeVb);
 	}
 	

@@ -356,7 +356,7 @@ public class StrucBaseController {
 	    
 	    /**
 	     * 	获取指定的结构体
-	     * @param sbId
+	     * @param modelCode  任何实体的code， 或者是属性的code
 	     * @return
 	     */
 	    @ResponseBody
@@ -365,8 +365,8 @@ public class StrucBaseController {
 			Map<String, Object> map = new HashMap<String, Object>();
 			JSONObject jobj = new JSONObject(map);
 			try {
-				
-				List<StrucBase> strucBaseList = strucBaseService.getAllStruc(modelCode);
+				ModelItem modelItem = commService.get(ModelItem.class, modelCode);
+				List<StrucBase> strucBaseList = strucBaseService.getAllStruc(modelItem.getBelongModel());
 				
 				map.put("strucBaseList", strucBaseList);
 				map.put("code", 200);
