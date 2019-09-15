@@ -37,9 +37,6 @@ public class MiStrategyContext {
 		ModelItem modelItem = modelItemContainer.getModelItem();
 		ModelItemType itemType = ModelItemType.getItemType(modelItem.getType());
 		
-		ModelItem belongModelItem = commService.get(ModelItem.class, modelItem.getBelongModel());
-		ModelItemType belongModelType = ModelItemType.getItemType(belongModelItem.getType());
-		
 		// 这里没什么问题， 先保存为敬
 		if ("add".equals(flag)) {
 			commService.insert(modelItem);
@@ -47,7 +44,7 @@ public class MiStrategyContext {
 			commService.update(modelItem);
 		}
 		
-		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType, belongModelType);
+		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType);
 		if (miStrategy!=null) {
 			miStrategy.saveOrUpdate(modelItemContainer, commService, flag, casenumItemService, modelItemService, modelItemCodeGeneratorService);
 		}
