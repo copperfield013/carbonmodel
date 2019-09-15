@@ -324,6 +324,10 @@ public class StrucBaseServiceImpl implements StrucBaseService {
 					
 					getVbMultRfieldStrucRelation(viewLabelList, strucRelation1, modelRelaList);
 					
+					//重新给指向结构体赋值
+					
+					allStruc =this.getAllStruc(rightModelCode); 
+					
 					// 指向结构体
 					getViewLabelToStrucPointer(viewLabelList, strucPointer, allStruc);
 					
