@@ -165,10 +165,11 @@ public class ModelItemServiceImpl implements ModelItemService {
 		case VALUE_ITEM:
 		case DIMENSION_ITEM:
 		case CASCADE_REFERENCE_ITEM:
+			getViewLabelToMiValue(miValue, viewLabelList, modelItemType);
+			break;
 		case CALCULATED_ITEM:
 			getViewLabelToMiValue(miValue, viewLabelList, modelItemType);
 			// miCalculated
-			
 			ViewLabel viewLabel2 = new ViewLabel("select", "text", "miCalculated.type", "" +miCalculated.getType(), "计算类型", 10);
 			
 			Map<String, String> valueDomain10 = new HashMap<String, String>();

@@ -63,7 +63,7 @@ public class MiStrategyContext {
 		ModelItemType belongModelType = ModelItemType.getItemType(belongModelItem.getType());
 		
 		//处理衍生数据
-		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType, belongModelType);
+		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType);
 		if (miStrategy!=null) {
 			miStrategy.delModelItem(modelItem, commService, modelItemService);
 		}
