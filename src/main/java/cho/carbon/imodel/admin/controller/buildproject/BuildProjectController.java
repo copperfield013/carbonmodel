@@ -46,6 +46,7 @@ public class BuildProjectController {
 	@Resource
 	ModelItemCodeGeneratorService miCodeGeneratorService;
 	
+	
 	@Resource
 	CommService commService;
 	
@@ -53,6 +54,7 @@ public class BuildProjectController {
 	public ModelAndView list(PageInfo pageInfo){
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("pageInfo", pageInfo);
+		
 		mv.setViewName(AdminConstants.JSP_BASE + "/buildproject/list.jsp");
 		return mv;
 	}
