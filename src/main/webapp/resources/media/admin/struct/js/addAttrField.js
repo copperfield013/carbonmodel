@@ -159,8 +159,9 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	 
 	 // 关系属性 改变的时候 ， 改变miCode
 	 $($page).on("change", ".radioStrucRela", function() {
+		 
 		 var relaCode = $(this).val();
-		 var $strucMiCodeItemCode = $(".strucMiCodeItemCode");
+		 var $strucMiCodeItemCode = $("select.strucMiCodeItemCode");
 		 if ($strucMiCodeItemCode.length>=1) {
 			 Ajax.ajax('admin/modelRelationType/getModelRelation', {
 				 typeCode:relaCode
@@ -168,19 +169,19 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    		 if (data.code==200) {
 	    			 var modelRela = data.modelRelationType;
 	    			 var $strucPointer  = $(".strucPointer ");
-	    			
+	    			 var $strucMiCodeItem = $("select.strucMiCodeItemCode");
 	    			 //获取右实体的字段
 	    			 Ajax.ajax('admin//modelItem/getShowCode', {
 	    				 miCode:modelRela.rightModelCode
 	    	    	 }, function(data) {
 	    	    		 var modelItemList = data.modelItemList;
 	    	    		 var str = "<option value=''>---请选择---</option>"; 
-	    	    		 
+	    	    
 	    	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
 	    	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 
 	    	            }
-	    	        		$strucMiCodeItemCode.append(str);
-	    	        		//$strucMiCodeItemCode.trigger("change");
+	    	    		 $strucMiCodeItem.empty().append(str);
+	    	    		 $strucMiCodeItem.trigger("change");
 	    	            }); 
 	    			 
 	    			 // 获取右实体的结构体
@@ -189,7 +190,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	    	    	 }, function(data) {
 	    	    		 var strucBaseList = data.strucBaseList;
 	    	    		 var str = "<option value=''>---请选择---</option>"; 
-	    	    		 
 	    	        	for (var key in strucBaseList) { //遍历json数组时，这么写p为索引，0,1
 	    	               str = str + "<option value=\"" + strucBaseList[key].id + "\">" + strucBaseList[key].title + "</option>"; 
 	    	            }
@@ -276,7 +276,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	 
 	  	//
 	    $($page).on("change", ".strucMiCodeItemCode", function() {  
-	    	
 	    	var miCode = $(this).val();
 	    	 var cnName = $(this).find("option:selected").text();
 	    	$(".strucBaseTitle").val(cnName);
@@ -342,10 +341,6 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		            	$strucPointer.empty().append(str);
 		            	$strucPointer.trigger("change");
 		         }); 
-	    		
-	    		
-	    		
-	    		
 	    	 }
 	    	 
 	    	 //更改子集
