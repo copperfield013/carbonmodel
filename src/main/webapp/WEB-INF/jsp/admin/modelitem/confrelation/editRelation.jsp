@@ -19,7 +19,12 @@
 				      <input type="hidden" name="symmetry" id="symmetry" value="${symmetry }">
 				      <input type="hidden" name="reverseCode" id="reverseCode" value="${reverseRela.typeCode }"/>
 				         
-				         
+				      <div class="form-group">
+						<label class="col-lg-2 control-label">实体名称</label>
+						<div class="col-lg-5">
+							${leftModelName }
+						</div>
+					</div>   
 				    <div class="form-group">
 						<label class="col-lg-2 control-label" for="leftName">关系名称</label>
 						<div class="col-lg-5">

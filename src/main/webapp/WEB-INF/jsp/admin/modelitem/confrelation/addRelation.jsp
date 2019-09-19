@@ -22,6 +22,13 @@
 				      <input type="hidden" name="typeCode" id="typeCode" />
 				      <input type="hidden" name="reverseCode" id="reverseCode" />
 				         
+				         
+				    <div class="form-group">
+						<label class="col-lg-2 control-label" for="name">实体名称</label>
+						<div class="col-lg-5">
+							${leftModelName }
+						</div>
+					</div>
 				    <div class="form-group">
 						<label class="col-lg-2 control-label" for="name">关系名称</label>
 						<div class="col-lg-5">

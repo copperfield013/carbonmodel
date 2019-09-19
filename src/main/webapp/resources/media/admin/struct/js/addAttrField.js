@@ -87,7 +87,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 			var strLabel = '<div class="form-group">';
 			strLabel+= '<label class="col-lg-2 control-label " for="'+viewLabel.name+'">'+viewLabel.showName+'</label>';
 			strLabel+= '<div class="col-lg-5">';
-			strLabel+= '<select allowClear="true" data-allow-clear="true" class=" '+viewLabel.viewClazz+'" name="'+viewLabel.name+'">';
+			strLabel+= '<select data-allow-clear="true" class=" '+viewLabel.viewClazz+'" name="'+viewLabel.name+'">';
 			strLabel+='<option value="">- -请选择- -</option>';
 			//这里存放optiong
 			var vDomainMap = viewLabel.valueDomain;
@@ -161,35 +161,32 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	 $($page).on("change", ".radioStrucRela", function() {
 		 var relaCode = $(this).val();
 		 var $strucMiCodeItemCode = $(".strucMiCodeItemCode");
-		 var $strucPointer  = $(".strucPointer ");
 		 if ($strucMiCodeItemCode.length>=1) {
 			 Ajax.ajax('admin/modelRelationType/getModelRelation', {
 				 typeCode:relaCode
 	    	 }, function(data) {
 	    		 if (data.code==200) {
 	    			 var modelRela = data.modelRelationType;
-	    			 
+	    			 var $strucPointer  = $(".strucPointer ");
+	    			
 	    			 //获取右实体的字段
 	    			 Ajax.ajax('admin//modelItem/getShowCode', {
 	    				 miCode:modelRela.rightModelCode
 	    	    	 }, function(data) {
-	    	    		 
 	    	    		 var modelItemList = data.modelItemList;
 	    	    		 var str = "<option value=''>---请选择---</option>"; 
 	    	    		 
 	    	        	for (var key in modelItemList) { //遍历json数组时，这么写p为索引，0,1
 	    	               str = str + "<option value=\"" + modelItemList[key].code + "\">" + modelItemList[key].name + "</option>"; 
 	    	            }
-	    	        		$strucMiCodeItemCode.empty().append(str);
-	    	        		$strucMiCodeItemCode.trigger("change");
+	    	        		$strucMiCodeItemCode.append(str);
+	    	        		//$strucMiCodeItemCode.trigger("change");
 	    	            }); 
-	    			 
 	    			 
 	    			 // 获取右实体的结构体
 	    			 Ajax.ajax('admin/structBase/getAppointStruct', {
 	    				 modelCode:modelRela.rightModelCode
 	    	    	 }, function(data) {
-	    	    		
 	    	    		 var strucBaseList = data.strucBaseList;
 	    	    		 var str = "<option value=''>---请选择---</option>"; 
 	    	    		 
@@ -228,7 +225,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
                 }
                 	
             	$strucPointer.empty().append(str);
-    		 
+            	$strucPointer.trigger("change");
          }); 
 		
 		 var $strucRRef = $(".strucRRef");
@@ -247,6 +244,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 	            }
 	            	
 	        		$strucRRef.empty().append(str);
+	        		$strucRRef.trigger("change");
 	            }); 
 	    	 });  
     	 }
@@ -271,7 +269,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
                 }
                 	
             	$strucPointer.empty().append(str);
-    		 
+            	$strucPointer.trigger("change");
          }); 
 		 
 	 });
@@ -325,6 +323,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		                }
 		                	
 		            	$multStrucRela.empty().append(str);
+		            	$multStrucRela.trigger("change");
 			            }); 
 		    		 
 		         }); 
@@ -341,7 +340,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 		                }
 		                	
 		            	$strucPointer.empty().append(str);
-		    		 
+		            	$strucPointer.trigger("change");
 		         }); 
 	    		
 	    		
@@ -369,7 +368,7 @@ seajs.use(['dialog','utils', 'ajax', '$CPF'], function(Dialog, Utils, Ajax, $CPF
 				                }
 				                	
 				            	$subsetStrucFileldEnum.empty().append(str);
-					    		 
+				            	$subsetStrucFileldEnum.trigger("change");
 					    	 })
 			    	 })
 	    	 }

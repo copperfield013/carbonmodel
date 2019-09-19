@@ -59,9 +59,6 @@ public class MiStrategyContext {
 		ModelItem modelItem = commService.get(ModelItem.class, miCode);
 		ModelItemType itemType = ModelItemType.getItemType(modelItem.getType());
 		
-		ModelItem belongModelItem = commService.get(ModelItem.class, modelItem.getBelongModel());
-		ModelItemType belongModelType = ModelItemType.getItemType(belongModelItem.getType());
-		
 		//处理衍生数据
 		MiStrategy miStrategy = MiStrategyFactory.getMiStrategy(itemType);
 		if (miStrategy!=null) {

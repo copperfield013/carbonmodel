@@ -85,8 +85,10 @@ public class ModelRelationTypeController {
 	@RequestMapping("/add")
 	public String add(Model model, String leftModelCode) {
 		try {
-			ModelItemType[] existMiTypes = {ModelItemType.MODEL};
+			ModelItemType[] existMiTypes = {ModelItemType.MODEL, ModelItemType.STAT_MODEL, ModelItemType.SQL_MODEL, ModelItemType.MQL_MODEL};
 			List<ModelItem> modelItemList = miService.getModelItemByType(null, existMiTypes, null, Constants.USING_STATE_USING);
+			ModelItem modelItem = commService.get(ModelItem.class, leftModelCode);
+			model.addAttribute("leftModelName", modelItem.getName());
 			model.addAttribute("leftModelCode", leftModelCode);
 			model.addAttribute("modelItemList", modelItemList);
 			return AdminConstants.JSP_BASE + "/modelitem/confrelation/addRelation.jsp";
@@ -180,11 +182,14 @@ public class ModelRelationTypeController {
 				  symmetry = "";
 			  }
 					
+			  //正向模型名称
+			  ModelItem modelItem = commService.get(ModelItem.class,  relation.getLeftModelCode());
 			 //逆向模型名称
 			  ModelItem reverseModelItem = commService.get(ModelItem.class,  relation.getRightModelCode());
 			 
 			 
 			 //TODO......
+			  model.addAttribute("leftModelName", modelItem.getName());
 			 model.addAttribute("symmetry", symmetry);
 			 model.addAttribute("relation", relation);
 			 model.addAttribute("reverseRela", reverseRela);
