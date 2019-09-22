@@ -18,6 +18,7 @@ import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
+import cho.carbon.imodel.model.neo4j.domain.Item;
 import cho.carbon.meta.enun.ModelItemType;
 import cn.sowell.copframe.dao.deferedQuery.DeferedParamQuery;
 import cn.sowell.copframe.dao.deferedQuery.sqlFunc.WrapForCountFunction;
@@ -34,7 +35,7 @@ public class ModelItemDaoImpl implements ModelItemDao {
 	@Override
 	public List<ModelItem> queryList(ModelItem modelItem, PageInfo pageInfo) throws Exception {
 		
-		String hql = "from ModelItem b WHERE type in(1, 101, 102)";
+		String hql = "from ModelItem b WHERE type in(1, 101, 102, 103)";
 		DeferedParamQuery dQuery = new DeferedParamQuery(hql);
 		if(TextUtils.hasText(modelItem.getCode())){
 			dQuery.appendCondition(" AND b.code =:code")
@@ -191,6 +192,25 @@ public class ModelItemDaoImpl implements ModelItemDao {
 	public List<ModelItem> getModelList() {
 		String hql = "from ModelItem b WHERE type in (1, 101, 102, 103)";
 		return sFactory.getCurrentSession().createQuery(hql).list();
+	}
+
+	@Override
+	public List<Item> getAllItem() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT a.name, a.type,b.code, b.need_history needHistory, b.need_cache needCache, b.need_running_logger needRunningLogger ")
+		.append(" FROM t_cc_model_item a")
+		.append(" left join t_cc_mi_model b on a.code=b.code")
+		.append(" WHERE type IN(1, 101, 102, 103)");
+		 List list = sFactory.getCurrentSession().createSQLQuery(sb.toString()).list();
+		 List<Item> itemList = new ArrayList<Item>();
+		 
+		 for (Object obj: list) {
+			 Object[] objStr = (Object[]) obj;
+			 Item item = new Item(objStr[2]+"", objStr[0]+"", objStr[1]+"", objStr[3]+"", objStr[4]+"", objStr[5]+"");
+			itemList.add(item);
+		}
+		 
+		return itemList;
 	}
 
 }

@@ -140,4 +140,9 @@ public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {
 		return modelRelationTypeDao.getExistRelaRightMi(leftModelCode);
 	}
 
+	@Override
+	public List<ModelRelationType> queryAllModelRela() {
+		return modelRelationTypeDao.queryAllModelRela();
+	}
+
 }

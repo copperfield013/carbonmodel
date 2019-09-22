@@ -106,5 +106,8 @@ public interface ModelItemService {
 	 */
 	List getTwoAttrByMappingId(Integer mappingId);
 	
-	
+	/**
+	 * 实体关系数据推送到neo4j数据库中
+	 */
+	void entityToNeo4jDB();
 }

@@ -15,6 +15,13 @@ public interface ModelRelationTypeDao {
 	 * @return
 	 */
 	List<ModelRelationType> queryList(ModelRelationType criteria, PageInfo pageInfo);
+	
+	/**
+	 * 获取所有关系
+	 * @return
+	 */
+	List<ModelRelationType> queryAllModelRela();
+	
 
 	/**
 	 * 根据实体id， 求出实体的关系, 名称变成中文

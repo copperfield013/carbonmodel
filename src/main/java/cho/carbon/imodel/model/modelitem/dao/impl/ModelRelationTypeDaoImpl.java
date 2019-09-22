@@ -128,4 +128,10 @@ public class ModelRelationTypeDaoImpl implements ModelRelationTypeDao {
 				.setParameter("leftModelCode", leftModelCode).list();
 	}
 
+	@Override
+	public List<ModelRelationType> queryAllModelRela() {
+		String hql = "FROM ModelRelationType";
+		return sFactory.getCurrentSession().createQuery(hql).list();
+	}
+
 }

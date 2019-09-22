@@ -16,6 +16,10 @@
 			<div id="createDBTable" style="float: right; font-size: 32px;    margin-right: 50px;">
 				<a title="刷新表结构" href="admin/modelItem/createDBTable" confirm="确认刷新表结构"><i class="fa fa-sitemap"></i></a>
 			</div>
+			
+			<div id="entityToNeo4j" style="float: right; font-size: 32px;    margin-right: 50px;">
+				<a title="同步neo4J" href="admin/modelItem/entityToNeo4j" confirm="确认同步neo4J"><i class="glyphicon glyphicon-random"></i></a>
+			</div>
 		</form>
 		
 	</nav>

@@ -68,6 +68,18 @@ public class ModelItemController {
 		 return AjaxPageResponse.FAILD("操作失败");
 		}
 	}
+	
+	//刷新实体关系到neo4j数据库
+	@ResponseBody
+	@RequestMapping(value="/entityToNeo4j", method=RequestMethod.POST)
+	public AjaxPageResponse entityToNeo4j(){
+		try {
+			miService.entityToNeo4jDB();
+			return AjaxPageResponse.REFRESH_LOCAL("操作成功");
+		} catch (Exception e) {
+		 return AjaxPageResponse.FAILD("操作失败");
+		}
+	}
 
 	/**
 	 * jsp 页面 分页 显示实体列表

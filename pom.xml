@@ -14,8 +14,39 @@
 		 <version.jackson>2.4.4</version.jackson>
 		 <cxf.version>3.2.2</cxf.version>
 		 <version.entityResolver>2.34</version.entityResolver>
+		 
+		 <neo4j-ogm.version>3.1.14</neo4j-ogm.version>
 	</properties>
+	
+	
 	<dependencies>
+	
+	<!-- neo4j start -->
+	
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-core</artifactId>
+            <version>${neo4j-ogm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-http-driver</artifactId>
+            <version>${neo4j-ogm.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-test</artifactId>
+            <version>3.1.14</version>
+            <scope>test</scope>
+            <exclusions> 
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-nop</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+	<!-- neo4j end -->
 	
 		<dependency>
 			<groupId>cn.sowell.copframe</groupId>

@@ -1,6 +1,9 @@
 package cho.carbon.imodel.model.modelitem.service.impl;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -9,6 +12,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.neo4j.ogm.config.ClasspathConfigurationSource;
+import org.neo4j.ogm.config.Configuration;
+import org.neo4j.ogm.cypher.ComparisonOperator;
+import org.neo4j.ogm.cypher.Filter;
+import org.neo4j.ogm.session.Session;
+import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.stereotype.Service;
 
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
@@ -16,25 +25,23 @@ import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.Constants;
 import cho.carbon.imodel.model.modelitem.dao.ModelItemDao;
-import cho.carbon.imodel.model.modelitem.pojo.MiCalExpress;
 import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
 import cho.carbon.imodel.model.modelitem.pojo.MiEnum;
-import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
-import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
-import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
 import cho.carbon.imodel.model.modelitem.pojo.MiReference;
-import cho.carbon.imodel.model.modelitem.pojo.MiStatDimension;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatFact;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
+import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
+import cho.carbon.imodel.model.modelitem.service.ModelRelationTypeService;
 import cho.carbon.imodel.model.modelitem.strategy.MiStrategyContext;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.modelitem.vo.ViewLabel;
-import cho.carbon.imodel.model.struct.pojo.StrucFilter;
+import cho.carbon.imodel.model.neo4j.domain.Item;
+import cho.carbon.imodel.model.neo4j.domain.ItemRelation;
 import cho.carbon.meta.enun.AggregateFunctionType;
 import cho.carbon.meta.enun.CalculatedItemType;
 import cho.carbon.meta.enun.ItemValueType;
@@ -54,6 +61,9 @@ public class ModelItemServiceImpl implements ModelItemService {
 	
 	@Resource
 	CascadedictBasicItemService casenumItemService;
+	
+	@Resource
+	ModelRelationTypeService modelRelationTypeService;
 	
 	@Override
 	public List<ModelItem> queryList(ModelItem modelItem, PageInfo pageInfo) throws Exception {
@@ -376,6 +386,58 @@ public class ModelItemServiceImpl implements ModelItemService {
 	public List<ModelItem> getModelList() {
 		
 		return modelItemDao.getModelList();
+	}
+
+	@Override
+	public void entityToNeo4jDB() {
+		ClasspathConfigurationSource con = new ClasspathConfigurationSource("neo4j.properties");
+		 Configuration configuration = new Configuration
+				 .Builder(con)
+	             .build();
+		  SessionFactory sessionFactory = new SessionFactory(configuration, Item.class.getPackage().getName()); 
+		  Session session =  sessionFactory.openSession();
+		
+		  session.purgeDatabase();
+		  
+		  // 获取所有实体数据， 并封装到Item中
+		  List<Item> allItem = modelItemDao.getAllItem();
+		  session.save(allItem);
+		  
+		  
+		  List<ModelRelationType> modelRelaList = modelRelationTypeService.queryAllModelRela();
+		
+		  for (ModelRelationType modelRelationType : modelRelaList) {
+			  Item itemLeft = null;
+			  Item itemRight = null;
+			  //获取左实体
+			  Filter leftFfilter = new Filter("code", ComparisonOperator.EQUALS, modelRelationType.getLeftModelCode());
+			  List<Item> ItemLeftList = (List<Item>) session.loadAll(Item.class, leftFfilter);
+			  if (!ItemLeftList.isEmpty()) {
+				  itemLeft = ItemLeftList.get(0);
+			  }
+			//获取右实体
+			  Filter rightFfilter = new Filter("code", ComparisonOperator.EQUALS, modelRelationType.getRightModelCode());
+			  List<Item> ItemRightList = (List<Item>) session.loadAll(Item.class, rightFfilter);
+			  if (!ItemRightList.isEmpty()) {
+				  itemRight = ItemRightList.get(0);
+			  }
+			  
+			  if (itemLeft!=null && itemRight!=null) {
+				  ItemRelation itemRelation = new ItemRelation(itemLeft, itemRight, modelRelationType.getTypeCode(), modelRelationType.getName());
+				  itemRelation.setRelationType(modelRelationType.getRelationType()+"");
+				  itemRelation.setUsingState(modelRelationType.getUsingState()+"");
+				  itemRelation.setGiant(modelRelationType.getGiant()+"");
+				  itemRelation.setLeftModelCode(modelRelationType.getLeftModelCode());
+				  itemRelation.setRightModelCode(modelRelationType.getRightModelCode());
+				  
+				  itemLeft.addItemRelation(itemRelation);
+				  session.save(itemLeft);
+			  }
+			  
+		  }
+		  
+		  session.clear();
+		
 	}
 	
 }

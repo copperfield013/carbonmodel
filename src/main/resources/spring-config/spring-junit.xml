@@ -17,7 +17,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		
 	<import resource="spring-core.xml"/>
 	<import resource="spring-dao.xml"/>
-	
 	<!-- dao自动扫描 -->
 	<context:component-scan base-package="cho.carbon.imodel.model.*.dao.impl" />
 	<!-- serivce自动扫描 -->

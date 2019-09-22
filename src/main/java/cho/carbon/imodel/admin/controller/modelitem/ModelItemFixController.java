@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,28 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItemFix;
-import cho.carbon.imodel.model.neo4j.domain.User;
-import cho.carbon.imodel.model.neo4j.repository.UserRepository;
-import cho.carbon.imodel.model.neo4j.service.UserService;
-import cho.carbon.imodel.model.struct.pojo.StrucBase;
-import cho.carbon.imodel.model.struct.service.StrucBaseService;
 import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
-import cn.sowell.copframe.dto.page.PageInfo;
-import cn.sowell.datacenter.entityResolver.config.ModuleConfigureMediator;
-import cn.sowell.datacenter.entityResolver.config.abst.Module;
-import cn.sowell.datacenter.entityResolver.config.param.CreateModuleParam;
-import cn.sowell.datacenter.entityResolver.config.param.QueryModuleCriteria;
 
 @Controller
 @RequestMapping(AdminConstants.URI_BASE + "/modelItemFix")
 public class ModelItemFixController {
-	
-	/*
-	 * @Resource private UserRepository userRepository;
-	 * 
-	 * @Resource private UserService userService;
-	 */
-	 
 	
 	@Resource
 	CommService commService;
@@ -46,12 +27,6 @@ public class ModelItemFixController {
     @RequestMapping(value = "/list",
         method = RequestMethod.POST)
 	public ModelAndView list(){
-		
-		/*
-		 * User user = new User(System.currentTimeMillis()+"", "No", "你好， 小明"); User
-		 * saved = userRepository.save(user);
-		 */
-
     	List modelItemFixList = (List) commService.excuteBySqlSelect("SELECT * FROM t_cc_model_item_fix");
     	
 		ModelAndView mv = new ModelAndView();

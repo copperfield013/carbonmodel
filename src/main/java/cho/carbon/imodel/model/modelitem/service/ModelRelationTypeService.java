@@ -16,6 +16,14 @@ public interface ModelRelationTypeService {
 	 * @return
 	 */
 	List<ModelRelationType> queryList(ModelRelationType criteria, PageInfo pageInfo);
+	
+	
+	/**
+	 * 获取所有关系
+	 * @return
+	 */
+	List<ModelRelationType> queryAllModelRela();
+	
 
 	/**
 	 * 根据实体id， 求出实体所有的关系
