@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.Constants;
 import cho.carbon.imodel.model.modelitem.dao.ModelRelationTypeDao;
@@ -14,7 +15,6 @@ import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.imodel.model.modelitem.service.ModelItemCodeGeneratorService;
 import cho.carbon.imodel.model.modelitem.service.ModelRelationTypeService;
 import cho.carbon.meta.enun.RelationType;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 @Service
 public class ModelRelationTypeServiceImpl implements ModelRelationTypeService {

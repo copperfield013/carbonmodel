@@ -2,9 +2,9 @@ package cho.carbon.imodel.model.cascadedict.service;
 
 import java.util.List;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.cascadedict.criteria.DictionaryMappingAliasCriteria;
 import cho.carbon.imodel.model.cascadedict.pojo.DictionaryMappingAlias;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface DictionaryMappingAliasService {
 

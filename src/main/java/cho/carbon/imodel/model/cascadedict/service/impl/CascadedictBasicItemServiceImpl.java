@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.cascadedict.criteria.CascadedictBasicItemCriteria;
 import cho.carbon.imodel.model.cascadedict.dao.CascadedictBasicItemDao;
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
@@ -15,7 +16,6 @@ import cho.carbon.imodel.model.cascadedict.pojo.CascadedictCodeGenerator;
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.modelitem.pojo.BasicChange;
 import cho.carbon.imodel.model.modelitem.service.BasicChangeService;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 @Service
 public class CascadedictBasicItemServiceImpl implements CascadedictBasicItemService {

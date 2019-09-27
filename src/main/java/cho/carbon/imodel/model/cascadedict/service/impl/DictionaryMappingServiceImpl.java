@@ -6,11 +6,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.cascadedict.criteria.DictionaryMappingCriteria;
 import cho.carbon.imodel.model.cascadedict.dao.DictionaryMappingDao;
 import cho.carbon.imodel.model.cascadedict.pojo.DictionaryMapping;
 import cho.carbon.imodel.model.cascadedict.service.DictionaryMappingService;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 @Service
 public class DictionaryMappingServiceImpl implements DictionaryMappingService {

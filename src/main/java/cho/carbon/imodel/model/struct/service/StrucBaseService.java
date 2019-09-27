@@ -2,12 +2,12 @@ package cho.carbon.imodel.model.struct.service;
 
 import java.util.List;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.modelitem.vo.ViewLabel;
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
 import cho.carbon.imodel.model.struct.pojo.StrucRelation;
 import cho.carbon.imodel.model.struct.vo.StrucBaseContainer;
 import cho.carbon.meta.enun.StrucElementType;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface StrucBaseService {
 

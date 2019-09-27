@@ -1,7 +1,6 @@
 package cho.carbon.imodel.admin.controller.cascadedict;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +25,6 @@ import cho.carbon.imodel.model.cascadedict.pojo.CascadedictSubsection;
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictSubsectionChild;
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.cascadedict.service.CascadedictSubsectionService;
-import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 @Controller
 @RequestMapping(AdminConstants.URI_CASCADEDICT + "/cascadedictSubsection")

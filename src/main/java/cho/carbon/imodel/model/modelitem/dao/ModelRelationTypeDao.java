@@ -2,10 +2,10 @@ package cho.carbon.imodel.model.modelitem.dao;
 
 import java.util.List;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.meta.enun.RelationType;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface ModelRelationTypeDao {
 	/**

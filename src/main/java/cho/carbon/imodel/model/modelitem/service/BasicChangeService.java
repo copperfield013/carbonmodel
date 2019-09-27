@@ -3,7 +3,6 @@ package cho.carbon.imodel.model.modelitem.service;
 import java.util.List;
 
 import cho.carbon.imodel.model.modelitem.pojo.BasicChange;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface BasicChangeService {
 

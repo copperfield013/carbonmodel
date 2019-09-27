@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cho.carbon.hc.copframe.dto.ajax.AjaxPageResponse;
 import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItemFix;
-import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
 
 @Controller
 @RequestMapping(AdminConstants.URI_BASE + "/modelItemFix")

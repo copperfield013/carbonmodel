@@ -2,9 +2,9 @@ package cho.carbon.imodel.model.cascadedict.dao;
 
 import java.util.List;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.cascadedict.criteria.DictionaryMappingCriteria;
 import cho.carbon.imodel.model.cascadedict.pojo.DictionaryMapping;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface DictionaryMappingDao {
 	/**

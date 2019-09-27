@@ -27,16 +27,16 @@
 	<import resource="spring-security.xml" />
 
 	<bean
-		class="cn.sowell.copframe.spring.propTranslator.PropertyValueTranslatorSet">
+		class="cho.carbon.hc.copframe.spring.propTranslator.PropertyValueTranslatorSet">
 		<property name="translatorSet">
 			<set>
 				<bean
-					class="cn.sowell.copframe.spring.propTranslator.translator.DatePropertyValueTranlator" />
+					class="cho.carbon.hc.copframe.spring.propTranslator.translator.DatePropertyValueTranlator" />
 			</set>
 		</property>
 	</bean>
 
-	<bean class="cn.sowell.copframe.dao.utils.NormalOperateDaoImpl" />
+	<bean class="cho.carbon.hc.copframe.dao.utils.NormalOperateDaoImpl" />
 
 	<mvc:interceptors>
 		<!-- 用于在请求中设置一些常用的变量 -->

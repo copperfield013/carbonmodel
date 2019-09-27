@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cho.carbon.hc.copframe.dto.ajax.AjaxPageResponse;
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.Constants;
@@ -29,9 +31,6 @@ import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.service.ModelRelationTypeService;
 import cho.carbon.meta.enun.ModelItemType;
 import cho.carbon.meta.enun.RelationType;
-import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
-import cn.sowell.copframe.dto.ajax.NoticeType;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 @Controller
 @RequestMapping(AdminConstants.URI_BASE + "/modelRelationType")

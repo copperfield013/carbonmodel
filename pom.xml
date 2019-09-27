@@ -9,11 +9,12 @@
 	<url>http://maven.apache.org</url>
 	
 	<properties>
-		<version.cpfweb>0.2.11</version.cpfweb>
+		<version.cpfweb>1.0</version.cpfweb>
+		<version.cpfspring>1.0</version.cpfspring>
+		<version.entityResolver>2.75</version.entityResolver>
 		<version.carbonModel>0.23</version.carbonModel>
 		 <version.jackson>2.4.4</version.jackson>
 		 <cxf.version>3.2.2</cxf.version>
-		 <version.entityResolver>2.34</version.entityResolver>
 		 
 		 <neo4j-ogm.version>3.1.14</neo4j-ogm.version>
 	</properties>
@@ -49,41 +50,25 @@
 	<!-- neo4j end -->
 	
 		<dependency>
-			<groupId>cn.sowell.copframe</groupId>
+			<groupId>cho.carbon.hc.copframe</groupId>
 			<artifactId>cpf-web</artifactId>
 			<version>${version.cpfweb}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>cn.sowell.copframe</groupId>
+					<groupId>cho.carbon.hc.copframe</groupId>
 					<artifactId>cpf-spring</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>cn.sowell.copframe</groupId>
+			<groupId>cho.carbon.hc.copframe</groupId>
 			<artifactId>cpf-spring</artifactId>
-			<version>0.3.15</version>
-		</dependency>
-		<dependency>
-			<groupId>cn.sowell.copframe</groupId>
-			<artifactId>cpf-excel</artifactId>
-			<version>0.1</version>
+			<version>${version.cpfspring}</version>
 		</dependency>
 		<dependency>
 			<groupId>cho.carbon</groupId>
 			<artifactId>model</artifactId>
 			<version>${version.carbonModel}</version>
-		</dependency>
-		<dependency>
-			<groupId>cn.sowell.copframe</groupId>
-			<artifactId>cpf-jedica</artifactId>
-			<version>0.0.3</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xbean</groupId>
@@ -132,34 +117,10 @@
 			<version>2.8.9</version>
 		</dependency>
 		
-   
- 		<!-- <dependency>
-         <groupId>io.springfox</groupId>
-         <artifactId>springfox-swagger2</artifactId>
-         <version>2.6.1</version>
-      </dependency>
-       <dependency>
-         <groupId>io.springfox</groupId>
-         <artifactId>springfox-swagger-ui</artifactId>
-         <version>2.6.1</version>
-      </dependency> -->
-      <!-- swagger-ui为项目提供api展示及测试的界面 -->
-     
-		<dependency>
-			<groupId>jexcelapi</groupId>
-			<artifactId>jxl</artifactId>
-			<version>2.4.2</version>
-		</dependency>
-		<dependency>
- 	     <groupId>cn.sowell.datacenter</groupId>
- 	     <artifactId>entityResolver</artifactId>
- 		<version>${version.entityResolver}</version>
- 			<exclusions>
- 			<exclusion>
-			<groupId>com.abc</groupId>
- 			<artifactId>item</artifactId>
- 			</exclusion>
- 			</exclusions>
+		<dependency> 
+	 	     <groupId>cho.carbon.hc</groupId>
+	 	     <artifactId>entityResolver</artifactId>
+	 		<version>${version.entityResolver}</version>
  		</dependency>
 		
 		<!-- CXF start -->

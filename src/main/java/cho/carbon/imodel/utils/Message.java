@@ -1,6 +1,6 @@
 package cho.carbon.imodel.utils;
 
-import cn.sowell.copframe.dto.ajax.NoticeType;
+import cho.carbon.hc.copframe.dto.ajax.NoticeType;
 
 /**
  * 消息数据

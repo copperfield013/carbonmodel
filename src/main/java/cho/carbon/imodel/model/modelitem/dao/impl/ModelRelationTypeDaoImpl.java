@@ -5,25 +5,20 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
-import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.hibernate.transform.ResultTransformer;
-import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import cho.carbon.hc.copframe.dao.deferedQuery.DeferedParamQuery;
+import cho.carbon.hc.copframe.dao.deferedQuery.sqlFunc.WrapForCountFunction;
+import cho.carbon.hc.copframe.dao.utils.QueryUtils;
+import cho.carbon.hc.copframe.dto.page.PageInfo;
+import cho.carbon.hc.copframe.utils.FormatUtils;
+import cho.carbon.hc.copframe.utils.TextUtils;
 import cho.carbon.imodel.model.modelitem.dao.ModelRelationTypeDao;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.meta.enun.RelationType;
-import cn.sowell.copframe.dao.deferedQuery.DeferedParamQuery;
-import cn.sowell.copframe.dao.deferedQuery.ResultSetter;
-import cn.sowell.copframe.dao.deferedQuery.sqlFunc.WrapForCountFunction;
-import cn.sowell.copframe.dao.utils.QueryUtils;
-import cn.sowell.copframe.dto.page.PageInfo;
-import cn.sowell.copframe.utils.FormatUtils;
-import cn.sowell.copframe.utils.TextUtils;
 
 @Repository
 public class ModelRelationTypeDaoImpl implements ModelRelationTypeDao {

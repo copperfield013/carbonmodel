@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cho.carbon.hc.copframe.dto.ajax.AjaxPageResponse;
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.cascadedict.criteria.DictionaryMappingCriteria;
 import cho.carbon.imodel.model.cascadedict.pojo.DictionaryMapping;
 import cho.carbon.imodel.model.cascadedict.service.DictionaryMappingService;
-import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 @Controller
 @RequestMapping(AdminConstants.URI_DICTIONARY + "/dictMapping")

@@ -10,7 +10,6 @@ import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -21,35 +20,29 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import cho.carbon.hc.copframe.dto.ajax.AjaxPageResponse;
 import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.comm.service.CommService;
-import cho.carbon.imodel.model.modelitem.Constants;
 import cho.carbon.imodel.model.modelitem.pojo.MiCalExpress;
 import cho.carbon.imodel.model.modelitem.pojo.MiCalculated;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiFilterRgroup;
-import cho.carbon.imodel.model.modelitem.pojo.MiStatFactGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiModelStat;
-import cho.carbon.imodel.model.modelitem.pojo.MiReference;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatDimension;
 import cho.carbon.imodel.model.modelitem.pojo.MiStatFact;
+import cho.carbon.imodel.model.modelitem.pojo.MiStatFactGroup;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.pojo.ModelRelationType;
 import cho.carbon.imodel.model.modelitem.service.MiExpreAndFilterService;
 import cho.carbon.imodel.model.modelitem.service.ModelItemService;
 import cho.carbon.imodel.model.modelitem.service.ModelRelationTypeService;
 import cho.carbon.imodel.model.modelitem.vo.MiFilterContainer;
-import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
 import cho.carbon.imodel.model.struct.pojo.StrucFilter;
 import cho.carbon.imodel.model.struct.pojo.StrucMiCode;
 import cho.carbon.meta.constant.ModelItemValueParter;
 import cho.carbon.meta.enun.ModelItemType;
-import cho.carbon.meta.enun.RelationType;
-import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
-import cn.sowell.copframe.dto.ajax.NoticeType;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 /**
  * 	表达式和过滤条件

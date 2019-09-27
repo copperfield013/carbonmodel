@@ -21,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import cho.carbon.hc.copframe.dto.ajax.AjaxPageResponse;
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.modelitem.pojo.MiValue;
@@ -35,8 +37,6 @@ import cho.carbon.meta.enun.ItemValueType;
 import cho.carbon.meta.enun.ModelItemType;
 import cho.carbon.meta.enun.StrucElementType;
 import cho.carbon.meta.mapping.ValueTypeMapping;
-import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 @Controller
 @RequestMapping(AdminConstants.URI_BASE + "/structBase")

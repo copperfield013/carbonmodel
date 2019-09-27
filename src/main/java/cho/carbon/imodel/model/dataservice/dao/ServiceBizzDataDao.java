@@ -2,9 +2,9 @@ package cho.carbon.imodel.model.dataservice.dao;
 
 import java.util.List;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.dataservice.criteria.ServiceBizzDataCriteria;
 import cho.carbon.imodel.model.dataservice.pojo.ServiceBizzData;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface ServiceBizzDataDao {
 	/**

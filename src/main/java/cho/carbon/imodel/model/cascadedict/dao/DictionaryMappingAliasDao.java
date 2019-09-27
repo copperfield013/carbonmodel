@@ -2,8 +2,8 @@ package cho.carbon.imodel.model.cascadedict.dao;
 
 import java.util.List;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.cascadedict.criteria.DictionaryMappingAliasCriteria;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface DictionaryMappingAliasDao {
 	/**

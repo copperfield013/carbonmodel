@@ -2,16 +2,13 @@ package cho.carbon.imodel.model.modelitem.dao;
 
 import java.util.List;
 
-
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.modelitem.pojo.MiCascade;
-import cho.carbon.imodel.model.modelitem.pojo.MiFilterCriterion;
-import cho.carbon.imodel.model.modelitem.pojo.MiFilterGroup;
 import cho.carbon.imodel.model.modelitem.pojo.MiTwolevelMapping;
 import cho.carbon.imodel.model.modelitem.pojo.ModelItem;
 import cho.carbon.imodel.model.modelitem.vo.ModelItemContainer;
 import cho.carbon.imodel.model.neo4j.domain.Item;
 import cho.carbon.meta.enun.ModelItemType;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface ModelItemDao {
 	/**

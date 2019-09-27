@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cho.carbon.hc.copframe.dto.ajax.AjaxPageResponse;
+import cho.carbon.hc.copframe.dto.page.PageInfo;
+import cho.carbon.hc.entityResolver.config.ModuleConfigureMediator;
+import cho.carbon.hc.entityResolver.config.abst.Module;
+import cho.carbon.hc.entityResolver.config.param.CreateModuleParam;
+import cho.carbon.hc.entityResolver.config.param.QueryModuleCriteria;
 import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.comm.service.CommService;
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
 import cho.carbon.imodel.model.struct.service.StrucBaseService;
-import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
-import cn.sowell.copframe.dto.page.PageInfo;
-import cn.sowell.datacenter.entityResolver.config.ModuleConfigureMediator;
-import cn.sowell.datacenter.entityResolver.config.abst.Module;
-import cn.sowell.datacenter.entityResolver.config.param.CreateModuleParam;
-import cn.sowell.datacenter.entityResolver.config.param.QueryModuleCriteria;
 
 @Controller
 @RequestMapping(AdminConstants.URI_MODULE + "/configModule")
@@ -65,7 +65,7 @@ public class ConfigModuleController {
 	 
 	@ResponseBody
     @RequestMapping(value = "/do_add")
-	public AjaxPageResponse doAdd(String moduleName, String moduleTitle, Long mappingId, String codeName, String titleName){
+	public AjaxPageResponse doAdd(String moduleName, String moduleTitle, Integer mappingId, String codeName, String titleName){
 		try {
 				
 			if (codeName == null) {

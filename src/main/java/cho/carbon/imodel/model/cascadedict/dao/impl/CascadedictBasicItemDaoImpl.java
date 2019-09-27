@@ -11,15 +11,15 @@ import org.hibernate.SessionFactory;
 import org.hibernate.type.Type;
 import org.springframework.stereotype.Repository;
 
+import cho.carbon.hc.copframe.dao.deferedQuery.DeferedParamQuery;
+import cho.carbon.hc.copframe.dao.deferedQuery.sqlFunc.WrapForCountFunction;
+import cho.carbon.hc.copframe.dao.utils.QueryUtils;
+import cho.carbon.hc.copframe.dto.page.PageInfo;
+import cho.carbon.hc.copframe.utils.FormatUtils;
+import cho.carbon.hc.copframe.utils.TextUtils;
 import cho.carbon.imodel.model.cascadedict.criteria.CascadedictBasicItemCriteria;
 import cho.carbon.imodel.model.cascadedict.dao.CascadedictBasicItemDao;
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
-import cn.sowell.copframe.dao.deferedQuery.DeferedParamQuery;
-import cn.sowell.copframe.dao.deferedQuery.sqlFunc.WrapForCountFunction;
-import cn.sowell.copframe.dao.utils.QueryUtils;
-import cn.sowell.copframe.dto.page.PageInfo;
-import cn.sowell.copframe.utils.FormatUtils;
-import cn.sowell.copframe.utils.TextUtils;
 
 @Repository
 public class CascadedictBasicItemDaoImpl implements CascadedictBasicItemDao {

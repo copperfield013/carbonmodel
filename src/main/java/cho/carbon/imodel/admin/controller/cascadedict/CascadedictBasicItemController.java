@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
@@ -19,20 +18,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import cho.carbon.hc.copframe.dto.ajax.AjaxPageResponse;
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.admin.controller.AdminConstants;
 import cho.carbon.imodel.model.cascadedict.criteria.CascadedictBasicItemCriteria;
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictBasicItem;
 import cho.carbon.imodel.model.cascadedict.pojo.CascadedictSubsection;
 import cho.carbon.imodel.model.cascadedict.service.CascadedictBasicItemService;
 import cho.carbon.imodel.model.cascadedict.service.CascadedictSubsectionService;
-import cn.sowell.copframe.dto.ajax.AjaxPageResponse;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 @Controller
 @RequestMapping(AdminConstants.URI_CASCADEDICT + "/cascadedictBasicItem")

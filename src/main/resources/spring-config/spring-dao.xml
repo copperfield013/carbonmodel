@@ -82,7 +82,7 @@
     
     <tx:annotation-driven transaction-manager="transactionManager"/>
     
-	 <bean id="dBModuleConfigMediator" class="cn.sowell.datacenter.entityResolver.config.DBModuleConfigMediator">
+	 <bean id="dBModuleConfigMediator" class="cho.carbon.hc.entityResolver.config.DBModuleConfigMediator">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 </beans>

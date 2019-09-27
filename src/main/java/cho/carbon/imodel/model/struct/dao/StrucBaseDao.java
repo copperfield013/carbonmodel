@@ -2,9 +2,9 @@ package cho.carbon.imodel.model.struct.dao;
 
 import java.util.List;
 
+import cho.carbon.hc.copframe.dto.page.PageInfo;
 import cho.carbon.imodel.model.struct.pojo.StrucBase;
 import cho.carbon.imodel.model.struct.pojo.StrucRelation;
-import cn.sowell.copframe.dto.page.PageInfo;
 
 public interface StrucBaseDao {
 
